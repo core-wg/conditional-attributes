@@ -1,61 +1,450 @@
 ---
-title: Conditional Attributes for Constrained RESTful Environments
+title: "Conditional Attributes for Constrained RESTful Environments"
 abbrev: Conditional Attributes for CoRE
 docname: draft-ietf-core-conditional-attributes-latest
+date: 2021-7-27
 category: info
 
 ipr: trust200902
-area: Applications and Real-Time
+area: art
 workgroup: CoRE Working Group
-keyword: Internet-Draft
+keyword: [Internet-Draft, CoRE, CoAP, Observe]
 
 stand_alone: yes
 pi: [toc, sortrefs, symrefs]
 
 author:
- -
-    ins: X. Y.
-    name: X Y
-    organization: TBD
-    email: TBD
+- ins: M. Koster
+  name: Michael Koster
+  organization: SmartThings
+  street: 665 Clyde Avenue
+  city: Mountain View
+  code: 94043
+  country: USA
+  email: michael.koster@smartthings.com
+- role: editor
+  ins: B. Silverajan
+  name: Bilhanan Silverajan
+  org: Tampere University
+  street: Kalevantie 4
+  city: Tampere
+  code: 'FI-33100'
+  country: Finland
+  email: bilhanan.silverajan@tuni.fi
 
 normative:
-  RFC2119:
 
 informative:
-
+  RFC7252: coap
+  RFC7641: observe
 
 
 --- abstract
 
-TODO Abstract
+This specification defines Conditional Notification and Control Attributes that work with CoAP Observe (RFC7641).
+ 
+--- note_Editor_note
+ 
+The git repository for the draft is found at TBD
 
 --- middle
 
-# Introduction
+Introduction        {#introduction}
+============
 
-TODO Introduction
+IETF Standards for machine to machine communication in constrained environments describe a REST protocol {{-coap}} and a set of related information standards that may be used to represent machine data and machine metadata in REST interfaces. 
+
+This specification defines Conditional Notification and Control Attributes for use with CoRE Observe {{RFC7641}}.
+
+Terminology     {#terminology}
+===========
+
+{::boilerplate bcp14}
+
+This specification requires readers to be familiar with all the terms and concepts that are discussed in {{RFC7641}}.  This specification makes use of the following additional terminology:
+
+Notification Band:  
+: A resource value range that  may be bounded by a minimum and maximum value or may be unbounded having either a minimum or maximum value.
+
+Conditional Attributes        {#binding_attributes}
+=============
+
+This specification defines conditional attributes, which provide for fine-grained control of notification and state synchronization when using CoRE Observe {{RFC7641}}. When resource interfaces following this specification are made available over CoAP, the CoAP Observation mechanism {{RFC7641}} MAY also be used to observe any changes in a resource, and receive asynchronous notifications as a result. A resource marked as Observable in its link description SHOULD support these conditional attributes. 
+
+Note: In this draft, we assume that there are finite quantization effects in the internal or external updates to the value representing the state of a resource; specifically, that a resource state may be updated at any time with any valid value. We therefore avoid any continuous-time assumptions in the description of the conditional attributes and instead use the phrase "sampled value" to refer to a member of a sequence of values that may be internally observed from the resource state over time.
+
+## Conditional Notification Attributes
+
+Conditional Notification Attributes define the conditions that trigger a notification. Conditional Notification Attributes SHOULD be evaluated on all potential notifications from a resource, whether resulting from an internal server-driven sampling process or from external update requests to the server. 
+
+The set of Conditional Notification Attributes defined here allow a client to control how often a client is interested in receiving notifications and how much a value should change for the new representation state to be interesting. One or more Conditional Notification Attributes MAY be included as query parameters in an Observe request.
+
+Conditional Notification Attributes are defined below:
+
+| Attribute         | Parameter | Value          |
+| --- | --- | --- |
+| Greater Than      | gt       | xs:decimal      |
+| Less Than         | lt       | xs:decimal      |
+| Change Step       | st       | xs:decimal (>0) |
+| Notification Band | band     | xs:boolean      |
+| Edge              | edge     | xs:boolean      |
+{: #notificationattributes title="Conditional Notification Attributes"}
 
 
-# Conventions and Definitions
+###Greater Than (gt) {#gt}
+When present, Greater Than indicates the upper limit value the sampled value SHOULD cross before triggering a notification. A notification is sent whenever the sampled value crosses the specified upper limit value, relative to the last reported value, and the time fpr pmin has elapsed since the last notification. The sampled value is sent in the notification. If the value continues to rise, no notifications are generated as a result of gt. If the value drops below the upper limit value then a notification is sent, subject again to the pmin time. 
 
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 {{RFC2119}} {{!RFC8174}} when, and only when, they appear in all capitals, as shown here.
+The Greater Than parameter can only be supported on resources with a scalar numeric value. 
+
+###Less Than (lt) {#lt}
+When present, Less Than indicates the lower limit value the resource value SHOULD cross before triggering a notification. A notification is sent when the samples value crosses the specified lower limit value, relative to the last reported value, and the time fpr pmin has elapsed since the last notification. The sampled value is sent in the notification. If the value continues to fall no notifications are generated as a result of lt. If the value rises above the lower limit value then a new notification is sent, subject to the pmin time. 
+
+The Less Than parameter can only be supported on resources with a scalar numeric value. 
+
+###Change Step (st) {#st}
+When present, the change step indicates how much the value representing a resource state SHOULD change before triggering a notification, compared to the old state. Upon reception of a query including the st attribute, the current resource state representing the most recently sampled value is reported, and then set as the last reported value (last_rep_v). When a subsequent sampled value or update of the resource state differs from the last reported state by an amount, positive or negative, greater than or equal to st, and the time for pmin has elapsed since the last notification, a notification is sent and the last reported value is updated to the new resource state sent in the notification. The change step MUST be greater than zero otherwise the receiver MUST return a CoAP error code 4.00 "Bad Request" (or equivalent).
+
+The Change Step parameter can only be supported on resource states represented with a scalar numeric value. 
+
+Note: Due to sampling and other constraints, e.g. pmin, the change in resource states received in two sequential notifications may differ by more than st.
+
+###Notification Band (band) {#band}
+
+The notification band attribute allows a bounded or unbounded (based on a minimum or maximum) value range that may trigger multiple notifications. This enables use cases where different ranges results in differing behaviour. For example, in monitoring the temperature of machinery, whilst the temperature is in the normal operating range, only periodic updates are needed. However as the temperature moves to more abnormal ranges more frequent state updates may be sent to clients.
+
+Without a notification band, a transition across a less than (lt), or greater than (gt) limit only generates one notification.  This means that it is not possible to describe a case where multiple notifications are sent so long as the limit is exceeded.
+
+The band attribute works as a modifier to the behaviour of gt and lt. Therefore, if band is present in a query, gt, lt or both, MUST be included.
+
+When band is present with the lt attribute, it defines the lower bound for the notification band (notification band minimum). Notifications occur when the resource value is equal to or above the notification band minimum. If lt is not present there is no minimum value for the band.
+
+When band is present with the gt attribute, it defines the upper bound for the notification band (notification band maximum). Notifications occur when the resource value is equal to or below the notification band maximum. If gt is not present there is no maximum value for the band.
+
+If band is present with both the gt and lt attributes, notification occurs when the resource value is greater than or equal to gt or when the resource value is less than or equal to lt.
+
+If a band is specified in which the value of gt is less than that of lt, in-band notification occurs. That is, notification occurs whenever the resource value is between the gt and lt values, including equal to gt or lt. 
+
+If the band is specified in which the value of gt is greater than that of lt, out-of-band notification occurs. That is, notification occurs when the resource value not between the gt and lt values, excluding equal to gt and lt.
+
+The Notification Band parameter can only be supported on resources with a scalar numeric value. 
+
+###Edge (edge) {#edge}
+
+When present, the Edge attribute indicates interest for receiving notifications of either the falling edge or the rising edge transition of a boolean resource state. When the value of the Edge attribute is 0, the server notifies the client each time a resource state changes from True to False. When the value of the Edge attribute is 1, the server notifies the client each time a resource state changes from False to True. 
+
+The Edge attribute can only be supported on resources with a boolean value.
+
+## Conditional Control Attributes
 
 
-# Security Considerations
+Conditional Control Attributes define the time intervals between consecutive notifications as well as the cadence of the measurement of the conditions that trigger a notification. Conditional Control Attributes can be used to configure the internal server-driven sampling process for performing measurements of the conditions of a resource. One or more Conditional Control Attributes MAY be included as query parameters in an Observe request.
 
-TODO Security
+Conditional Control Attributes are defined below:
+
+| Attribute                    | Parameter  | Value           |
+| --- | --- | --- |
+| Minimum Period (s)           | pmin       | xs:decimal (>0) |
+| Maximum Period (s)           | pmax       | xs:decimal (>0) |
+| Minimum Evaluation Period (s)| epmin      | xs:decimal (>0) |
+| Maximum Evaluation Period (s)| epmax      | xs:decimal (>0) |
+| Confirmable Notification     | con        | xs:boolean      |
+{: #controlattributes title="Conditional Control Attributes"}
 
 
-# IANA Considerations
 
-This document has no IANA actions.
+ 
+###Minimum Period (pmin) {#pmin}
+
+When present, the minimum period indicates the minimum time, in seconds, between two consecutive notifications (whether or not the resource state has changed). In the absence of this parameter, the minimum period is up to the server. The minimum period MUST be greater than zero otherwise the receiver MUST return a CoAP error code 4.00 "Bad Request" (or equivalent).
+
+A server MAY update the resource state with the last sampled value that occured during the pmin interval, after the pmin interval expires. 
+
+Note: Due to finite quantization effects, the time between notifications may be greater than pmin even when the sampled value changes within the pmin interval. Pmin may or may not be used to drive the internal sampling process.
+
+###Maximum Period (pmax) {#pmax}
+When present, the maximum period indicates the maximum time, in seconds, between two consecutive notifications (whether or not the resource state has changed). In the absence of this parameter, the maximum period is up to the server. The maximum period MUST be greater than zero and MUST be greater than, or equal to, the minimum period parameter (if present) otherwise the receiver MUST return a CoAP error code 4.00 "Bad Request" (or equivalent).
+
+###Minimum Evaluation Period (epmin) {#epmin}
+
+When present, the minimum evaluation period indicates the minimum time, in seconds, the client recommends to the server to wait between two consecutive measurements of the conditions of a resource since the client has no interest in the server doing more frequent measurements. When the minimum evaluation period expires after the previous measurement, the server MAY immediately perform a new measurement. In the absence of this parameter, the minimum evaluation period is not defined and thus not used by the server. The server MAY use pmin, if defined, as a guidance on the desired measurement cadence. The minimum evaluation period MUST be greater than zero otherwise the receiver MUST return a CoAP error code 4.00 "Bad Request" (or equivalent).
+
+###Maximum Evaluation Period (epmax) {#epmax}
+
+When present, the maximum evaluation period indicates the maximum time, in seconds, the server MAY wait between two consecutive measurements of the conditions of a resource. When the maximum evaluation period expires after the previous measurement, the server MUST immediately perform a new measurement. In the absence of this parameter, the maximum evaluation period is not defined and thus not used by the server. The maximum evaluation period MUST be greater than zero and MUST be greater than the minimum evaluation period parameter (if present) otherwise the receiver MUST return a CoAP error code 4.00 "Bad Request" (or equivalent).
+
+###Confirmable Notification (con) {#con}
+
+When present with a value of 1 in a query, the con attribute indicates a notification MUST be confirmable, i.e., the server MUST send the notification in a confirmable CoAP message, to request an acknowledgement from the client. When present with a value of 0 in a query, the con attribute indicates a notification can be confirmable or non-confirmable, i.e., it can be sent in a confirmable or a non-confirmable CoAP message.
 
 
+## Server processing of Conditional Attributes
+
+Conditional Notification Attributes and Conditional Control Attributes may be present in the same query. However, they are not defined at multiple prioritization levels. The server sends a notification whenever any of the parameter conditions are met, upon which it updates its last notification value and time to prepare for the next notification. Only one notification occurs when there are multiple conditions being met at the same time. The reference code below illustrates the logic to determine when a notification is to be sent.
+
+~~~~
+bool notifiable( Resource * r ) {
+
+#define BAND r->band
+#define SCALAR_TYPE ( num_type == r->type )
+#define STRING_TYPE ( str_type == r->type )
+#define BOOLEAN_TYPE ( bool_type == r->type )
+#define PMIN_EX ( r->last_sample_time - r->last_rep_time >= r->pmin )
+#define PMAX_EX ( r->last_sample_time - r->last_rep_time > r->pmax )
+#define LT_EX ( r->v < r->lt ^ r->last_rep_v < r->lt )
+#define GT_EX ( r->v > r->gt ^ r->last_rep_v > r->gt )
+#define ST_EX ( abs( r->v - r->last_rep_v ) >= r->st )
+#define IN_BAND ( ( r->gt <= r->v && r->v <= r->lt ) || ( r->lt <= r->gt && r->gt <= r->v ) || ( r->v <= r->lt && r->lt <= r->gt ) )
+#define VB_CHANGE ( r->vb != r->last_rep_vb )
+#define VS_CHANGE ( r->vs != r->last_rep_vs )
+
+  return (
+    PMIN_EX &&
+    ( SCALAR_TYPE ?
+      ( ( !BAND && ( GT_EX || LT_EX || ST_EX || PMAX_EX ) ) ||
+        ( BAND && IN_BAND && ( ST_EX || PMAX_EX) ) )
+    : STRING_TYPE ?
+      ( VS_CHANGE || PMAX_EX )
+    : BOOLEAN_TYPE ?
+      ( VB_CHANGE || PMAX_EX )
+    : false )
+  );
+}
+~~~~
+{: #figattrint title="Code logic for conditional notification attribute interactions"}
+
+
+Implementation Considerations   {#Implementation}
+=======================
+
+When pmax and pmin are equal, the expected behaviour is that notifications will be sent every (pmin == pmax) seconds. However, these notifications can only be fulfilled by the server on a best effort basis. Because pmin and pmax are designed as acceptable tolerance bounds for sending state updates, a query from an interested client containing equal pmin and pmax values must not be seen as a hard real-time scheduling contract between the client and the server.
+
+When using multiple resource bindings (e.g. multiple Observations of resource) with different bands, consideration should be given to the resolution of the resource value when setting sequential bands. For example: Given BandA (Abmn=10, Bbmx=20) and BandB (Bbmn=21, Bbmx=30). If the resource value returns an integer then notifications for values between and inclusive of 10 and 30 will be triggered. Whereas if the resolution is to one decimal point (0.1) then notifications for values 20.1 to 20.9 will not be triggered.
+
+The use of the notification band minimum and maximum allow for a synchronization whenever a change in the resource value occurs. Theoretically this could occur in-line with the server internal sample period or the configuration of epmin and epmax values for determining the resource value. Implementors SHOULD consider the resolution needed before updating the resource, e.g. updating the resource when a temperature sensor value changes by 0.001 degree versus 1 degree.
+
+When a server has multiple observations with different measurement cadences as defined by the epmin and epmax values, the server MAY evaluate all observations when performing the measurement of any one observation.
+
+Security Considerations   {#Security}
+=======================
+TBD
+IANA Considerations
+===================
+
+TBD
+
+Acknowledgements
+================
+Hannes Tschofenig and Mert Ocak highlighted syntactical corrections in the usage of pmax and pmin in a query. Alan Soloway contributed text leading to the inclusion of epmin and epmax. David Navarro proposed allowing for pmax to be equal to pmin. 
+
+Contributors
+============
+
+    Christian Groves
+    Australia
+    email: cngroves.std@gmail.com
+
+    Zach Shelby
+    ARM
+    Vuokatti
+    FINLAND
+    phone: +358 40 7796297
+    email: zach.shelby@arm.com
+
+    Matthieu Vial
+    Schneider-Electric
+    Grenoble
+    France
+    phone: +33 (0)47657 6522
+    eMail: matthieu.vial@schneider-electric.com
+
+    Jintao Zhu
+    Huawei
+    Xi’an, Shaanxi Province
+    China
+    email: jintao.zhu@huawei.com 
+
+Changelog
+=========
+
+draft-ietf-core-conditional-attributes-00
+
+* Conditional Atttributes section from draft-ietf-core-dynlink-13 separated into own WG draft
 
 --- back
 
-# Acknowledgments
-{:numbered="false"}
+Examples
+========
 
-TODO acknowledge. 
+This appendix provides some examples of the use of binding attribute / observe attributes.
+
+Note: For brevity the only the method or response code is shown in the header field.
+
+Minimum Period (pmin) example
+--------------------------
+
+~~~~
+        Observed   CLIENT  SERVER     Actual
+    t   State         |      |         State
+        ____________  |      |  ____________
+    1                 |      |
+    2    unknown      |      |     18.5 Cel
+    3                 +----->|                  Header: GET
+    4                 | GET  |                   Token: 0x4a
+    5                 |      |                Uri-Path: temperature
+    6                 |      |               Uri-Query: pmin="10"
+    7                 |      |                 Observe: 0 (register)
+    8                 |      |
+    9   ____________  |<-----+                  Header: 2.05
+   10                 | 2.05 |                   Token: 0x4a
+   11    18.5 Cel     |      |                 Observe: 9
+   12                 |      |                 Payload: "18.5 Cel"
+   13                 |      |  ____________
+   14                 |      |
+   15                 |      |     23 Cel
+   16                 |      |
+   17                 |      |
+   18                 |      |
+   19                 |      |  ____________
+   20   ____________  |<-----+                  Header: 2.05
+   21                 | 2.05 |     26 Cel        Token: 0x4a
+   22    26 Cel       |      |                 Observe: 20
+   23                 |      |                 Payload: "26 Cel"
+   24                 |      |
+   25                 |      |
+~~~~
+{: #figbindexp1 title="Client registers and receives one notification of the current state and one of a new state state when pmin time expires."}
+
+Maximum Period (pmax) example
+--------------------------
+
+~~~~
+        Observed   CLIENT  SERVER     Actual
+    t   State         |      |         State
+        ____________  |      |  ____________
+    1                 |      |
+    2    unknown      |      |     18.5 Cel
+    3                 +----->|                  Header: GET
+    4                 | GET  |                   Token: 0x4a
+    5                 |      |                Uri-Path: temperature
+    6                 |      |               Uri-Query: pmax="20"
+    7                 |      |                 Observe: 0 (register)
+    8                 |      |
+    9   ____________  |<-----+                  Header: 2.05
+   10                 | 2.05 |                   Token: 0x4a
+   11    18.5 Cel     |      |                 Observe: 9
+   12                 |      |                 Payload: "18.5 Cel"
+   13                 |      |
+   14                 |      |
+   15                 |      |  ____________
+   16   ____________  |<-----+                  Header: 2.05
+   17                 | 2.05 |     23 Cel        Token: 0x4a
+   18    23 Cel       |      |                 Observe: 16
+   19                 |      |                 Payload: "23 Cel"
+   20                 |      |
+   21                 |      |
+   22                 |      |
+   23                 |      |
+   24                 |      |
+   25                 |      |
+   26                 |      |
+   27                 |      |
+   28                 |      |
+   29                 |      |
+   30                 |      |
+   31                 |      |
+   32                 |      |
+   33                 |      |
+   34                 |      |   
+   35                 |      |
+   36                 |      |  ____________
+   37   ____________  |<-----+                  Header: 2.05
+   38                 | 2.05 |     23 Cel        Token: 0x4a
+   39    23 Cel       |      |                 Observe: 37
+   40                 |      |                 Payload: "23 Cel"
+   41                 |      |
+   42                 |      |
+~~~~
+{: #figbindexp2 title="Client registers and receives one notification of the current state, one of a new state and one of an unchanged state when pmax time expires."}
+
+Greater Than (gt) example
+--------------------------
+
+~~~~
+     Observed   CLIENT  SERVER     Actual
+ t   State         |      |         State
+     ____________  |      |  ____________
+ 1                 |      |
+ 2    unknown      |      |     18.5 Cel
+ 3                 +----->|                  Header: GET 
+ 4                 | GET  |                   Token: 0x4a
+ 5                 |      |                Uri-Path: temperature
+ 6                 |      |               Uri-Query: gt=25
+ 7                 |      |                 Observe: 0 (register)
+ 8                 |      |
+ 9   ____________  |<-----+                  Header: 2.05 
+10                 | 2.05 |                   Token: 0x4a
+11    18.5 Cel     |      |                 Observe: 9
+12                 |      |                 Payload: "18.5 Cel"
+13                 |      |                 
+14                 |      |
+15                 |      |  ____________
+16   ____________  |<-----+                  Header: 2.05 
+17                 | 2.05 |     26 Cel        Token: 0x4a
+18    26 Cel       |      |                 Observe: 16
+29                 |      |                 Payload: "26 Cel"
+20                 |      |                 
+21                 |      |
+~~~~
+{: #figbindexp3 title="Client registers and receives one notification of the current state and one of a new state when it passes through the greater than threshold of 25."}
+
+Greater Than (gt) and Period Max (pmax) example
+----------------------------------
+
+~~~~
+     Observed   CLIENT  SERVER     Actual
+ t   State         |      |         State
+     ____________  |      |  ____________
+ 1                 |      |
+ 2    unknown      |      |     18.5 Cel
+ 3                 +----->|                  Header: GET 
+ 4                 | GET  |                   Token: 0x4a
+ 5                 |      |                Uri-Path: temperature
+ 6                 |      |         Uri-Query: pmax=20;gt=25
+ 7                 |      |                 Observe: 0 (register)
+ 8                 |      |
+ 9   ____________  |<-----+                  Header: 2.05 
+10                 | 2.05 |                   Token: 0x4a
+11    18.5 Cel     |      |                 Observe: 9
+12                 |      |                 Payload: "18.5 Cel"
+13                 |      |                 
+14                 |      |
+15                 |      |
+16                 |      |
+17                 |      |
+18                 |      |
+19                 |      |
+20                 |      |
+21                 |      |
+22                 |      |
+23                 |      |
+24                 |      |
+25                 |      |
+26                 |      |
+27                 |      |
+28                 |      |
+29                 |      |  ____________
+30   ____________  |<-----+                  Header: 2.05
+31                 | 2.05 |     23 Cel        Token: 0x4a
+32    23 Cel       |      |                 Observe: 30
+33                 |      |                 Payload: "23 Cel"
+34                 |      |                 
+35                 |      |
+36                 |      |  ____________
+37   ____________  |<-----+                  Header: 2.05 
+38                 | 2.05 |     26 Cel        Token: 0x4a
+39    26 Cel       |      |                 Observe: 37
+40                 |      |                 Payload: "26 Cel"
+41                 |      |                 
+42                 |      |
+~~~~
+{: #figbindexp4 title="Client registers and receives one notification of the current state, one when pmax time expires and one of a new state when it passes through the greater than threshold of 25."}
