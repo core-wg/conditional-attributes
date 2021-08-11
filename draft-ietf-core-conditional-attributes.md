@@ -22,6 +22,14 @@ author:
   code: 94043
   country: USA
   email: michael.koster@smartthings.com
+- ins: A. Soloway
+  name: Alan Soloway
+  organization: Qualcomm Technologies, Inc.
+  street: 5775 Morehouse Drive
+  city: San Diego
+  code: 92121
+  country: USA
+  email: asoloway@qti.qualcomm.com
 - role: editor
   ins: B. Silverajan
   name: Bilhanan Silverajan
