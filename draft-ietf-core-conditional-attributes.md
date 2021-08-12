@@ -16,12 +16,12 @@ pi: [toc, sortrefs, symrefs]
 author:
 - ins: M. Koster
   name: Michael Koster
-  organization: SmartThings
-  street: 665 Clyde Avenue
-  city: Mountain View
-  code: 94043
+  organization: Dogtiger Labs
+  street: 524 H Street
+  city: Antioch, CA
+  code: 94509
   country: USA
-  email: michael.koster@smartthings.com
+  email: michaeljohnkoster@gmail.com
 - ins: A. Soloway
   name: Alan Soloway
   organization: Qualcomm Technologies, Inc.
