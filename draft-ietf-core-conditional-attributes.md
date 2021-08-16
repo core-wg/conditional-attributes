@@ -53,7 +53,7 @@ This specification defines Conditional Notification and Control Attributes that 
  
 --- note_Editor_note
  
-The git repository for the draft is found at TBD
+The git repository for the draft is found at https://github.com/core-wg/conditional-attributes/
 
 --- middle
 
@@ -138,12 +138,11 @@ The Notification Band parameter can only be supported on resources with a scalar
 
 ###Edge (edge) {#edge}
 
-When present, the Edge attribute indicates interest for receiving notifications of either the falling edge or the rising edge transition of a boolean resource state. When the value of the Edge attribute is 0, the server notifies the client each time a resource state changes from True to False. When the value of the Edge attribute is 1, the server notifies the client each time a resource state changes from False to True. 
+When present, the Edge attribute indicates interest for receiving notifications of either the falling edge or the rising edge transition of a boolean resource state. When the value of the Edge attribute is 0 (False), the server notifies the client each time a resource state changes from True to False. When the value of the Edge attribute is 1 (True), the server notifies the client each time a resource state changes from False to True. 
 
 The Edge attribute can only be supported on resources with a boolean value.
 
 ## Conditional Control Attributes
-
 
 Conditional Control Attributes define the time intervals between consecutive notifications as well as the cadence of the measurement of the conditions that trigger a notification. Conditional Control Attributes can be used to configure the internal server-driven sampling process for performing measurements of the conditions of a resource. One or more Conditional Control Attributes MAY be included as query parameters in an Observe request.
 
@@ -159,8 +158,6 @@ Conditional Control Attributes are defined below:
 {: #controlattributes title="Conditional Control Attributes"}
 
 
-
- 
 ###Minimum Period (pmin) {#pmin}
 
 When present, the minimum period indicates the minimum time, in seconds, between two consecutive notifications (whether or not the resource state has changed). In the absence of this parameter, the minimum period is up to the server. The minimum period MUST be greater than zero otherwise the receiver MUST return a CoAP error code 4.00 "Bad Request" (or equivalent).
@@ -170,6 +167,7 @@ A server MAY update the resource state with the last sampled value that occured 
 Note: Due to finite quantization effects, the time between notifications may be greater than pmin even when the sampled value changes within the pmin interval. Pmin may or may not be used to drive the internal sampling process.
 
 ###Maximum Period (pmax) {#pmax}
+
 When present, the maximum period indicates the maximum time, in seconds, between two consecutive notifications (whether or not the resource state has changed). In the absence of this parameter, the maximum period is up to the server. The maximum period MUST be greater than zero and MUST be greater than, or equal to, the minimum period parameter (if present) otherwise the receiver MUST return a CoAP error code 4.00 "Bad Request" (or equivalent).
 
 ###Minimum Evaluation Period (epmin) {#epmin}
@@ -182,8 +180,7 @@ When present, the maximum evaluation period indicates the maximum time, in secon
 
 ###Confirmable Notification (con) {#con}
 
-When present with a value of 1 in a query, the con attribute indicates a notification MUST be confirmable, i.e., the server MUST send the notification in a confirmable CoAP message, to request an acknowledgement from the client. When present with a value of 0 in a query, the con attribute indicates a notification can be confirmable or non-confirmable, i.e., it can be sent in a confirmable or a non-confirmable CoAP message.
-
+When present with a value of 1 (True) in a query, the con attribute indicates a notification MUST be confirmable, i.e., the server MUST send the notification in a confirmable CoAP message, to request an acknowledgement from the client. When present with a value of 0 (False) in a query, the con attribute indicates a notification can be confirmable or non-confirmable, i.e., it can be sent in a confirmable or a non-confirmable CoAP message.
 
 ## Server processing of Conditional Attributes
 
@@ -235,6 +232,7 @@ When a server has multiple observations with different measurement cadences as d
 Security Considerations   {#Security}
 =======================
 TBD
+
 IANA Considerations
 ===================
 
@@ -242,7 +240,7 @@ TBD
 
 Acknowledgements
 ================
-Hannes Tschofenig and Mert Ocak highlighted syntactical corrections in the usage of pmax and pmin in a query. Alan Soloway contributed text leading to the inclusion of epmin and epmax. David Navarro proposed allowing for pmax to be equal to pmin. 
+Hannes Tschofenig and Mert Ocak highlighted syntactical corrections in the usage of pmax and pmin in a query. David Navarro proposed allowing for pmax to be equal to pmin. 
 
 Contributors
 ============
