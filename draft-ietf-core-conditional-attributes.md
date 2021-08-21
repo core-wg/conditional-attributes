@@ -198,7 +198,9 @@ bool notifiable( Resource * r ) {
 #define LT_EX ( r->v < r->lt ^ r->last_rep_v < r->lt )
 #define GT_EX ( r->v > r->gt ^ r->last_rep_v > r->gt )
 #define ST_EX ( abs( r->v - r->last_rep_v ) >= r->st )
-#define IN_BAND ( ( r->gt <= r->v && r->v <= r->lt ) || ( r->lt <= r->gt && r->gt <= r->v ) || ( r->v <= r->lt && r->lt <= r->gt ) )
+#define IN_BAND ( ( r->gt <= r->v && r->v <= r->lt ) || \
+                  ( r->lt <= r->gt && r->gt <= r->v ) || \
+                  ( r->v <= r->lt && r->lt <= r->gt ) )
 #define VB_CHANGE ( r->vb != r->last_rep_vb )
 #define VS_CHANGE ( r->vs != r->last_rep_vs )
 
