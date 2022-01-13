@@ -2,7 +2,7 @@
 title: "Conditional Attributes for Constrained RESTful Environments"
 abbrev: Conditional Attributes for CoRE
 docname: draft-ietf-core-conditional-attributes-latest
-date: 2021-7-27
+date: 2022-1-13
 category: info
 
 ipr: trust200902
@@ -273,6 +273,11 @@ Contributors
 
 Changelog
 =========
+
+draft-ietf-core-conditional-attributes-01
+
+* Clarifications on True and False values for Edge and Con Attributes
+* Alan Soloway added as author
 
 draft-ietf-core-conditional-attributes-00
 
