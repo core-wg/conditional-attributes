@@ -122,7 +122,7 @@ The notification band attribute allows a bounded or unbounded (based on a minimu
 
 Without a notification band, a transition across a less than (lt), or greater than (gt) limit only generates one notification.  This means that it is not possible to describe a case where multiple notifications are sent so long as the limit is exceeded.
 
-The band attribute works as a modifier to the behaviour of gt and lt. Therefore, if band is present in a query, gt, lt or both, MUST be included.
+The band attribute works as a modifier to the behaviour of gt and lt. Its use is determined only by its presence, and not its value. Therefore, if band is present in a query, gt, lt or both, MUST be included.
 
 When band is present with the lt attribute, it defines the lower bound for the notification band (notification band minimum). Notifications occur when the resource value is equal to or above the notification band minimum. If lt is not present there is no minimum value for the band.
 
