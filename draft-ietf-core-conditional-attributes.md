@@ -94,7 +94,7 @@ Conditional Notification Attributes are defined below:
 | Greater Than      | gt       | xs:decimal      |
 | Less Than         | lt       | xs:decimal      |
 | Change Step       | st       | xs:decimal (>0) |
-| Notification Band | band     | xs:boolean      |
+| Notification Band | band     | (none)          |
 | Edge              | edge     | xs:boolean      |
 {: #notificationattributes title="Conditional Notification Attributes"}
 
