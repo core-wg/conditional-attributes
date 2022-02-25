@@ -2,7 +2,7 @@
 title: "Conditional Attributes for Constrained RESTful Environments"
 abbrev: Conditional Attributes for CoRE
 docname: draft-ietf-core-conditional-attributes-latest
-date: 2022-1-13
+date: 2022-2-24
 category: info
 
 ipr: trust200902
@@ -100,12 +100,12 @@ Conditional Notification Attributes are defined below:
 
 
 ###Greater Than (gt) {#gt}
-When present, Greater Than indicates the upper limit value the sampled value SHOULD cross before triggering a notification. A notification is sent whenever the sampled value crosses the specified upper limit value, relative to the last reported value, and the time fpr pmin has elapsed since the last notification. The sampled value is sent in the notification. If the value continues to rise, no notifications are generated as a result of gt. If the value drops below the upper limit value then a notification is sent, subject again to the pmin time. 
+When present, Greater Than indicates the upper limit value the sampled value SHOULD cross before triggering a notification. A notification is sent whenever the sampled value crosses the specified upper limit value, relative to the last reported value, and the time for pmin has elapsed since the last notification. The sampled value is sent in the notification. If the value continues to rise, no notifications are generated as a result of gt. If the value drops below the upper limit value then a notification is sent, subject again to the pmin time. 
 
 The Greater Than parameter can only be supported on resources with a scalar numeric value. 
 
 ###Less Than (lt) {#lt}
-When present, Less Than indicates the lower limit value the resource value SHOULD cross before triggering a notification. A notification is sent when the samples value crosses the specified lower limit value, relative to the last reported value, and the time fpr pmin has elapsed since the last notification. The sampled value is sent in the notification. If the value continues to fall no notifications are generated as a result of lt. If the value rises above the lower limit value then a new notification is sent, subject to the pmin time. 
+When present, Less Than indicates the lower limit value the resource value SHOULD cross before triggering a notification. A notification is sent when the samples value crosses the specified lower limit value, relative to the last reported value, and the time for pmin has elapsed since the last notification. The sampled value is sent in the notification. If the value continues to fall no notifications are generated as a result of lt. If the value rises above the lower limit value then a new notification is sent, subject to the pmin time. 
 
 The Less Than parameter can only be supported on resources with a scalar numeric value. 
 
@@ -225,20 +225,36 @@ Implementation Considerations   {#Implementation}
 
 When pmax and pmin are equal, the expected behaviour is that notifications will be sent every (pmin == pmax) seconds. However, these notifications can only be fulfilled by the server on a best effort basis. Because pmin and pmax are designed as acceptable tolerance bounds for sending state updates, a query from an interested client containing equal pmin and pmax values must not be seen as a hard real-time scheduling contract between the client and the server.
 
-When using multiple resource bindings (e.g. multiple Observations of resource) with different bands, consideration should be given to the resolution of the resource value when setting sequential bands. For example: Given BandA (Abmn=10, Bbmx=20) and BandB (Bbmn=21, Bbmx=30). If the resource value returns an integer then notifications for values between and inclusive of 10 and 30 will be triggered. Whereas if the resolution is to one decimal point (0.1) then notifications for values 20.1 to 20.9 will not be triggered.
-
 The use of the notification band minimum and maximum allow for a synchronization whenever a change in the resource value occurs. Theoretically this could occur in-line with the server internal sample period or the configuration of epmin and epmax values for determining the resource value. Implementors SHOULD consider the resolution needed before updating the resource, e.g. updating the resource when a temperature sensor value changes by 0.001 degree versus 1 degree.
 
 When a server has multiple observations with different measurement cadences as defined by the epmin and epmax values, the server MAY evaluate all observations when performing the measurement of any one observation.
 
+This specification defines conditional attributes that can be used with CoRE Observe relationships between CoAP clients and CoAP servers. However, it is recognised that the presence of 1 or more proxies between a client and a server can interfere with clients receiving resource updates, if a proxy does not supply resource representations when the value remains unchanged (eg if pmax is set, and the server sends multiple updates when the resource state contains the same value). A server SHOULD use the Max-Age option to mitigate this by setting Max-Age to be less than or equal to pmax.
+
 Security Considerations   {#Security}
 =======================
-TBD
+
+The security considerations in Section 11 of {{RFC7252}} apply. Additionally, the security considerations in Section 7 of {{RFC7641}} also apply.
 
 IANA Considerations
 ===================
 
-TBD
+This memo requests a new Conditional Attributes registry to ensure attributes map uniquely to parameter names.
+
+| Attribute                    | Parameter  | Value           | Reference |
+| -------------- | --- | --- | --- |
+| Minimum Period (s)           | pmin       | xs:decimal (>0) | This memo |
+| Maximum Period (s)           | pmax       | xs:decimal (>0) | This memo |
+| Minimum Evaluation Period (s)| epmin      | xs:decimal (>0) | This memo |
+| Maximum Evaluation Period (s)| epmax      | xs:decimal (>0) | This memo |
+| Confirmable Notification     | con        | xs:boolean      | This memo |
+| Greater Than                 | gt         | xs:decimal      | This memo |
+| Less Than                    | lt         | xs:decimal      | This memo |
+| Change Step                  | st         | xs:decimal (>0) | This memo |
+| Notification Band            | band       | (none)          | This memo |
+| Edge                         | edge       | xs:boolean      | This memo |
+
+
 
 Acknowledgements
 ================
@@ -273,6 +289,12 @@ Contributors
 
 Changelog
 =========
+draft-ietf-core-conditional-attributes-02
+
+* Clarifications on usage and value of the band parameter
+* Implementation considerations for proxies added
+* Security considerations added
+* IANA considerations added
 
 draft-ietf-core-conditional-attributes-01
 
