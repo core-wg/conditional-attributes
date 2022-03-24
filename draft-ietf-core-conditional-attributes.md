@@ -77,8 +77,8 @@ Notification Band:
 Conditional Attributes        {#binding_attributes}
 =============
 
-This specification defines conditional attributes, which provide for fine-grained control of notification and state synchronization when using CoRE Observe {{RFC7641}}. When resource interfaces following this specification are made available over CoAP, the CoAP Observation mechanism {{RFC7641}} MAY also be used to observe any changes in a resource, and receive asynchronous notifications as a result. A resource marked as Observable in its link description SHOULD support these conditional attributes. 
-
+This specification defines conditional attributes for use with CoRE Observe {{RFC7641}}. Conditional attributes provide fine-grained control of notification and synchronization of resource states. They are conveyed as metadata within the query component of a URI by a requesting client, to which an origin server may respond to, with corresponding changes in resource states. A resource marked as Observable in its link description SHOULD support these conditional attributes.
+ 
 Note: In this draft, we assume that there are finite quantization effects in the internal or external updates to the value representing the state of a resource; specifically, that a resource state may be updated at any time with any valid value. We therefore avoid any continuous-time assumptions in the description of the conditional attributes and instead use the phrase "sampled value" to refer to a member of a sequence of values that may be internally observed from the resource state over time.
 
 ## Conditional Notification Attributes
