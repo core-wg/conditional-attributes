@@ -1,0 +1,414 @@
+{
+  "magic": "E!vIA5L86J2I",
+  "timestamp": "2021-09-30T00:27:07.335059+00:00",
+  "repo": "core-wg/conditional-attributes",
+  "labels": [
+    {
+      "name": "bug",
+      "description": "Something isn't working",
+      "color": "d73a4a"
+    },
+    {
+      "name": "documentation",
+      "description": "Improvements or additions to documentation",
+      "color": "0075ca"
+    },
+    {
+      "name": "duplicate",
+      "description": "This issue or pull request already exists",
+      "color": "cfd3d7"
+    },
+    {
+      "name": "enhancement",
+      "description": "New feature or request",
+      "color": "a2eeef"
+    },
+    {
+      "name": "good first issue",
+      "description": "Good for newcomers",
+      "color": "7057ff"
+    },
+    {
+      "name": "help wanted",
+      "description": "Extra attention is needed",
+      "color": "008672"
+    },
+    {
+      "name": "invalid",
+      "description": "This doesn't seem right",
+      "color": "e4e669"
+    },
+    {
+      "name": "question",
+      "description": "Further information is requested",
+      "color": "d876e3"
+    },
+    {
+      "name": "wontfix",
+      "description": "This will not be worked on",
+      "color": "ffffff"
+    }
+  ],
+  "issues": [
+    {
+      "number": 1,
+      "id": "MDU6SXNzdWU5NTM5MTM0MjY=",
+      "title": "Adding support for \"Maximum Historical Queue\"",
+      "url": "https://github.com/core-wg/conditional-attributes/issues/1",
+      "state": "CLOSED",
+      "author": "asoloway64",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "OMA LwM2M added support for additional attributes that should be reflected back into the dynlink draft to avoid fragmentation. One of those attributes is called \"Maximum Historical Queue\".\r\n\r\nThe current LwM2M Core Spec currently has this statement:\r\n\"The behaviour of Notification class attributes MUST follow [DynLink] unless stated otherwise in this specification. Note:\r\nThe attributes epmin, epmax, con and edge are specified in this specification but currently not referenced in [DynLink].\"\r\n\r\nThe goal would be to change that statement to:\r\n\"The behavior of all Attributes SHOULD follow [DynLink].\"\r\n\r\nBelow is content to consider for the dynlink draft:\r\n\"The Maximum Historical Queue Attribute indicates how many entries of historical data resulting from an Observation of a specific Object, Object Instance, Resource, Resource Instance MUST be stored, e.g. while the LwM2M Client is offline, or, the LwM2M Server account is disabled. If this attribute is present, only the data of Objects, Object Instances, Resources, Resource Instances with hqmax>0 will be included in notifications which were stored while disabled or offline. Historical notifications MAY be sent in a format as described in Section [SenML JSON] (). If the queue size reaches hqmax and a new reading is received, the oldest reading MUST be dropped. The LwM2M Client SHOULD empty the queue as soon it becomes aware that connectivity has been restored. The use of \"hqmax\" is dependent on notification storing being enabled via the \"Notification Storing When Disabled or Offline\" Resource of the LwM2M Server Object.\"\r\n",
+      "createdAt": "2020-09-24T15:47:01Z",
+      "updatedAt": "2021-07-27T14:03:00Z",
+      "closedAt": "2021-07-27T14:03:00Z",
+      "comments": [
+        {
+          "author": "bsilverajan",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Closing, as the consensus during meetings is not to include this attribute to the draft, but instead employ other ways for supplying historical state representations eg the Series Transfer Pattern (STP) (draft-bormann-t2trg-stp)",
+          "createdAt": "2021-07-27T14:03:00Z",
+          "updatedAt": "2021-07-27T14:03:00Z"
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "id": "MDU6SXNzdWU5NTM5MTM3NDU=",
+      "title": "Adding support for \"Confirmable Notification\"",
+      "url": "https://github.com/core-wg/conditional-attributes/issues/2",
+      "state": "CLOSED",
+      "author": "asoloway64",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "OMA LwM2M added support for additional attributes that should be reflected back into the dynlink draft to avoid fragmentation. One of those attributes is called \"Confirmable Notification\".\r\n\r\nThe current LwM2M Core Spec currently has this statement:\r\n\"The behaviour of Notification class attributes MUST follow [DynLink] unless stated otherwise in this specification. Note:\r\nThe attributes epmin, epmax, con and edge are specified in this specification but currently not referenced in [DynLink].\"\r\n\r\nThe goal would be to change that statement to:\r\n\"The behavior of all Attributes SHOULD follow [DynLink].\"\r\n\r\nBelow is content to consider for the dynlink draft:\r\n\"The Notification Confirmable Attribute indicates whether a Notification resulting from an Observation of a specific Object, Object\r\nInstance, Resource, Resource Instance MUST be sent over confirmable transport. If a Notification includes several Objects or Object Instances or Resources or Resource Instances or a combination thereof, then this Notification MUST be sent over confirmable transport if at least one of the Notification components has con=1.\"\r\n",
+      "createdAt": "2020-09-24T15:44:34Z",
+      "updatedAt": "2021-07-27T13:59:53Z",
+      "closedAt": "2021-07-27T13:59:53Z",
+      "comments": [
+        {
+          "author": "bsilverajan",
+          "authorAssociation": "COLLABORATOR",
+          "body": "\"Con\" has now been added to the draft",
+          "createdAt": "2021-07-27T13:59:53Z",
+          "updatedAt": "2021-07-27T13:59:53Z"
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "id": "MDU6SXNzdWU5NTM5MTQwNzY=",
+      "title": "Adding support for \"Edge\"",
+      "url": "https://github.com/core-wg/conditional-attributes/issues/3",
+      "state": "CLOSED",
+      "author": "asoloway64",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "OMA LwM2M added support for additional attributes that should be reflected back into the dynlink draft to avoid fragmentation. One of those attributes is called \"Edge\".\r\n\r\nThe current LwM2M Core Spec currently has this statement:\r\n\"The behaviour of Notification class attributes MUST follow [DynLink] unless stated otherwise in this specification. Note:\r\nThe attributes epmin, epmax, con and edge are specified in this specification but currently not referenced in [DynLink].\"\r\n\r\nThe goal would be to change that statement to:\r\n\"The behavior of all Attributes SHOULD follow [DynLink].\"\r\n\r\nBelow is content to consider for the dynlink draft:\r\n\"Notes: The Edge Attribute indicates either the falling edge (\"0\") or the rising edge (\"1\") transistion of a Boolean Resource. When this Attribute is present, the LwM2M Client MUST notify the Server each time the Observed Resource value goes from \"true\" to \"false\" (edge = \"0\"), or from \"false\" to \"true\" (edge = \"1\") with respect to the pmin parameter and valid \"Change Value Conditions\" (see Notification Conditions above).\"\r\n",
+      "createdAt": "2020-09-24T15:42:03Z",
+      "updatedAt": "2021-07-27T14:00:39Z",
+      "closedAt": "2021-07-27T14:00:39Z",
+      "comments": [
+        {
+          "author": "bsilverajan",
+          "authorAssociation": "COLLABORATOR",
+          "body": "the \"edge\" attribute has now been added to the draft",
+          "createdAt": "2021-07-27T14:00:39Z",
+          "updatedAt": "2021-07-27T14:00:39Z"
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "id": "MDU6SXNzdWU5NTM5MTQ1MDg=",
+      "title": "Proxy and Caching considerations",
+      "url": "https://github.com/core-wg/conditional-attributes/issues/4",
+      "state": "OPEN",
+      "author": "bsilverajan",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The draft describes conditional notification attributes for observation as well as binding methods (GET, GET+Observe, POST, PUT). \r\n\r\nHowever, there is little, if any, information regarding any potential challenges that could arise particularly with proxying and caching.\r\n\r\nWe have 3 choices:\r\n\r\n1. Add a new section to explore these considerations\r\n2. Expand the text under the current Implementation Considerations\r\n3. Omit adding anything\r\n\r\nYour comments?",
+      "createdAt": "2019-07-22T16:10:43Z",
+      "updatedAt": "2021-09-29T09:56:21Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "bsilverajan",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I'm proposing the following text as an Implementation Consideration:\r\n\r\n\"This specification defines conditional attributes that can be used with CoRE Observe relationships between CoAP clients and CoAP servers. However, it is recognised that the presence of 1 or more proxies between a client and a server can interfere with clients receiving resource updates, if a proxy does not supply resource representations if the value remains unchanged (eg if pmax is set, and the server sends multiple updates when the resource state contains the same value). A server MAY use the Max-Age option to mitigate this by setting Max-Age to be less than or equal to pmax.\u201d\r\n\r\nAdditionally we can also include a pictorial representation of the issue as follows:\r\n```\r\n\r\n00 00 00 00 00 00 01 01 01 01 01 01 01 01 01 02 02 02 02 03 03 03 03        SERVER\r\n|     |     |     |     |     |     |     |     |     |     |     |\r\n|     |     |     |     |     |     |     |     |     |     |     |    pmax 2\r\n|     |     |     |     |     |     |     |     |     |     |     |\r\n00    00    00    01    01    01    01    01    02    02    03    03        PROXY\r\n|                 |                             |           |\r\n|                 |                             |           |          pmax 2\r\n|                 |                             |           |\r\n00                01                            02          03              CLIENT\r\n```\r\n\r\n\r\nComments?",
+          "createdAt": "2021-09-29T09:56:21Z",
+          "updatedAt": "2021-09-29T09:56:21Z"
+        }
+      ]
+    },
+    {
+      "number": 7,
+      "id": "MDU6SXNzdWU5NzExNDYwMjQ=",
+      "title": "The value of the Band attribute",
+      "url": "https://github.com/core-wg/conditional-attributes/issues/7",
+      "state": "OPEN",
+      "author": "asoloway64",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The band attribute is defined as a boolean type, but the use of the band attribute is determined by its presence, not its value. We should probably explicitly explain that.\r\n",
+      "createdAt": "2021-08-15T14:22:55Z",
+      "updatedAt": "2021-08-21T06:09:44Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "bsilverajan",
+          "authorAssociation": "COLLABORATOR",
+          "body": "This is a good catch. Do we need the band attribute to have a value to begin with? This query component can simply be a name, instead of name-value pair (i.e band does not have any datatype). \r\n\r\nExample:\r\n`/temperature?band&gt=\"30\"&lt=\"35\"`",
+          "createdAt": "2021-08-21T06:09:44Z",
+          "updatedAt": "2021-08-21T06:09:44Z"
+        }
+      ]
+    },
+    {
+      "number": 8,
+      "id": "MDU6SXNzdWU5NzExNDY0ODI=",
+      "title": "The band example uses Abmn, Abmx, Bbmn and Bbmx",
+      "url": "https://github.com/core-wg/conditional-attributes/issues/8",
+      "state": "OPEN",
+      "author": "asoloway64",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "When reading the example of the use of band, I was initially confused on the representation of the other control attributes. Should we change those examples to use lt, gt and band?\r\n",
+      "createdAt": "2021-08-15T14:24:51Z",
+      "updatedAt": "2021-09-29T13:58:56Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "bsilverajan",
+          "authorAssociation": "COLLABORATOR",
+          "body": "You're referring to this sentence in Implementation Considerations:\r\n\r\n`For example: Given BandA (Abmn=10, Bbmx=20) and BandB (Bbmn=21, Bbmx=30)......`\r\n\r\nI have no objections if we make the change you propose so it says:\r\n\r\n`For example: Given 2 bands, A (band=1, gt=1, lt=20) and B (band=1, gt=21, lt=30)....`\r\n\r\nIs this what you meant?\r\n",
+          "createdAt": "2021-09-29T10:11:16Z",
+          "updatedAt": "2021-09-29T10:11:43Z"
+        },
+        {
+          "author": "asoloway64",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Yep, exactly.\r\n",
+          "createdAt": "2021-09-29T13:58:55Z",
+          "updatedAt": "2021-09-29T13:58:55Z"
+        }
+      ]
+    },
+    {
+      "number": 9,
+      "id": "MDU6SXNzdWU5NzExNDg0Njk=",
+      "title": "Format of pdf",
+      "url": "https://github.com/core-wg/conditional-attributes/issues/9",
+      "state": "CLOSED",
+      "author": "asoloway64",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "When I look at the pdf version from the web site https://datatracker.ietf.org/doc/draft-ietf-core-conditional-attributes/, the Implementation Considerations section text is not displayed as normal text.\r\n",
+      "createdAt": "2021-08-15T14:33:43Z",
+      "updatedAt": "2021-08-21T06:12:07Z",
+      "closedAt": "2021-08-21T06:12:07Z",
+      "comments": [
+        {
+          "author": "cabo",
+          "authorAssociation": "MEMBER",
+          "body": "The page 9 looks good to me, but it is scaled down to make room for the overly long line starting with `#define IN_BAND`.  This needs to be split up so it fits into the 72-character line width.\r\n\r\n(The fixed submission interface will stop using the legacy formatters if only the XML is submitted, so the reduction may \"solve\" itself, but the line is still too long.)",
+          "createdAt": "2021-08-15T15:32:21Z",
+          "updatedAt": "2021-08-15T15:50:28Z"
+        },
+        {
+          "author": "asoloway64",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I created Pull Request #10 to split up that line.\r\n",
+          "createdAt": "2021-08-15T16:23:52Z",
+          "updatedAt": "2021-08-15T16:23:52Z"
+        },
+        {
+          "author": "bsilverajan",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Closing this issue as both have been fixed in the current working copy:\r\n\r\n- `#define IN_BAND` line split to account for page width\r\n- IANA consideration section properly formatted",
+          "createdAt": "2021-08-21T06:12:07Z",
+          "updatedAt": "2021-08-21T06:12:07Z"
+        }
+      ]
+    }
+  ],
+  "pulls": [
+    {
+      "number": 5,
+      "id": "MDExOlB1bGxSZXF1ZXN0NzA5Mzg3Mjcy",
+      "title": "Adding me as author",
+      "url": "https://github.com/core-wg/conditional-attributes/pull/5",
+      "state": "MERGED",
+      "author": "asoloway64",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2021-08-11T18:16:38Z",
+      "updatedAt": "2021-08-11T21:54:35Z",
+      "baseRepository": "core-wg/conditional-attributes",
+      "baseRefName": "main",
+      "baseRefOid": "42b0762e2f7216a499da3d3195c48861c3dbfdae",
+      "headRepository": "asoloway64/conditional-attributes",
+      "headRefName": "patch-1",
+      "headRefOid": "7c6a2b109f030538b184cbf26480fc88033a16e1",
+      "closedAt": "2021-08-11T21:54:34Z",
+      "mergedAt": "2021-08-11T21:54:34Z",
+      "mergedBy": "bsilverajan",
+      "mergeCommit": {
+        "oid": "4319484636601881f67b34f0150dd4c7e09b58f9"
+      },
+      "comments": [
+        {
+          "author": "bsilverajan",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Adding Alan as an author",
+          "createdAt": "2021-08-11T21:53:51Z",
+          "updatedAt": "2021-08-11T21:53:51Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 6,
+      "id": "MDExOlB1bGxSZXF1ZXN0NzEyOTQ0Mjk0",
+      "title": "Mainly editorials",
+      "url": "https://github.com/core-wg/conditional-attributes/pull/6",
+      "state": "MERGED",
+      "author": "asoloway64",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2021-08-15T14:19:30Z",
+      "updatedAt": "2021-08-16T09:01:20Z",
+      "baseRepository": "core-wg/conditional-attributes",
+      "baseRefName": "main",
+      "baseRefOid": "fecf9d788c5fb07f2197b5583c5113f73cd28e8f",
+      "headRepository": "core-wg/conditional-attributes",
+      "headRefName": "asoloway64-patch-1",
+      "headRefOid": "18312715fd1d97b770c8dd66a5ad7add938e2f23",
+      "closedAt": "2021-08-16T09:01:20Z",
+      "mergedAt": "2021-08-16T09:01:20Z",
+      "mergedBy": "bsilverajan",
+      "mergeCommit": {
+        "oid": "2199e40afea480932cb6a4e7d034d781c45783a0"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NzMwNDgxOTMw",
+          "commit": {
+            "abbreviatedOid": "1831271"
+          },
+          "author": "bsilverajan",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "These changes seem fine to me so I'll approve the PR",
+          "createdAt": "2021-08-16T09:00:48Z",
+          "updatedAt": "2021-08-16T09:00:48Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 10,
+      "id": "MDExOlB1bGxSZXF1ZXN0NzEyOTYzNzYw",
+      "title": "Split up line 204 which was greater than 72 characters",
+      "url": "https://github.com/core-wg/conditional-attributes/pull/10",
+      "state": "MERGED",
+      "author": "asoloway64",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2021-08-15T16:22:52Z",
+      "updatedAt": "2021-08-21T05:16:26Z",
+      "baseRepository": "core-wg/conditional-attributes",
+      "baseRefName": "main",
+      "baseRefOid": "fecf9d788c5fb07f2197b5583c5113f73cd28e8f",
+      "headRepository": "core-wg/conditional-attributes",
+      "headRefName": "asoloway64-patch-2",
+      "headRefOid": "cb421d3ebc0c2ffaa54df926a74d632ba80269e1",
+      "closedAt": "2021-08-21T05:16:26Z",
+      "mergedAt": "2021-08-21T05:16:26Z",
+      "mergedBy": "bsilverajan",
+      "mergeCommit": {
+        "oid": "146d1d5c8585bf295872259f4c0f824e4b15a1c0"
+      },
+      "comments": [
+        {
+          "author": "cabo",
+          "authorAssociation": "MEMBER",
+          "body": "Actually, I think you need trailing backslashes on 204 and 205, but I haven't used continuation lines on #define for quite some time.",
+          "createdAt": "2021-08-16T09:12:02Z",
+          "updatedAt": "2021-08-16T09:12:02Z"
+        },
+        {
+          "author": "bsilverajan",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> Actually, I think you need trailing backslashes on 204 and 205, but I haven't used continuation lines on #define for quite some time.\r\n\r\nVery true, that was my mistake!",
+          "createdAt": "2021-08-16T09:17:25Z",
+          "updatedAt": "2021-08-16T09:17:25Z"
+        },
+        {
+          "author": "asoloway64",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Markdown uses backslash for control characters, so my understanding was that you needed the double-backslash to get a backslash displayed.",
+          "createdAt": "2021-08-16T14:44:34Z",
+          "updatedAt": "2021-08-16T14:44:34Z"
+        },
+        {
+          "author": "bsilverajan",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> Markdown uses backslash for control characters, so my understanding was that you needed the double-backslash to get a backslash displayed.\r\n\r\nI ran both versions through xml2rfc and it seems just a single backslash suffices. So I think we can merge the PR with Carsten's changes. \r\n\r\nThank you both!",
+          "createdAt": "2021-08-21T05:15:58Z",
+          "updatedAt": "2021-08-21T05:15:58Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NzMwMjA0NDcy",
+          "commit": {
+            "abbreviatedOid": "29ebe38"
+          },
+          "author": "cabo",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2021-08-15T16:54:25Z",
+          "updatedAt": "2021-08-15T16:54:25Z",
+          "comments": [
+            {
+              "originalPosition": 6,
+              "body": "C requires backslash-escaping continuation lines of #defines...\r\n",
+              "createdAt": "2021-08-15T16:54:25Z",
+              "updatedAt": "2021-08-15T16:54:25Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NzMwNDg3MTgz",
+          "commit": {
+            "abbreviatedOid": "29ebe38"
+          },
+          "author": "bsilverajan",
+          "authorAssociation": "COLLABORATOR",
+          "state": "CHANGES_REQUESTED",
+          "body": "Thanks Alan and Carsten. \r\n\r\nAlan could you please amend the change to include ~~leading backslashes to lines 205 and 206~~  trailing backslashes to lines 204 and 205?\r\n\r\n(Edited based on Carsten's feedback)",
+          "createdAt": "2021-08-16T09:06:37Z",
+          "updatedAt": "2021-08-16T09:20:58Z",
+          "comments": []
+        }
+      ]
+    }
+  ]
+}
