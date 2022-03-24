@@ -77,7 +77,7 @@ Notification Band:
 Conditional Attributes        {#binding_attributes}
 =============
 
-This specification defines conditional attributes for use with CoRE Observe {{RFC7641}}. Conditional attributes provide fine-grained control of notification and synchronization of resource states. They are conveyed as metadata within the query component of a URI by a requesting client, to which an origin server may respond to, with corresponding changes in resource states. A resource marked as Observable in its link description SHOULD support these conditional attributes.
+This specification defines conditional attributes for use with CoRE Observe {{RFC7641}}. Conditional attributes provide fine-grained control of notification and synchronization of resource states. When observing a resource, a CoAP client conveys conditional attributes as metadata using the query component of a CoAP URI. A conditional attribute can be represented as a "name=value" query parameter or simply a "name" without a value. Multiple conditional attributes in a query component are separated with an ampersand "&". A resource marked as Observable in its link description SHOULD support these conditional attributes.
  
 Note: In this draft, we assume that there are finite quantization effects in the internal or external updates to the value representing the state of a resource; specifically, that a resource state may be updated at any time with any valid value. We therefore avoid any continuous-time assumptions in the description of the conditional attributes and instead use the phrase "sampled value" to refer to a member of a sequence of values that may be internally observed from the resource state over time.
 
@@ -85,11 +85,11 @@ Note: In this draft, we assume that there are finite quantization effects in the
 
 Conditional Notification Attributes define the conditions that trigger a notification. Conditional Notification Attributes SHOULD be evaluated on all potential notifications from a resource, whether resulting from an internal server-driven sampling process or from external update requests to the server. 
 
-The set of Conditional Notification Attributes defined here allow a client to control how often a client is interested in receiving notifications and how much a value should change for the new representation state to be interesting. One or more Conditional Notification Attributes MAY be included as query parameters in an Observe request.
+The set of Conditional Notification Attributes defined here allow a client to control how often a client is interested in receiving notifications and how much a value should change for the new representation state to be interesting. One or more Conditional Notification Attributes MAY be included in an Observe request.
 
 Conditional Notification Attributes are defined below:
 
-| Attribute         | Parameter | Value          |
+| Attribute         | Name | Value          |
 | --- | --- | --- |
 | Greater Than      | gt       | xs:decimal      |
 | Less Than         | lt       | xs:decimal      |
@@ -144,11 +144,11 @@ The Edge attribute can only be supported on resources with a boolean value.
 
 ## Conditional Control Attributes
 
-Conditional Control Attributes define the time intervals between consecutive notifications as well as the cadence of the measurement of the conditions that trigger a notification. Conditional Control Attributes can be used to configure the internal server-driven sampling process for performing measurements of the conditions of a resource. One or more Conditional Control Attributes MAY be included as query parameters in an Observe request.
+Conditional Control Attributes define the time intervals between consecutive notifications as well as the cadence of the measurement of the conditions that trigger a notification. Conditional Control Attributes can be used to configure the internal server-driven sampling process for performing measurements of the conditions of a resource. One or more Conditional Control Attributes MAY be included in an Observe request.
 
 Conditional Control Attributes are defined below:
 
-| Attribute                    | Parameter  | Value           |
+| Attribute                    | Name  | Value           |
 | --- | --- | --- |
 | Minimum Period (s)           | pmin       | xs:decimal (>0) |
 | Maximum Period (s)           | pmax       | xs:decimal (>0) |
