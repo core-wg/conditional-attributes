@@ -221,7 +221,6 @@ bool notifiable( Resource * r ) {
   );
 }
 ~~~~
-
 {: #figattrint title="Code logic for conditional notification attribute interactions"}
 
 
