@@ -1022,7 +1022,7 @@ svg [stroke="fill"], svg [fill^="#fff"] {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Koster, et al.</td>
-<td class="center">Expires 10 November 2022</td>
+<td class="center">Expires 11 November 2022</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1035,12 +1035,12 @@ svg [stroke="fill"], svg [fill^="#fff"] {
 <dd class="internet-draft">draft-ietf-core-conditional-attributes-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2022-05-09" class="published">9 May 2022</time>
+<time datetime="2022-05-10" class="published">10 May 2022</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2022-11-10">10 November 2022</time></dd>
+<dd class="expires"><time datetime="2022-11-11">11 November 2022</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1089,7 +1089,7 @@ svg [stroke="fill"], svg [fill^="#fff"] {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 10 November 2022.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 11 November 2022.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1471,20 +1471,22 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
 <pre>
 bool notifiable( Resource * r ) {
 
-#define BAND r-&gt;band
-#define SCALAR_TYPE ( num_type == r-&gt;type )
-#define STRING_TYPE ( str_type == r-&gt;type )
-#define BOOLEAN_TYPE ( bool_type == r-&gt;type )
-#define PMIN_EX ( r-&gt;last_sample_time - r-&gt;last_rep_time &gt;= r-&gt;pmin )
-#define PMAX_EX ( r-&gt;last_sample_time - r-&gt;last_rep_time &gt; r-&gt;pmax )
-#define LT_EX ( r-&gt;v &lt; r-&gt;lt ^ r-&gt;last_rep_v &lt; r-&gt;lt )
-#define GT_EX ( r-&gt;v &gt; r-&gt;gt ^ r-&gt;last_rep_v &gt; r-&gt;gt )
-#define ST_EX ( abs( r-&gt;v - r-&gt;last_rep_v ) &gt;= r-&gt;st )
-#define IN_BAND ( ( r-&gt;gt &lt;= r-&gt;v &amp;&amp; r-&gt;v &lt;= r-&gt;lt ) || \
-                  ( r-&gt;lt &lt;= r-&gt;gt &amp;&amp; r-&gt;gt &lt;= r-&gt;v ) || \
-                  ( r-&gt;v &lt;= r-&gt;lt &amp;&amp; r-&gt;lt &lt;= r-&gt;gt ) )
-#define VB_CHANGE ( r-&gt;vb != r-&gt;last_rep_vb )
-#define VS_CHANGE ( r-&gt;vs != r-&gt;last_rep_vs )
+  #define EDGE EXISTS(r-&gt;edge)
+  #define BAND EXISTS(r-&gt;band)
+  #define SCALAR_TYPE ( num_type == r-&gt;type )
+  #define STRING_TYPE ( str_type == r-&gt;type )
+  #define BOOLEAN_TYPE ( bool_type == r-&gt;type )
+  #define PMIN_EX ( r-&gt;last_sample_time - r-&gt;last_rep_time &gt;= r-&gt;pmin )
+  #define PMAX_EX ( r-&gt;last_sample_time - r-&gt;last_rep_time &gt; r-&gt;pmax )
+  #define LT_EX ( r-&gt;v &lt; r-&gt;lt ^ r-&gt;last_rep_v &lt; r-&gt;lt )
+  #define GT_EX ( r-&gt;v &gt; r-&gt;gt ^ r-&gt;last_rep_v &gt; r-&gt;gt )
+  #define ST_EX ( abs( r-&gt;v - r-&gt;last_rep_v ) &gt;= r-&gt;st )
+  #define IN_BAND ( ( r-&gt;gt &lt;= r-&gt;v &amp;&amp; r-&gt;v &lt;= r-&gt;lt ) || \
+                    ( r-&gt;lt &lt;= r-&gt;gt &amp;&amp; r-&gt;gt &lt;= r-&gt;v ) || \
+                    ( r-&gt;v &lt;= r-&gt;lt &amp;&amp; r-&gt;lt &lt;= r-&gt;gt ) )
+  #define VB_CHANGE ( r-&gt;vb != r-&gt;last_rep_vb )
+  #define VB_EDGE ( r-&gt;vb &amp;&amp; r-&gt;edge || !r-&gt;vb &amp;&amp; !r-&gt;edge )
+  #define VS_CHANGE ( r-&gt;vs != r-&gt;last_rep_vs )
 
   return (
     PMIN_EX &amp;&amp;
@@ -1494,7 +1496,9 @@ bool notifiable( Resource * r ) {
     : STRING_TYPE ?
       ( VS_CHANGE || PMAX_EX )
     : BOOLEAN_TYPE ?
-      ( VB_CHANGE || PMAX_EX )
+      ( ( !EDGE &amp;&amp; VB_CHANGE ) ||
+        ( EDGE &amp;&amp; VB_CHANGE &amp;&amp; VB_EDGE ) ||
+        PMAX_EX )
     : false )
   );
 }
@@ -1655,32 +1659,37 @@ email: jintao.zhu@huawei.com
       <h2 id="name-changelog">
 <a href="#section-9" class="section-number selfRef">9. </a><a href="#name-changelog" class="section-name selfRef">Changelog</a>
       </h2>
-<p id="section-9-1">draft-ietf-core-conditional-attributes-03<a href="#section-9-1" class="pilcrow">¶</a></p>
+<p id="section-9-1">draft-ietf-core-conditional-attributes-04<a href="#section-9-1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-9-2.1">Attribute names updated to create uniqueness for use as conditional observe attributes.<a href="#section-9-2.1" class="pilcrow">¶</a>
+<li class="normal" id="section-9-2.1">Reference code updated to include behaviour for edge attribute.<a href="#section-9-2.1" class="pilcrow">¶</a>
 </li>
       </ul>
-<p id="section-9-3">draft-ietf-core-conditional-attributes-02<a href="#section-9-3" class="pilcrow">¶</a></p>
+<p id="section-9-3">draft-ietf-core-conditional-attributes-03<a href="#section-9-3" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-9-4.1">Clarifications on usage and value of the band parameter<a href="#section-9-4.1" class="pilcrow">¶</a>
-</li>
-        <li class="normal" id="section-9-4.2">Implementation considerations for proxies added<a href="#section-9-4.2" class="pilcrow">¶</a>
-</li>
-        <li class="normal" id="section-9-4.3">Security considerations added<a href="#section-9-4.3" class="pilcrow">¶</a>
-</li>
-        <li class="normal" id="section-9-4.4">IANA considerations added<a href="#section-9-4.4" class="pilcrow">¶</a>
+<li class="normal" id="section-9-4.1">Attribute names updated to create uniqueness for use as conditional observe attributes.<a href="#section-9-4.1" class="pilcrow">¶</a>
 </li>
       </ul>
-<p id="section-9-5">draft-ietf-core-conditional-attributes-01<a href="#section-9-5" class="pilcrow">¶</a></p>
+<p id="section-9-5">draft-ietf-core-conditional-attributes-02<a href="#section-9-5" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-9-6.1">Clarifications on True and False values for Edge and Con Attributes<a href="#section-9-6.1" class="pilcrow">¶</a>
+<li class="normal" id="section-9-6.1">Clarifications on usage and value of the band parameter<a href="#section-9-6.1" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="section-9-6.2">Alan Soloway added as author<a href="#section-9-6.2" class="pilcrow">¶</a>
+        <li class="normal" id="section-9-6.2">Implementation considerations for proxies added<a href="#section-9-6.2" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-9-6.3">Security considerations added<a href="#section-9-6.3" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-9-6.4">IANA considerations added<a href="#section-9-6.4" class="pilcrow">¶</a>
 </li>
       </ul>
-<p id="section-9-7">draft-ietf-core-conditional-attributes-00<a href="#section-9-7" class="pilcrow">¶</a></p>
+<p id="section-9-7">draft-ietf-core-conditional-attributes-01<a href="#section-9-7" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-9-8.1">Conditional Atttributes section from draft-ietf-core-dynlink-13 separated into own WG draft<a href="#section-9-8.1" class="pilcrow">¶</a>
+<li class="normal" id="section-9-8.1">Clarifications on True and False values for Edge and Con Attributes<a href="#section-9-8.1" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-9-8.2">Alan Soloway added as author<a href="#section-9-8.2" class="pilcrow">¶</a>
+</li>
+      </ul>
+<p id="section-9-9">draft-ietf-core-conditional-attributes-00<a href="#section-9-9" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-9-10.1">Conditional Atttributes section from draft-ietf-core-dynlink-13 separated into own WG draft<a href="#section-9-10.1" class="pilcrow">¶</a>
 </li>
       </ul>
 </section>

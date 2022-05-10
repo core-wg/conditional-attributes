@@ -5,10 +5,10 @@
 CoRE Working Group                                             M. Koster
 Internet-Draft                                             Dogtiger Labs
 Intended status: Informational                                A. Soloway
-Expires: 10 November 2022                    Qualcomm Technologies, Inc.
+Expires: 11 November 2022                    Qualcomm Technologies, Inc.
                                                       B. Silverajan, Ed.
                                                       Tampere University
-                                                              9 May 2022
+                                                             10 May 2022
 
 
       Conditional Attributes for Constrained RESTful Environments
@@ -39,7 +39,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 10 November 2022.
+   This Internet-Draft will expire on 11 November 2022.
 
 Copyright Notice
 
@@ -391,9 +391,10 @@ Table of Contents
    below illustrates the logic to determine when a notification is to be
    sent.
 
-   bool notifiable( Resource * r ) {
+ bool notifiable( Resource * r ) {
 
-   #define BAND r->band
+   #define EDGE EXISTS(r->edge)
+   #define BAND EXISTS(r->band)
    #define SCALAR_TYPE ( num_type == r->type )
    #define STRING_TYPE ( str_type == r->type )
    #define BOOLEAN_TYPE ( bool_type == r->type )
@@ -406,23 +407,26 @@ Table of Contents
                      ( r->lt <= r->gt && r->gt <= r->v ) || \
                      ( r->v <= r->lt && r->lt <= r->gt ) )
    #define VB_CHANGE ( r->vb != r->last_rep_vb )
+   #define VB_EDGE ( r->vb && r->edge || !r->vb && !r->edge )
    #define VS_CHANGE ( r->vs != r->last_rep_vs )
 
-     return (
-       PMIN_EX &&
-       ( SCALAR_TYPE ?
-         ( ( !BAND && ( GT_EX || LT_EX || ST_EX || PMAX_EX ) ) ||
-           ( BAND && IN_BAND && ( ST_EX || PMAX_EX) ) )
-       : STRING_TYPE ?
-         ( VS_CHANGE || PMAX_EX )
-       : BOOLEAN_TYPE ?
-         ( VB_CHANGE || PMAX_EX )
-       : false )
-     );
-   }
+   return (
+     PMIN_EX &&
+     ( SCALAR_TYPE ?
+       ( ( !BAND && ( GT_EX || LT_EX || ST_EX || PMAX_EX ) ) ||
+         ( BAND && IN_BAND && ( ST_EX || PMAX_EX) ) )
+     : STRING_TYPE ?
+       ( VS_CHANGE || PMAX_EX )
+     : BOOLEAN_TYPE ?
+       ( ( !EDGE && VB_CHANGE ) ||
+         ( EDGE && VB_CHANGE && VB_EDGE ) ||
+         PMAX_EX )
+     : false )
+   );
+ }
 
-        Figure 1: Code logic for conditional notification attribute
-                                interactions
+      Figure 1: Code logic for conditional notification attribute
+                              interactions
 
 4.  Implementation Considerations
 
@@ -533,6 +537,10 @@ Table of Contents
    email: jintao.zhu@huawei.com
 
 9.  Changelog
+
+   draft-ietf-core-conditional-attributes-04
+
+   *  Reference code updated to include behaviour for edge attribute.
 
    draft-ietf-core-conditional-attributes-03
 
