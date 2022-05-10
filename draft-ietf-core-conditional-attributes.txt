@@ -5,10 +5,10 @@
 CoRE Working Group                                             M. Koster
 Internet-Draft                                             Dogtiger Labs
 Intended status: Informational                                A. Soloway
-Expires: 25 September 2022                   Qualcomm Technologies, Inc.
+Expires: 10 November 2022                    Qualcomm Technologies, Inc.
                                                       B. Silverajan, Ed.
                                                       Tampere University
-                                                           24 March 2022
+                                                              9 May 2022
 
 
       Conditional Attributes for Constrained RESTful Environments
@@ -39,7 +39,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 25 September 2022.
+   This Internet-Draft will expire on 10 November 2022.
 
 Copyright Notice
 
@@ -61,17 +61,17 @@ Table of Contents
    2.  Terminology
    3.  Conditional Attributes
      3.1.  Conditional Notification Attributes
-       3.1.1.  Greater Than (gt)
-       3.1.2.  Less Than (lt)
-       3.1.3.  Change Step (st)
-       3.1.4.  Notification Band (band)
-       3.1.5.  Edge (edge)
+       3.1.1.  Greater Than (c.gt)
+       3.1.2.  Less Than (c.lt)
+       3.1.3.  Change Step (c.st)
+       3.1.4.  Notification band (c.band)
+       3.1.5.  Edge (c.edge)
      3.2.  Conditional Control Attributes
-       3.2.1.  Minimum Period (pmin)
-       3.2.2.  Maximum Period (pmax)
-       3.2.3.  Minimum Evaluation Period (epmin)
-       3.2.4.  Maximum Evaluation Period (epmax)
-       3.2.5.  Confirmable Notification (con)
+       3.2.1.  Minimum Period (c.pmin)
+       3.2.2.  Maximum Period (c.pmax)
+       3.2.3.  Minimum Evaluation Period (c.epmin)
+       3.2.4.  Maximum Evaluation Period (c.epmax)
+       3.2.5.  Confirmable Notification (c.con)
      3.3.  Server processing of Conditional Attributes
    4.  Implementation Considerations
    5.  Security Considerations
@@ -83,10 +83,10 @@ Table of Contents
      10.1.  Normative References
      10.2.  Informative References
    Appendix A.  Examples
-     A.1.  Minimum Period (pmin) example
-     A.2.  Maximum Period (pmax) example
-     A.3.  Greater Than (gt) example
-     A.4.  Greater Than (gt) and Period Max (pmax) example
+     A.1.  Minimum Period (c.pmin) example
+     A.2.  Maximum Period (c.pmax) example
+     A.3.  Greater Than (c.gt) example
+     A.4.  Greater Than (c.gt) and Period Max (c.pmax) example
    Authors' Addresses
 
 1.  Introduction
@@ -153,76 +153,76 @@ Table of Contents
 
    Conditional Notification Attributes are defined below:
 
-              +===================+======+=================+
-              | Attribute         | Name | Value           |
-              +===================+======+=================+
-              | Greater Than      | gt   | xs:decimal      |
-              +-------------------+------+-----------------+
-              | Less Than         | lt   | xs:decimal      |
-              +-------------------+------+-----------------+
-              | Change Step       | st   | xs:decimal (>0) |
-              +-------------------+------+-----------------+
-              | Notification Band | band | (none)          |
-              +-------------------+------+-----------------+
-              | Edge              | edge | xs:boolean      |
-              +-------------------+------+-----------------+
+             +===================+========+=================+
+             | Attribute         | Name   | Value           |
+             +===================+========+=================+
+             | Greater Than      | c.gt   | xs:decimal      |
+             +-------------------+--------+-----------------+
+             | Less Than         | c.lt   | xs:decimal      |
+             +-------------------+--------+-----------------+
+             | Change Step       | c.st   | xs:decimal (>0) |
+             +-------------------+--------+-----------------+
+             | Notification Band | c.band | (none)          |
+             +-------------------+--------+-----------------+
+             | Edge              | c.edge | xs:boolean      |
+             +-------------------+--------+-----------------+
 
                Table 1: Conditional Notification Attributes
 
-3.1.1.  Greater Than (gt)
+3.1.1.  Greater Than (c.gt)
 
    When present, Greater Than indicates the upper limit value the
    sampled value SHOULD cross before triggering a notification.  A
    notification is sent whenever the sampled value crosses the specified
    upper limit value, relative to the last reported value, and the time
-   for pmin has elapsed since the last notification.  The sampled value
-   is sent in the notification.  If the value continues to rise, no
-   notifications are generated as a result of gt.  If the value drops
-   below the upper limit value then a notification is sent, subject
-   again to the pmin time.
+   for "c.pmin" has elapsed since the last notification.  The sampled
+   value is sent in the notification.  If the value continues to rise,
+   no notifications are generated as a result of "c.gt".  If the value
+   drops below the upper limit value then a notification is sent,
+   subject again to the "c.pmin" time.
 
    The Greater Than parameter can only be supported on resources with a
    scalar numeric value.
 
-3.1.2.  Less Than (lt)
+3.1.2.  Less Than (c.lt)
 
    When present, Less Than indicates the lower limit value the resource
    value SHOULD cross before triggering a notification.  A notification
    is sent when the samples value crosses the specified lower limit
-   value, relative to the last reported value, and the time for pmin has
-   elapsed since the last notification.  The sampled value is sent in
-   the notification.  If the value continues to fall no notifications
-   are generated as a result of lt.  If the value rises above the lower
-   limit value then a new notification is sent, subject to the pmin
-   time.
+   value, relative to the last reported value, and the time for "c.pmin"
+   has elapsed since the last notification.  The sampled value is sent
+   in the notification.  If the value continues to fall no notifications
+   are generated as a result of "c.lt".  If the value rises above the
+   lower limit value then a new notification is sent, subject to the
+   "c.pmin" time.
 
    The Less Than parameter can only be supported on resources with a
    scalar numeric value.
 
-3.1.3.  Change Step (st)
+3.1.3.  Change Step (c.st)
 
    When present, the change step indicates how much the value
    representing a resource state SHOULD change before triggering a
    notification, compared to the old state.  Upon reception of a query
-   including the st attribute, the current resource state representing
-   the most recently sampled value is reported, and then set as the last
-   reported value (last_rep_v).  When a subsequent sampled value or
-   update of the resource state differs from the last reported state by
-   an amount, positive or negative, greater than or equal to st, and the
-   time for pmin has elapsed since the last notification, a notification
-   is sent and the last reported value is updated to the new resource
-   state sent in the notification.  The change step MUST be greater than
-   zero otherwise the receiver MUST return a CoAP error code 4.00 "Bad
-   Request" (or equivalent).
+   including the "c.st" attribute, the current resource state
+   representing the most recently sampled value is reported, and then
+   set as the last reported value (last_rep_v).  When a subsequent
+   sampled value or update of the resource state differs from the last
+   reported state by an amount, positive or negative, greater than or
+   equal to st, and the time for "c.pmin" has elapsed since the last
+   notification, a notification is sent and the last reported value is
+   updated to the new resource state sent in the notification.  The
+   change step MUST be greater than zero otherwise the receiver MUST
+   return a CoAP error code 4.00 "Bad Request" (or equivalent).
 
    The Change Step parameter can only be supported on resource states
    represented with a scalar numeric value.
 
-   Note: Due to sampling and other constraints, e.g. pmin, the change in
-   resource states received in two sequential notifications may differ
-   by more than st.
+   Note: Due to sampling and other constraints, e.g. "c.pmin", the
+   change in resource states received in two sequential notifications
+   may differ by more than "c.st".
 
-3.1.4.  Notification Band (band)
+3.1.4.  Notification band (c.band)
 
    The notification band attribute allows a bounded or unbounded (based
    on a minimum or maximum) value range that may trigger multiple
@@ -233,57 +233,57 @@ Table of Contents
    moves to more abnormal ranges more frequent state updates may be sent
    to clients.
 
-   Without a notification band, a transition across a less than (lt), or
-   greater than (gt) limit only generates one notification.  This means
-   that it is not possible to describe a case where multiple
+   Without a notification band, a transition across a less than (c.lt),
+   or greater than (c.gt) limit only generates one notification.  This
+   means that it is not possible to describe a case where multiple
    notifications are sent so long as the limit is exceeded.
 
-   The band attribute works as a modifier to the behaviour of gt and lt.
-   Its use is determined only by its presence, and not its value.
-   Therefore, if band is present in a query, gt, lt or both, MUST be
-   included.
+   The "c.band" attribute works as a modifier to the behaviour of "c.gt"
+   and "c.lt".  Its use is determined only by its presence, and not its
+   value.  Therefore, if "c.band" is present in a query, "c.gt", "c.lt"
+   or both, MUST be included.
 
-   When band is present with the lt attribute, it defines the lower
-   bound for the notification band (notification band minimum).
+   When "c.band" is present with the "c.lt" attribute, it defines the
+   lower bound for the notification band (notification band minimum).
    Notifications occur when the resource value is equal to or above the
-   notification band minimum.  If lt is not present there is no minimum
-   value for the band.
+   notification band minimum.  If "c.lt" is not present there is no
+   minimum value for the band.
 
-   When band is present with the gt attribute, it defines the upper
-   bound for the notification band (notification band maximum).
+   When "c.band" is present with the "c.gt" attribute, it defines the
+   upper bound for the notification band (notification band maximum).
    Notifications occur when the resource value is equal to or below the
-   notification band maximum.  If gt is not present there is no maximum
-   value for the band.
+   notification band maximum.  If "c.gt" is not present there is no
+   maximum value for the band.
 
-   If band is present with both the gt and lt attributes, notification
-   occurs when the resource value is greater than or equal to gt or when
-   the resource value is less than or equal to lt.
+   If "c.band" is present with both the "c.gt" and "c.lt" attributes,
+   notification occurs when the resource value is greater than or equal
+   to "c.gt" or when the resource value is less than or equal to "c.lt".
 
-   If a band is specified in which the value of gt is less than that of
-   lt, in-band notification occurs.  That is, notification occurs
-   whenever the resource value is between the gt and lt values,
-   including equal to gt or lt.
+   If "c.band" is specified in which the value of "c.gt" is less than
+   that of "c.lt", in-band notification occurs.  That is, notification
+   occurs whenever the resource value is between the "c.gt" and "c.lt"
+   values, including equal to "c.gt" or "c.lt".
 
-   If the band is specified in which the value of gt is greater than
-   that of lt, out-of-band notification occurs.  That is, notification
-   occurs when the resource value not between the gt and lt values,
-   excluding equal to gt and lt.
+   If "c.band" is specified in which the value of "c.gt" is greater than
+   that of "c.lt", out-of-band notification occurs.  That is,
+   notification occurs when the resource value not between the "c.gt"
+   and "c.lt" values, excluding equal to "c.gt" and "c.lt".
 
    The Notification Band parameter can only be supported on resources
    with a scalar numeric value.
 
-3.1.5.  Edge (edge)
+3.1.5.  Edge (c.edge)
 
-   When present, the Edge attribute indicates interest for receiving
+   When present, the "c.edge" attribute indicates interest for receiving
    notifications of either the falling edge or the rising edge
-   transition of a boolean resource state.  When the value of the Edge
-   attribute is 0 (False), the server notifies the client each time a
-   resource state changes from True to False.  When the value of the
-   Edge attribute is 1 (True), the server notifies the client each time
-   a resource state changes from False to True.
+   transition of a boolean resource state.  When the value of the
+   "c.edge" attribute is 0 (False), the server notifies the client each
+   time a resource state changes from True to False.  When the value of
+   the "c.edge" attribute is 1 (True), the server notifies the client
+   each time a resource state changes from False to True.
 
-   The Edge attribute can only be supported on resources with a boolean
-   value.
+   The "c.edge" attribute can only be supported on resources with a
+   boolean value.
 
 3.2.  Conditional Control Attributes
 
@@ -297,23 +297,23 @@ Table of Contents
 
    Conditional Control Attributes are defined below:
 
-        +===============================+=======+=================+
-        | Attribute                     | Name  | Value           |
-        +===============================+=======+=================+
-        | Minimum Period (s)            | pmin  | xs:decimal (>0) |
-        +-------------------------------+-------+-----------------+
-        | Maximum Period (s)            | pmax  | xs:decimal (>0) |
-        +-------------------------------+-------+-----------------+
-        | Minimum Evaluation Period (s) | epmin | xs:decimal (>0) |
-        +-------------------------------+-------+-----------------+
-        | Maximum Evaluation Period (s) | epmax | xs:decimal (>0) |
-        +-------------------------------+-------+-----------------+
-        | Confirmable Notification      | con   | xs:boolean      |
-        +-------------------------------+-------+-----------------+
+       +===============================+=========+=================+
+       | Attribute                     | Name    | Value           |
+       +===============================+=========+=================+
+       | Minimum Period (s)            | c.pmin  | xs:decimal (>0) |
+       +-------------------------------+---------+-----------------+
+       | Maximum Period (s)            | c.pmax  | xs:decimal (>0) |
+       +-------------------------------+---------+-----------------+
+       | Minimum Evaluation Period (s) | c.epmin | xs:decimal (>0) |
+       +-------------------------------+---------+-----------------+
+       | Maximum Evaluation Period (s) | c.epmax | xs:decimal (>0) |
+       +-------------------------------+---------+-----------------+
+       | Confirmable Notification      | c.con   | xs:boolean      |
+       +-------------------------------+---------+-----------------+
 
                   Table 2: Conditional Control Attributes
 
-3.2.1.  Minimum Period (pmin)
+3.2.1.  Minimum Period (c.pmin)
 
    When present, the minimum period indicates the minimum time, in
    seconds, between two consecutive notifications (whether or not the
@@ -323,15 +323,15 @@ Table of Contents
    code 4.00 "Bad Request" (or equivalent).
 
    A server MAY update the resource state with the last sampled value
-   that occured during the pmin interval, after the pmin interval
-   expires.
+   that occured during the "c.pmin" interval, after the "c.pmin"
+   interval expires.
 
    Note: Due to finite quantization effects, the time between
-   notifications may be greater than pmin even when the sampled value
-   changes within the pmin interval.  Pmin may or may not be used to
-   drive the internal sampling process.
+   notifications may be greater than "c.pmin" even when the sampled
+   value changes within the "c.pmin" interval. "c.pmin" may or may not
+   be used to drive the internal sampling process.
 
-3.2.2.  Maximum Period (pmax)
+3.2.2.  Maximum Period (c.pmax)
 
    When present, the maximum period indicates the maximum time, in
    seconds, between two consecutive notifications (whether or not the
@@ -341,7 +341,7 @@ Table of Contents
    period parameter (if present) otherwise the receiver MUST return a
    CoAP error code 4.00 "Bad Request" (or equivalent).
 
-3.2.3.  Minimum Evaluation Period (epmin)
+3.2.3.  Minimum Evaluation Period (c.epmin)
 
    When present, the minimum evaluation period indicates the minimum
    time, in seconds, the client recommends to the server to wait between
@@ -351,12 +351,12 @@ Table of Contents
    previous measurement, the server MAY immediately perform a new
    measurement.  In the absence of this parameter, the minimum
    evaluation period is not defined and thus not used by the server.
-   The server MAY use pmin, if defined, as a guidance on the desired
+   The server MAY use "c.pmin", if defined, as a guidance on the desired
    measurement cadence.  The minimum evaluation period MUST be greater
    than zero otherwise the receiver MUST return a CoAP error code 4.00
    "Bad Request" (or equivalent).
 
-3.2.4.  Maximum Evaluation Period (epmax)
+3.2.4.  Maximum Evaluation Period (c.epmax)
 
    When present, the maximum evaluation period indicates the maximum
    time, in seconds, the server MAY wait between two consecutive
@@ -369,15 +369,15 @@ Table of Contents
    parameter (if present) otherwise the receiver MUST return a CoAP
    error code 4.00 "Bad Request" (or equivalent).
 
-3.2.5.  Confirmable Notification (con)
+3.2.5.  Confirmable Notification (c.con)
 
-   When present with a value of 1 (True) in a query, the con attribute
-   indicates a notification MUST be confirmable, i.e., the server MUST
-   send the notification in a confirmable CoAP message, to request an
-   acknowledgement from the client.  When present with a value of 0
-   (False) in a query, the con attribute indicates a notification can be
-   confirmable or non-confirmable, i.e., it can be sent in a confirmable
-   or a non-confirmable CoAP message.
+   When present with a value of 1 (True) in a query, the "c.con"
+   attribute indicates a notification MUST be confirmable, i.e., the
+   server MUST send the notification in a confirmable CoAP message, to
+   request an acknowledgement from the client.  When present with a
+   value of 0 (False) in a query, the "c.con" attribute indicates a
+   notification can be confirmable or non-confirmable, i.e., it can be
+   sent in a confirmable or a non-confirmable CoAP message.
 
 3.3.  Server processing of Conditional Attributes
 
@@ -426,38 +426,39 @@ Table of Contents
 
 4.  Implementation Considerations
 
-   When pmax and pmin are equal, the expected behaviour is that
-   notifications will be sent every (pmin == pmax) seconds.  However,
-   these notifications can only be fulfilled by the server on a best
-   effort basis.  Because pmin and pmax are designed as acceptable
-   tolerance bounds for sending state updates, a query from an
-   interested client containing equal pmin and pmax values must not be
-   seen as a hard real-time scheduling contract between the client and
-   the server.
+   When "c.pmax" and "c.pmin" are equal, the expected behaviour is that
+   notifications will be sent every (c.pmin == c.pmax) seconds.
+   However, these notifications can only be fulfilled by the server on a
+   best effort basis.  Because "c.pmin" and "c.pmax" are designed as
+   acceptable tolerance bounds for sending state updates, a query from
+   an interested client containing equal "c.pmin" and "c.pmax" values
+   must not be seen as a hard real-time scheduling contract between the
+   client and the server.
 
    The use of the notification band minimum and maximum allow for a
    synchronization whenever a change in the resource value occurs.
    Theoretically this could occur in-line with the server internal
-   sample period or the configuration of epmin and epmax values for
-   determining the resource value.  Implementors SHOULD consider the
+   sample period or the configuration of "c.epmin" and "c.epmax" values
+   for determining the resource value.  Implementors SHOULD consider the
    resolution needed before updating the resource, e.g. updating the
    resource when a temperature sensor value changes by 0.001 degree
    versus 1 degree.
 
    When a server has multiple observations with different measurement
-   cadences as defined by the epmin and epmax values, the server MAY
-   evaluate all observations when performing the measurement of any one
-   observation.
+   cadences as defined by the "c.epmin" and "c.epmax" values, the server
+   MAY evaluate all observations when performing the measurement of any
+   one observation.
 
    This specification defines conditional attributes that can be used
    with CoRE Observe relationships between CoAP clients and CoAP
    servers.  However, it is recognised that the presence of 1 or more
    proxies between a client and a server can interfere with clients
    receiving resource updates, if a proxy does not supply resource
-   representations when the value remains unchanged (eg if pmax is set,
-   and the server sends multiple updates when the resource state
+   representations when the value remains unchanged (eg if "c.pmax" is
+   set, and the server sends multiple updates when the resource state
    contains the same value).  A server SHOULD use the Max-Age option to
-   mitigate this by setting Max-Age to be less than or equal to pmax.
+   mitigate this by setting Max-Age to be less than or equal to
+   "c.pmax".
 
 5.  Security Considerations
 
@@ -473,28 +474,28 @@ Table of Contents
      +====================+===========+=================+===========+
      | Attribute          | Parameter | Value           | Reference |
      +====================+===========+=================+===========+
-     | Minimum Period (s) | pmin      | xs:decimal (>0) | This memo |
+     | Minimum Period (s) | c.pmin    | xs:decimal (>0) | This memo |
      +--------------------+-----------+-----------------+-----------+
-     | Maximum Period (s) | pmax      | xs:decimal (>0) | This memo |
+     | Maximum Period (s) | c.pmax    | xs:decimal (>0) | This memo |
      +--------------------+-----------+-----------------+-----------+
-     | Minimum Evaluation | epmin     | xs:decimal (>0) | This memo |
+     | Minimum Evaluation | c.epmin   | xs:decimal (>0) | This memo |
      | Period (s)         |           |                 |           |
      +--------------------+-----------+-----------------+-----------+
-     | Maximum Evaluation | epmax     | xs:decimal (>0) | This memo |
+     | Maximum Evaluation | c.epmax   | xs:decimal (>0) | This memo |
      | Period (s)         |           |                 |           |
      +--------------------+-----------+-----------------+-----------+
-     | Confirmable        | con       | xs:boolean      | This memo |
+     | Confirmable        | c.con     | xs:boolean      | This memo |
      | Notification       |           |                 |           |
      +--------------------+-----------+-----------------+-----------+
-     | Greater Than       | gt        | xs:decimal      | This memo |
+     | Greater Than       | c.gt      | xs:decimal      | This memo |
      +--------------------+-----------+-----------------+-----------+
-     | Less Than          | lt        | xs:decimal      | This memo |
+     | Less Than          | c.lt      | xs:decimal      | This memo |
      +--------------------+-----------+-----------------+-----------+
-     | Change Step        | st        | xs:decimal (>0) | This memo |
+     | Change Step        | c.st      | xs:decimal (>0) | This memo |
      +--------------------+-----------+-----------------+-----------+
-     | Notification Band  | band      | (none)          | This memo |
+     | Notification Band  | c.band    | (none)          | This memo |
      +--------------------+-----------+-----------------+-----------+
-     | Edge               | edge      | xs:boolean      | This memo |
+     | Edge               | c.edge    | xs:boolean      | This memo |
      +--------------------+-----------+-----------------+-----------+
 
                                  Table 3
@@ -532,6 +533,11 @@ Table of Contents
    email: jintao.zhu@huawei.com
 
 9.  Changelog
+
+   draft-ietf-core-conditional-attributes-03
+
+   *  Attribute names updated to create uniqueness for use as
+      conditional observe attributes.
 
    draft-ietf-core-conditional-attributes-02
 
@@ -588,7 +594,7 @@ Appendix A.  Examples
    Note: For brevity the only the method or response code is shown in
    the header field.
 
-A.1.  Minimum Period (pmin) example
+A.1.  Minimum Period (c.pmin) example
 
            Observed   CLIENT  SERVER     Actual
        t   State         |      |         State
@@ -598,7 +604,7 @@ A.1.  Minimum Period (pmin) example
        3                 +----->|                  Header: GET
        4                 | GET  |                   Token: 0x4a
        5                 |      |                Uri-Path: temperature
-       6                 |      |               Uri-Query: pmin="10"
+       6                 |      |               Uri-Query: c.pmin="10"
        7                 |      |                 Observe: 0 (register)
        8                 |      |
        9   ____________  |<-----+                  Header: 2.05
@@ -620,10 +626,10 @@ A.1.  Minimum Period (pmin) example
       25                 |      |
 
       Figure 2: Client registers and receives one notification of the
-         current state and one of a new state state when pmin time
+        current state and one of a new state state when c.pmin time
                                   expires.
 
-A.2.  Maximum Period (pmax) example
+A.2.  Maximum Period (c.pmax) example
 
            Observed   CLIENT  SERVER     Actual
        t   State         |      |         State
@@ -633,7 +639,7 @@ A.2.  Maximum Period (pmax) example
        3                 +----->|                  Header: GET
        4                 | GET  |                   Token: 0x4a
        5                 |      |                Uri-Path: temperature
-       6                 |      |               Uri-Query: pmax="20"
+       6                 |      |               Uri-Query: c.pmax="20"
        7                 |      |                 Observe: 0 (register)
        8                 |      |
        9   ____________  |<-----+                  Header: 2.05
@@ -673,9 +679,9 @@ A.2.  Maximum Period (pmax) example
 
       Figure 3: Client registers and receives one notification of the
       current state, one of a new state and one of an unchanged state
-                          when pmax time expires.
+                                when "c.pmax
 
-A.3.  Greater Than (gt) example
+A.3.  Greater Than (c.gt) example
 
         Observed   CLIENT  SERVER     Actual
     t   State         |      |         State
@@ -685,7 +691,7 @@ A.3.  Greater Than (gt) example
     3                 +----->|                  Header: GET
     4                 | GET  |                   Token: 0x4a
     5                 |      |                Uri-Path: temperature
-    6                 |      |               Uri-Query: gt=25
+    6                 |      |               Uri-Query: c.gt=25
     7                 |      |                 Observe: 0 (register)
     8                 |      |
     9   ____________  |<-----+                  Header: 2.05
@@ -706,7 +712,7 @@ A.3.  Greater Than (gt) example
       current state and one of a new state when it passes through the
                        greater than threshold of 25.
 
-A.4.  Greater Than (gt) and Period Max (pmax) example
+A.4.  Greater Than (c.gt) and Period Max (c.pmax) example
 
         Observed   CLIENT  SERVER     Actual
     t   State         |      |         State
@@ -716,7 +722,7 @@ A.4.  Greater Than (gt) and Period Max (pmax) example
     3                 +----->|                  Header: GET
     4                 | GET  |                   Token: 0x4a
     5                 |      |                Uri-Path: temperature
-    6                 |      |         Uri-Query: pmax=20;gt=25
+    6                 |      |         Uri-Query: c.pmax=20;c.gt=25
     7                 |      |                 Observe: 0 (register)
     8                 |      |
     9   ____________  |<-----+                  Header: 2.05
@@ -755,8 +761,7 @@ A.4.  Greater Than (gt) and Period Max (pmax) example
    42                 |      |
 
       Figure 5: Client registers and receives one notification of the
-      current state, one when pmax time expires and one of a new state
-          when it passes through the greater than threshold of 25.
+                      current state, one when "c.pmax
 
 Authors' Addresses
 

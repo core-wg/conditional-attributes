@@ -11,18 +11,18 @@
 <meta content="
        This specification defines Conditional Notification and Control Attributes that work with CoAP Observe (RFC7641). 
     " name="description">
-<meta content="xml2rfc 3.12.3" name="generator">
+<meta content="xml2rfc 3.12.5" name="generator">
 <meta content="Internet-Draft" name="keyword">
 <meta content="CoRE" name="keyword">
 <meta content="CoAP" name="keyword">
 <meta content="Observe" name="keyword">
 <meta content="draft-ietf-core-conditional-attributes-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.12.3
+  xml2rfc 3.12.5
     Python 3.9.7
     appdirs 1.4.4
     ConfigArgParse 1.3
-    google-i18n-address 2.5.0
+    google-i18n-address 2.5.1
     html5lib 1.1
     intervaltree 3.1.0
     Jinja2 2.11.3
@@ -1018,11 +1018,11 @@ svg [stroke="fill"], svg [fill^="#fff"] {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">Conditional Attributes for CoRE</td>
-<td class="right">March 2022</td>
+<td class="right">May 2022</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Koster, et al.</td>
-<td class="center">Expires 25 September 2022</td>
+<td class="center">Expires 10 November 2022</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1035,12 +1035,12 @@ svg [stroke="fill"], svg [fill^="#fff"] {
 <dd class="internet-draft">draft-ietf-core-conditional-attributes-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2022-03-24" class="published">24 March 2022</time>
+<time datetime="2022-05-09" class="published">9 May 2022</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2022-09-25">25 September 2022</time></dd>
+<dd class="expires"><time datetime="2022-11-10">10 November 2022</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1089,7 +1089,7 @@ svg [stroke="fill"], svg [fill^="#fff"] {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 25 September 2022.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 10 November 2022.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1131,19 +1131,19 @@ svg [stroke="fill"], svg [fill^="#fff"] {
                 <p id="section-toc.1-1.3.2.1.1"><a href="#section-3.1" class="xref">3.1</a>.  <a href="#name-conditional-notification-at" class="xref">Conditional Notification Attributes</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1.2.1">
-                    <p id="section-toc.1-1.3.2.1.2.1.1" class="keepWithNext"><a href="#section-3.1.1" class="xref">3.1.1</a>.  <a href="#name-greater-than-gt" class="xref">Greater Than (gt)</a></p>
+                    <p id="section-toc.1-1.3.2.1.2.1.1" class="keepWithNext"><a href="#section-3.1.1" class="xref">3.1.1</a>.  <a href="#name-greater-than-cgt" class="xref">Greater Than (c.gt)</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1.2.2">
-                    <p id="section-toc.1-1.3.2.1.2.2.1"><a href="#section-3.1.2" class="xref">3.1.2</a>.  <a href="#name-less-than-lt" class="xref">Less Than (lt)</a></p>
+                    <p id="section-toc.1-1.3.2.1.2.2.1"><a href="#section-3.1.2" class="xref">3.1.2</a>.  <a href="#name-less-than-clt" class="xref">Less Than (c.lt)</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1.2.3">
-                    <p id="section-toc.1-1.3.2.1.2.3.1"><a href="#section-3.1.3" class="xref">3.1.3</a>.  <a href="#name-change-step-st" class="xref">Change Step (st)</a></p>
+                    <p id="section-toc.1-1.3.2.1.2.3.1"><a href="#section-3.1.3" class="xref">3.1.3</a>.  <a href="#name-change-step-cst" class="xref">Change Step (c.st)</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1.2.4">
-                    <p id="section-toc.1-1.3.2.1.2.4.1"><a href="#section-3.1.4" class="xref">3.1.4</a>.  <a href="#name-notification-band-band" class="xref">Notification Band (band)</a></p>
+                    <p id="section-toc.1-1.3.2.1.2.4.1"><a href="#section-3.1.4" class="xref">3.1.4</a>.  <a href="#name-notification-band-cband" class="xref">Notification band (c.band)</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1.2.5">
-                    <p id="section-toc.1-1.3.2.1.2.5.1"><a href="#section-3.1.5" class="xref">3.1.5</a>.  <a href="#name-edge-edge" class="xref">Edge (edge)</a></p>
+                    <p id="section-toc.1-1.3.2.1.2.5.1"><a href="#section-3.1.5" class="xref">3.1.5</a>.  <a href="#name-edge-cedge" class="xref">Edge (c.edge)</a></p>
 </li>
                 </ul>
 </li>
@@ -1151,19 +1151,19 @@ svg [stroke="fill"], svg [fill^="#fff"] {
                 <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="xref">3.2</a>.  <a href="#name-conditional-control-attribu" class="xref">Conditional Control Attributes</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2.2.1">
-                    <p id="section-toc.1-1.3.2.2.2.1.1"><a href="#section-3.2.1" class="xref">3.2.1</a>.  <a href="#name-minimum-period-pmin" class="xref">Minimum Period (pmin)</a></p>
+                    <p id="section-toc.1-1.3.2.2.2.1.1"><a href="#section-3.2.1" class="xref">3.2.1</a>.  <a href="#name-minimum-period-cpmin" class="xref">Minimum Period (c.pmin)</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2.2.2">
-                    <p id="section-toc.1-1.3.2.2.2.2.1"><a href="#section-3.2.2" class="xref">3.2.2</a>.  <a href="#name-maximum-period-pmax" class="xref">Maximum Period (pmax)</a></p>
+                    <p id="section-toc.1-1.3.2.2.2.2.1"><a href="#section-3.2.2" class="xref">3.2.2</a>.  <a href="#name-maximum-period-cpmax" class="xref">Maximum Period (c.pmax)</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2.2.3">
-                    <p id="section-toc.1-1.3.2.2.2.3.1"><a href="#section-3.2.3" class="xref">3.2.3</a>.  <a href="#name-minimum-evaluation-period-e" class="xref">Minimum Evaluation Period (epmin)</a></p>
+                    <p id="section-toc.1-1.3.2.2.2.3.1"><a href="#section-3.2.3" class="xref">3.2.3</a>.  <a href="#name-minimum-evaluation-period-c" class="xref">Minimum Evaluation Period (c.epmin)</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2.2.4">
-                    <p id="section-toc.1-1.3.2.2.2.4.1"><a href="#section-3.2.4" class="xref">3.2.4</a>.  <a href="#name-maximum-evaluation-period-e" class="xref">Maximum Evaluation Period (epmax)</a></p>
+                    <p id="section-toc.1-1.3.2.2.2.4.1"><a href="#section-3.2.4" class="xref">3.2.4</a>.  <a href="#name-maximum-evaluation-period-c" class="xref">Maximum Evaluation Period (c.epmax)</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2.2.5">
-                    <p id="section-toc.1-1.3.2.2.2.5.1"><a href="#section-3.2.5" class="xref">3.2.5</a>.  <a href="#name-confirmable-notification-co" class="xref">Confirmable Notification (con)</a></p>
+                    <p id="section-toc.1-1.3.2.2.2.5.1"><a href="#section-3.2.5" class="xref">3.2.5</a>.  <a href="#name-confirmable-notification-cc" class="xref">Confirmable Notification (c.con)</a></p>
 </li>
                 </ul>
 </li>
@@ -1205,16 +1205,16 @@ svg [stroke="fill"], svg [fill^="#fff"] {
             <p id="section-toc.1-1.11.1"><a href="#appendix-A" class="xref">Appendix A</a>.  <a href="#name-examples" class="xref">Examples</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.1">
-                <p id="section-toc.1-1.11.2.1.1"><a href="#appendix-A.1" class="xref">A.1</a>.  <a href="#name-minimum-period-pmin-example" class="xref">Minimum Period (pmin) example</a></p>
+                <p id="section-toc.1-1.11.2.1.1"><a href="#appendix-A.1" class="xref">A.1</a>.  <a href="#name-minimum-period-cpmin-exampl" class="xref">Minimum Period (c.pmin) example</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.2">
-                <p id="section-toc.1-1.11.2.2.1"><a href="#appendix-A.2" class="xref">A.2</a>.  <a href="#name-maximum-period-pmax-example" class="xref">Maximum Period (pmax) example</a></p>
+                <p id="section-toc.1-1.11.2.2.1"><a href="#appendix-A.2" class="xref">A.2</a>.  <a href="#name-maximum-period-cpmax-exampl" class="xref">Maximum Period (c.pmax) example</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.3">
-                <p id="section-toc.1-1.11.2.3.1"><a href="#appendix-A.3" class="xref">A.3</a>.  <a href="#name-greater-than-gt-example" class="xref">Greater Than (gt) example</a></p>
+                <p id="section-toc.1-1.11.2.3.1"><a href="#appendix-A.3" class="xref">A.3</a>.  <a href="#name-greater-than-cgt-example" class="xref">Greater Than (c.gt) example</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.4">
-                <p id="section-toc.1-1.11.2.4.1"><a href="#appendix-A.4" class="xref">A.4</a>.  <a href="#name-greater-than-gt-and-period-" class="xref">Greater Than (gt) and Period Max (pmax) example</a></p>
+                <p id="section-toc.1-1.11.2.4.1"><a href="#appendix-A.4" class="xref">A.4</a>.  <a href="#name-greater-than-cgt-and-period" class="xref">Greater Than (c.gt) and Period Max (c.pmax) example</a></p>
 </li>
             </ul>
 </li>
@@ -1285,27 +1285,27 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
           <tbody>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">Greater Than</td>
-              <td class="text-left" rowspan="1" colspan="1">gt</td>
+              <td class="text-left" rowspan="1" colspan="1">c.gt</td>
               <td class="text-left" rowspan="1" colspan="1">xs:decimal</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">Less Than</td>
-              <td class="text-left" rowspan="1" colspan="1">lt</td>
+              <td class="text-left" rowspan="1" colspan="1">c.lt</td>
               <td class="text-left" rowspan="1" colspan="1">xs:decimal</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">Change Step</td>
-              <td class="text-left" rowspan="1" colspan="1">st</td>
+              <td class="text-left" rowspan="1" colspan="1">c.st</td>
               <td class="text-left" rowspan="1" colspan="1">xs:decimal (&gt;0)</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">Notification Band</td>
-              <td class="text-left" rowspan="1" colspan="1">band</td>
+              <td class="text-left" rowspan="1" colspan="1">c.band</td>
               <td class="text-left" rowspan="1" colspan="1">(none)</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">Edge</td>
-              <td class="text-left" rowspan="1" colspan="1">edge</td>
+              <td class="text-left" rowspan="1" colspan="1">c.edge</td>
               <td class="text-left" rowspan="1" colspan="1">xs:boolean</td>
             </tr>
           </tbody>
@@ -1313,55 +1313,55 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
 </div>
 <div id="gt">
 <section id="section-3.1.1">
-          <h4 id="name-greater-than-gt">
-<a href="#section-3.1.1" class="section-number selfRef">3.1.1. </a><a href="#name-greater-than-gt" class="section-name selfRef">Greater Than (gt)</a>
+          <h4 id="name-greater-than-cgt">
+<a href="#section-3.1.1" class="section-number selfRef">3.1.1. </a><a href="#name-greater-than-cgt" class="section-name selfRef">Greater Than (c.gt)</a>
           </h4>
-<p id="section-3.1.1-1">When present, Greater Than indicates the upper limit value the sampled value SHOULD cross before triggering a notification. A notification is sent whenever the sampled value crosses the specified upper limit value, relative to the last reported value, and the time for pmin has elapsed since the last notification. The sampled value is sent in the notification. If the value continues to rise, no notifications are generated as a result of gt. If the value drops below the upper limit value then a notification is sent, subject again to the pmin time.<a href="#section-3.1.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.1.1-1">When present, Greater Than indicates the upper limit value the sampled value SHOULD cross before triggering a notification. A notification is sent whenever the sampled value crosses the specified upper limit value, relative to the last reported value, and the time for "c.pmin" has elapsed since the last notification. The sampled value is sent in the notification. If the value continues to rise, no notifications are generated as a result of "c.gt". If the value drops below the upper limit value then a notification is sent, subject again to the "c.pmin" time.<a href="#section-3.1.1-1" class="pilcrow">¶</a></p>
 <p id="section-3.1.1-2">The Greater Than parameter can only be supported on resources with a scalar numeric value.<a href="#section-3.1.1-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="lt">
 <section id="section-3.1.2">
-          <h4 id="name-less-than-lt">
-<a href="#section-3.1.2" class="section-number selfRef">3.1.2. </a><a href="#name-less-than-lt" class="section-name selfRef">Less Than (lt)</a>
+          <h4 id="name-less-than-clt">
+<a href="#section-3.1.2" class="section-number selfRef">3.1.2. </a><a href="#name-less-than-clt" class="section-name selfRef">Less Than (c.lt)</a>
           </h4>
-<p id="section-3.1.2-1">When present, Less Than indicates the lower limit value the resource value SHOULD cross before triggering a notification. A notification is sent when the samples value crosses the specified lower limit value, relative to the last reported value, and the time for pmin has elapsed since the last notification. The sampled value is sent in the notification. If the value continues to fall no notifications are generated as a result of lt. If the value rises above the lower limit value then a new notification is sent, subject to the pmin time.<a href="#section-3.1.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.1.2-1">When present, Less Than indicates the lower limit value the resource value SHOULD cross before triggering a notification. A notification is sent when the samples value crosses the specified lower limit value, relative to the last reported value, and the time for "c.pmin" has elapsed since the last notification. The sampled value is sent in the notification. If the value continues to fall no notifications are generated as a result of "c.lt". If the value rises above the lower limit value then a new notification is sent, subject to the "c.pmin" time.<a href="#section-3.1.2-1" class="pilcrow">¶</a></p>
 <p id="section-3.1.2-2">The Less Than parameter can only be supported on resources with a scalar numeric value.<a href="#section-3.1.2-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="st">
 <section id="section-3.1.3">
-          <h4 id="name-change-step-st">
-<a href="#section-3.1.3" class="section-number selfRef">3.1.3. </a><a href="#name-change-step-st" class="section-name selfRef">Change Step (st)</a>
+          <h4 id="name-change-step-cst">
+<a href="#section-3.1.3" class="section-number selfRef">3.1.3. </a><a href="#name-change-step-cst" class="section-name selfRef">Change Step (c.st)</a>
           </h4>
-<p id="section-3.1.3-1">When present, the change step indicates how much the value representing a resource state SHOULD change before triggering a notification, compared to the old state. Upon reception of a query including the st attribute, the current resource state representing the most recently sampled value is reported, and then set as the last reported value (last_rep_v). When a subsequent sampled value or update of the resource state differs from the last reported state by an amount, positive or negative, greater than or equal to st, and the time for pmin has elapsed since the last notification, a notification is sent and the last reported value is updated to the new resource state sent in the notification. The change step MUST be greater than zero otherwise the receiver MUST return a CoAP error code 4.00 "Bad Request" (or equivalent).<a href="#section-3.1.3-1" class="pilcrow">¶</a></p>
+<p id="section-3.1.3-1">When present, the change step indicates how much the value representing a resource state SHOULD change before triggering a notification, compared to the old state. Upon reception of a query including the "c.st" attribute, the current resource state representing the most recently sampled value is reported, and then set as the last reported value (last_rep_v). When a subsequent sampled value or update of the resource state differs from the last reported state by an amount, positive or negative, greater than or equal to st, and the time for "c.pmin" has elapsed since the last notification, a notification is sent and the last reported value is updated to the new resource state sent in the notification. The change step MUST be greater than zero otherwise the receiver MUST return a CoAP error code 4.00 "Bad Request" (or equivalent).<a href="#section-3.1.3-1" class="pilcrow">¶</a></p>
 <p id="section-3.1.3-2">The Change Step parameter can only be supported on resource states represented with a scalar numeric value.<a href="#section-3.1.3-2" class="pilcrow">¶</a></p>
-<p id="section-3.1.3-3">Note: Due to sampling and other constraints, e.g. pmin, the change in resource states received in two sequential notifications may differ by more than st.<a href="#section-3.1.3-3" class="pilcrow">¶</a></p>
+<p id="section-3.1.3-3">Note: Due to sampling and other constraints, e.g. "c.pmin", the change in resource states received in two sequential notifications may differ by more than "c.st".<a href="#section-3.1.3-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="band">
 <section id="section-3.1.4">
-          <h4 id="name-notification-band-band">
-<a href="#section-3.1.4" class="section-number selfRef">3.1.4. </a><a href="#name-notification-band-band" class="section-name selfRef">Notification Band (band)</a>
+          <h4 id="name-notification-band-cband">
+<a href="#section-3.1.4" class="section-number selfRef">3.1.4. </a><a href="#name-notification-band-cband" class="section-name selfRef">Notification band (c.band)</a>
           </h4>
 <p id="section-3.1.4-1">The notification band attribute allows a bounded or unbounded (based on a minimum or maximum) value range that may trigger multiple notifications. This enables use cases where different ranges results in differing behaviour. For example, in monitoring the temperature of machinery, whilst the temperature is in the normal operating range, only periodic updates are needed. However as the temperature moves to more abnormal ranges more frequent state updates may be sent to clients.<a href="#section-3.1.4-1" class="pilcrow">¶</a></p>
-<p id="section-3.1.4-2">Without a notification band, a transition across a less than (lt), or greater than (gt) limit only generates one notification.  This means that it is not possible to describe a case where multiple notifications are sent so long as the limit is exceeded.<a href="#section-3.1.4-2" class="pilcrow">¶</a></p>
-<p id="section-3.1.4-3">The band attribute works as a modifier to the behaviour of gt and lt. Its use is determined only by its presence, and not its value. Therefore, if band is present in a query, gt, lt or both, MUST be included.<a href="#section-3.1.4-3" class="pilcrow">¶</a></p>
-<p id="section-3.1.4-4">When band is present with the lt attribute, it defines the lower bound for the notification band (notification band minimum). Notifications occur when the resource value is equal to or above the notification band minimum. If lt is not present there is no minimum value for the band.<a href="#section-3.1.4-4" class="pilcrow">¶</a></p>
-<p id="section-3.1.4-5">When band is present with the gt attribute, it defines the upper bound for the notification band (notification band maximum). Notifications occur when the resource value is equal to or below the notification band maximum. If gt is not present there is no maximum value for the band.<a href="#section-3.1.4-5" class="pilcrow">¶</a></p>
-<p id="section-3.1.4-6">If band is present with both the gt and lt attributes, notification occurs when the resource value is greater than or equal to gt or when the resource value is less than or equal to lt.<a href="#section-3.1.4-6" class="pilcrow">¶</a></p>
-<p id="section-3.1.4-7">If a band is specified in which the value of gt is less than that of lt, in-band notification occurs. That is, notification occurs whenever the resource value is between the gt and lt values, including equal to gt or lt.<a href="#section-3.1.4-7" class="pilcrow">¶</a></p>
-<p id="section-3.1.4-8">If the band is specified in which the value of gt is greater than that of lt, out-of-band notification occurs. That is, notification occurs when the resource value not between the gt and lt values, excluding equal to gt and lt.<a href="#section-3.1.4-8" class="pilcrow">¶</a></p>
+<p id="section-3.1.4-2">Without a notification band, a transition across a less than (c.lt), or greater than (c.gt) limit only generates one notification.  This means that it is not possible to describe a case where multiple notifications are sent so long as the limit is exceeded.<a href="#section-3.1.4-2" class="pilcrow">¶</a></p>
+<p id="section-3.1.4-3">The "c.band" attribute works as a modifier to the behaviour of "c.gt" and "c.lt". Its use is determined only by its presence, and not its value. Therefore, if "c.band" is present in a query, "c.gt", "c.lt" or both, MUST be included.<a href="#section-3.1.4-3" class="pilcrow">¶</a></p>
+<p id="section-3.1.4-4">When "c.band" is present with the "c.lt" attribute, it defines the lower bound for the notification band (notification band minimum). Notifications occur when the resource value is equal to or above the notification band minimum. If "c.lt" is not present there is no minimum value for the band.<a href="#section-3.1.4-4" class="pilcrow">¶</a></p>
+<p id="section-3.1.4-5">When "c.band" is present with the "c.gt" attribute, it defines the upper bound for the notification band (notification band maximum). Notifications occur when the resource value is equal to or below the notification band maximum. If "c.gt" is not present there is no maximum value for the band.<a href="#section-3.1.4-5" class="pilcrow">¶</a></p>
+<p id="section-3.1.4-6">If "c.band" is present with both the "c.gt" and "c.lt" attributes, notification occurs when the resource value is greater than or equal to "c.gt" or when the resource value is less than or equal to "c.lt".<a href="#section-3.1.4-6" class="pilcrow">¶</a></p>
+<p id="section-3.1.4-7">If "c.band" is specified in which the value of "c.gt" is less than that of "c.lt", in-band notification occurs. That is, notification occurs whenever the resource value is between the "c.gt" and "c.lt" values, including equal to "c.gt" or "c.lt".<a href="#section-3.1.4-7" class="pilcrow">¶</a></p>
+<p id="section-3.1.4-8">If "c.band" is specified in which the value of "c.gt" is greater than that of "c.lt", out-of-band notification occurs. That is, notification occurs when the resource value not between the "c.gt" and "c.lt" values, excluding equal to "c.gt" and "c.lt".<a href="#section-3.1.4-8" class="pilcrow">¶</a></p>
 <p id="section-3.1.4-9">The Notification Band parameter can only be supported on resources with a scalar numeric value.<a href="#section-3.1.4-9" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="edge">
 <section id="section-3.1.5">
-          <h4 id="name-edge-edge">
-<a href="#section-3.1.5" class="section-number selfRef">3.1.5. </a><a href="#name-edge-edge" class="section-name selfRef">Edge (edge)</a>
+          <h4 id="name-edge-cedge">
+<a href="#section-3.1.5" class="section-number selfRef">3.1.5. </a><a href="#name-edge-cedge" class="section-name selfRef">Edge (c.edge)</a>
           </h4>
-<p id="section-3.1.5-1">When present, the Edge attribute indicates interest for receiving notifications of either the falling edge or the rising edge transition of a boolean resource state. When the value of the Edge attribute is 0 (False), the server notifies the client each time a resource state changes from True to False. When the value of the Edge attribute is 1 (True), the server notifies the client each time a resource state changes from False to True.<a href="#section-3.1.5-1" class="pilcrow">¶</a></p>
-<p id="section-3.1.5-2">The Edge attribute can only be supported on resources with a boolean value.<a href="#section-3.1.5-2" class="pilcrow">¶</a></p>
+<p id="section-3.1.5-1">When present, the "c.edge" attribute indicates interest for receiving notifications of either the falling edge or the rising edge transition of a boolean resource state. When the value of the "c.edge" attribute is 0 (False), the server notifies the client each time a resource state changes from True to False. When the value of the "c.edge" attribute is 1 (True), the server notifies the client each time a resource state changes from False to True.<a href="#section-3.1.5-1" class="pilcrow">¶</a></p>
+<p id="section-3.1.5-2">The "c.edge" attribute can only be supported on resources with a boolean value.<a href="#section-3.1.5-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1389,27 +1389,27 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
           <tbody>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">Minimum Period (s)</td>
-              <td class="text-left" rowspan="1" colspan="1">pmin</td>
+              <td class="text-left" rowspan="1" colspan="1">c.pmin</td>
               <td class="text-left" rowspan="1" colspan="1">xs:decimal (&gt;0)</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">Maximum Period (s)</td>
-              <td class="text-left" rowspan="1" colspan="1">pmax</td>
+              <td class="text-left" rowspan="1" colspan="1">c.pmax</td>
               <td class="text-left" rowspan="1" colspan="1">xs:decimal (&gt;0)</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">Minimum Evaluation Period (s)</td>
-              <td class="text-left" rowspan="1" colspan="1">epmin</td>
+              <td class="text-left" rowspan="1" colspan="1">c.epmin</td>
               <td class="text-left" rowspan="1" colspan="1">xs:decimal (&gt;0)</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">Maximum Evaluation Period (s)</td>
-              <td class="text-left" rowspan="1" colspan="1">epmax</td>
+              <td class="text-left" rowspan="1" colspan="1">c.epmax</td>
               <td class="text-left" rowspan="1" colspan="1">xs:decimal (&gt;0)</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">Confirmable Notification</td>
-              <td class="text-left" rowspan="1" colspan="1">con</td>
+              <td class="text-left" rowspan="1" colspan="1">c.con</td>
               <td class="text-left" rowspan="1" colspan="1">xs:boolean</td>
             </tr>
           </tbody>
@@ -1417,44 +1417,44 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
 </div>
 <div id="pmin">
 <section id="section-3.2.1">
-          <h4 id="name-minimum-period-pmin">
-<a href="#section-3.2.1" class="section-number selfRef">3.2.1. </a><a href="#name-minimum-period-pmin" class="section-name selfRef">Minimum Period (pmin)</a>
+          <h4 id="name-minimum-period-cpmin">
+<a href="#section-3.2.1" class="section-number selfRef">3.2.1. </a><a href="#name-minimum-period-cpmin" class="section-name selfRef">Minimum Period (c.pmin)</a>
           </h4>
 <p id="section-3.2.1-1">When present, the minimum period indicates the minimum time, in seconds, between two consecutive notifications (whether or not the resource state has changed). In the absence of this parameter, the minimum period is up to the server. The minimum period MUST be greater than zero otherwise the receiver MUST return a CoAP error code 4.00 "Bad Request" (or equivalent).<a href="#section-3.2.1-1" class="pilcrow">¶</a></p>
-<p id="section-3.2.1-2">A server MAY update the resource state with the last sampled value that occured during the pmin interval, after the pmin interval expires.<a href="#section-3.2.1-2" class="pilcrow">¶</a></p>
-<p id="section-3.2.1-3">Note: Due to finite quantization effects, the time between notifications may be greater than pmin even when the sampled value changes within the pmin interval. Pmin may or may not be used to drive the internal sampling process.<a href="#section-3.2.1-3" class="pilcrow">¶</a></p>
+<p id="section-3.2.1-2">A server MAY update the resource state with the last sampled value that occured during the "c.pmin" interval, after the "c.pmin" interval expires.<a href="#section-3.2.1-2" class="pilcrow">¶</a></p>
+<p id="section-3.2.1-3">Note: Due to finite quantization effects, the time between notifications may be greater than "c.pmin" even when the sampled value changes within the "c.pmin" interval. "c.pmin" may or may not be used to drive the internal sampling process.<a href="#section-3.2.1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="pmax">
 <section id="section-3.2.2">
-          <h4 id="name-maximum-period-pmax">
-<a href="#section-3.2.2" class="section-number selfRef">3.2.2. </a><a href="#name-maximum-period-pmax" class="section-name selfRef">Maximum Period (pmax)</a>
+          <h4 id="name-maximum-period-cpmax">
+<a href="#section-3.2.2" class="section-number selfRef">3.2.2. </a><a href="#name-maximum-period-cpmax" class="section-name selfRef">Maximum Period (c.pmax)</a>
           </h4>
 <p id="section-3.2.2-1">When present, the maximum period indicates the maximum time, in seconds, between two consecutive notifications (whether or not the resource state has changed). In the absence of this parameter, the maximum period is up to the server. The maximum period MUST be greater than zero and MUST be greater than, or equal to, the minimum period parameter (if present) otherwise the receiver MUST return a CoAP error code 4.00 "Bad Request" (or equivalent).<a href="#section-3.2.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="epmin">
 <section id="section-3.2.3">
-          <h4 id="name-minimum-evaluation-period-e">
-<a href="#section-3.2.3" class="section-number selfRef">3.2.3. </a><a href="#name-minimum-evaluation-period-e" class="section-name selfRef">Minimum Evaluation Period (epmin)</a>
+          <h4 id="name-minimum-evaluation-period-c">
+<a href="#section-3.2.3" class="section-number selfRef">3.2.3. </a><a href="#name-minimum-evaluation-period-c" class="section-name selfRef">Minimum Evaluation Period (c.epmin)</a>
           </h4>
-<p id="section-3.2.3-1">When present, the minimum evaluation period indicates the minimum time, in seconds, the client recommends to the server to wait between two consecutive measurements of the conditions of a resource since the client has no interest in the server doing more frequent measurements. When the minimum evaluation period expires after the previous measurement, the server MAY immediately perform a new measurement. In the absence of this parameter, the minimum evaluation period is not defined and thus not used by the server. The server MAY use pmin, if defined, as a guidance on the desired measurement cadence. The minimum evaluation period MUST be greater than zero otherwise the receiver MUST return a CoAP error code 4.00 "Bad Request" (or equivalent).<a href="#section-3.2.3-1" class="pilcrow">¶</a></p>
+<p id="section-3.2.3-1">When present, the minimum evaluation period indicates the minimum time, in seconds, the client recommends to the server to wait between two consecutive measurements of the conditions of a resource since the client has no interest in the server doing more frequent measurements. When the minimum evaluation period expires after the previous measurement, the server MAY immediately perform a new measurement. In the absence of this parameter, the minimum evaluation period is not defined and thus not used by the server. The server MAY use "c.pmin", if defined, as a guidance on the desired measurement cadence. The minimum evaluation period MUST be greater than zero otherwise the receiver MUST return a CoAP error code 4.00 "Bad Request" (or equivalent).<a href="#section-3.2.3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="epmax">
 <section id="section-3.2.4">
-          <h4 id="name-maximum-evaluation-period-e">
-<a href="#section-3.2.4" class="section-number selfRef">3.2.4. </a><a href="#name-maximum-evaluation-period-e" class="section-name selfRef">Maximum Evaluation Period (epmax)</a>
+          <h4 id="name-maximum-evaluation-period-c">
+<a href="#section-3.2.4" class="section-number selfRef">3.2.4. </a><a href="#name-maximum-evaluation-period-c" class="section-name selfRef">Maximum Evaluation Period (c.epmax)</a>
           </h4>
 <p id="section-3.2.4-1">When present, the maximum evaluation period indicates the maximum time, in seconds, the server MAY wait between two consecutive measurements of the conditions of a resource. When the maximum evaluation period expires after the previous measurement, the server MUST immediately perform a new measurement. In the absence of this parameter, the maximum evaluation period is not defined and thus not used by the server. The maximum evaluation period MUST be greater than zero and MUST be greater than the minimum evaluation period parameter (if present) otherwise the receiver MUST return a CoAP error code 4.00 "Bad Request" (or equivalent).<a href="#section-3.2.4-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="con">
 <section id="section-3.2.5">
-          <h4 id="name-confirmable-notification-co">
-<a href="#section-3.2.5" class="section-number selfRef">3.2.5. </a><a href="#name-confirmable-notification-co" class="section-name selfRef">Confirmable Notification (con)</a>
+          <h4 id="name-confirmable-notification-cc">
+<a href="#section-3.2.5" class="section-number selfRef">3.2.5. </a><a href="#name-confirmable-notification-cc" class="section-name selfRef">Confirmable Notification (c.con)</a>
           </h4>
-<p id="section-3.2.5-1">When present with a value of 1 (True) in a query, the con attribute indicates a notification MUST be confirmable, i.e., the server MUST send the notification in a confirmable CoAP message, to request an acknowledgement from the client. When present with a value of 0 (False) in a query, the con attribute indicates a notification can be confirmable or non-confirmable, i.e., it can be sent in a confirmable or a non-confirmable CoAP message.<a href="#section-3.2.5-1" class="pilcrow">¶</a></p>
+<p id="section-3.2.5-1">When present with a value of 1 (True) in a query, the "c.con" attribute indicates a notification MUST be confirmable, i.e., the server MUST send the notification in a confirmable CoAP message, to request an acknowledgement from the client. When present with a value of 0 (False) in a query, the "c.con" attribute indicates a notification can be confirmable or non-confirmable, i.e., it can be sent in a confirmable or a non-confirmable CoAP message.<a href="#section-3.2.5-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1513,10 +1513,10 @@ bool notifiable( Resource * r ) {
       <h2 id="name-implementation-consideratio">
 <a href="#section-4" class="section-number selfRef">4. </a><a href="#name-implementation-consideratio" class="section-name selfRef">Implementation Considerations</a>
       </h2>
-<p id="section-4-1">When pmax and pmin are equal, the expected behaviour is that notifications will be sent every (pmin == pmax) seconds. However, these notifications can only be fulfilled by the server on a best effort basis. Because pmin and pmax are designed as acceptable tolerance bounds for sending state updates, a query from an interested client containing equal pmin and pmax values must not be seen as a hard real-time scheduling contract between the client and the server.<a href="#section-4-1" class="pilcrow">¶</a></p>
-<p id="section-4-2">The use of the notification band minimum and maximum allow for a synchronization whenever a change in the resource value occurs. Theoretically this could occur in-line with the server internal sample period or the configuration of epmin and epmax values for determining the resource value. Implementors SHOULD consider the resolution needed before updating the resource, e.g. updating the resource when a temperature sensor value changes by 0.001 degree versus 1 degree.<a href="#section-4-2" class="pilcrow">¶</a></p>
-<p id="section-4-3">When a server has multiple observations with different measurement cadences as defined by the epmin and epmax values, the server MAY evaluate all observations when performing the measurement of any one observation.<a href="#section-4-3" class="pilcrow">¶</a></p>
-<p id="section-4-4">This specification defines conditional attributes that can be used with CoRE Observe relationships between CoAP clients and CoAP servers. However, it is recognised that the presence of 1 or more proxies between a client and a server can interfere with clients receiving resource updates, if a proxy does not supply resource representations when the value remains unchanged (eg if pmax is set, and the server sends multiple updates when the resource state contains the same value). A server SHOULD use the Max-Age option to mitigate this by setting Max-Age to be less than or equal to pmax.<a href="#section-4-4" class="pilcrow">¶</a></p>
+<p id="section-4-1">When "c.pmax" and "c.pmin" are equal, the expected behaviour is that notifications will be sent every (c.pmin == c.pmax) seconds. However, these notifications can only be fulfilled by the server on a best effort basis. Because "c.pmin" and "c.pmax" are designed as acceptable tolerance bounds for sending state updates, a query from an interested client containing equal "c.pmin" and "c.pmax" values must not be seen as a hard real-time scheduling contract between the client and the server.<a href="#section-4-1" class="pilcrow">¶</a></p>
+<p id="section-4-2">The use of the notification band minimum and maximum allow for a synchronization whenever a change in the resource value occurs. Theoretically this could occur in-line with the server internal sample period or the configuration of "c.epmin" and "c.epmax" values for determining the resource value. Implementors SHOULD consider the resolution needed before updating the resource, e.g. updating the resource when a temperature sensor value changes by 0.001 degree versus 1 degree.<a href="#section-4-2" class="pilcrow">¶</a></p>
+<p id="section-4-3">When a server has multiple observations with different measurement cadences as defined by the "c.epmin" and "c.epmax" values, the server MAY evaluate all observations when performing the measurement of any one observation.<a href="#section-4-3" class="pilcrow">¶</a></p>
+<p id="section-4-4">This specification defines conditional attributes that can be used with CoRE Observe relationships between CoAP clients and CoAP servers. However, it is recognised that the presence of 1 or more proxies between a client and a server can interfere with clients receiving resource updates, if a proxy does not supply resource representations when the value remains unchanged (eg if "c.pmax" is set, and the server sends multiple updates when the resource state contains the same value). A server SHOULD use the Max-Age option to mitigate this by setting Max-Age to be less than or equal to "c.pmax".<a href="#section-4-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="Security">
@@ -1546,61 +1546,61 @@ bool notifiable( Resource * r ) {
         <tbody>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">Minimum Period (s)</td>
-            <td class="text-left" rowspan="1" colspan="1">pmin</td>
+            <td class="text-left" rowspan="1" colspan="1">c.pmin</td>
             <td class="text-left" rowspan="1" colspan="1">xs:decimal (&gt;0)</td>
             <td class="text-left" rowspan="1" colspan="1">This memo</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">Maximum Period (s)</td>
-            <td class="text-left" rowspan="1" colspan="1">pmax</td>
+            <td class="text-left" rowspan="1" colspan="1">c.pmax</td>
             <td class="text-left" rowspan="1" colspan="1">xs:decimal (&gt;0)</td>
             <td class="text-left" rowspan="1" colspan="1">This memo</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">Minimum Evaluation Period (s)</td>
-            <td class="text-left" rowspan="1" colspan="1">epmin</td>
+            <td class="text-left" rowspan="1" colspan="1">c.epmin</td>
             <td class="text-left" rowspan="1" colspan="1">xs:decimal (&gt;0)</td>
             <td class="text-left" rowspan="1" colspan="1">This memo</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">Maximum Evaluation Period (s)</td>
-            <td class="text-left" rowspan="1" colspan="1">epmax</td>
+            <td class="text-left" rowspan="1" colspan="1">c.epmax</td>
             <td class="text-left" rowspan="1" colspan="1">xs:decimal (&gt;0)</td>
             <td class="text-left" rowspan="1" colspan="1">This memo</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">Confirmable Notification</td>
-            <td class="text-left" rowspan="1" colspan="1">con</td>
+            <td class="text-left" rowspan="1" colspan="1">c.con</td>
             <td class="text-left" rowspan="1" colspan="1">xs:boolean</td>
             <td class="text-left" rowspan="1" colspan="1">This memo</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">Greater Than</td>
-            <td class="text-left" rowspan="1" colspan="1">gt</td>
+            <td class="text-left" rowspan="1" colspan="1">c.gt</td>
             <td class="text-left" rowspan="1" colspan="1">xs:decimal</td>
             <td class="text-left" rowspan="1" colspan="1">This memo</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">Less Than</td>
-            <td class="text-left" rowspan="1" colspan="1">lt</td>
+            <td class="text-left" rowspan="1" colspan="1">c.lt</td>
             <td class="text-left" rowspan="1" colspan="1">xs:decimal</td>
             <td class="text-left" rowspan="1" colspan="1">This memo</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">Change Step</td>
-            <td class="text-left" rowspan="1" colspan="1">st</td>
+            <td class="text-left" rowspan="1" colspan="1">c.st</td>
             <td class="text-left" rowspan="1" colspan="1">xs:decimal (&gt;0)</td>
             <td class="text-left" rowspan="1" colspan="1">This memo</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">Notification Band</td>
-            <td class="text-left" rowspan="1" colspan="1">band</td>
+            <td class="text-left" rowspan="1" colspan="1">c.band</td>
             <td class="text-left" rowspan="1" colspan="1">(none)</td>
             <td class="text-left" rowspan="1" colspan="1">This memo</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">Edge</td>
-            <td class="text-left" rowspan="1" colspan="1">edge</td>
+            <td class="text-left" rowspan="1" colspan="1">c.edge</td>
             <td class="text-left" rowspan="1" colspan="1">xs:boolean</td>
             <td class="text-left" rowspan="1" colspan="1">This memo</td>
           </tr>
@@ -1655,27 +1655,32 @@ email: jintao.zhu@huawei.com
       <h2 id="name-changelog">
 <a href="#section-9" class="section-number selfRef">9. </a><a href="#name-changelog" class="section-name selfRef">Changelog</a>
       </h2>
-<p id="section-9-1">draft-ietf-core-conditional-attributes-02<a href="#section-9-1" class="pilcrow">¶</a></p>
+<p id="section-9-1">draft-ietf-core-conditional-attributes-03<a href="#section-9-1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-9-2.1">Clarifications on usage and value of the band parameter<a href="#section-9-2.1" class="pilcrow">¶</a>
-</li>
-        <li class="normal" id="section-9-2.2">Implementation considerations for proxies added<a href="#section-9-2.2" class="pilcrow">¶</a>
-</li>
-        <li class="normal" id="section-9-2.3">Security considerations added<a href="#section-9-2.3" class="pilcrow">¶</a>
-</li>
-        <li class="normal" id="section-9-2.4">IANA considerations added<a href="#section-9-2.4" class="pilcrow">¶</a>
+<li class="normal" id="section-9-2.1">Attribute names updated to create uniqueness for use as conditional observe attributes.<a href="#section-9-2.1" class="pilcrow">¶</a>
 </li>
       </ul>
-<p id="section-9-3">draft-ietf-core-conditional-attributes-01<a href="#section-9-3" class="pilcrow">¶</a></p>
+<p id="section-9-3">draft-ietf-core-conditional-attributes-02<a href="#section-9-3" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-9-4.1">Clarifications on True and False values for Edge and Con Attributes<a href="#section-9-4.1" class="pilcrow">¶</a>
+<li class="normal" id="section-9-4.1">Clarifications on usage and value of the band parameter<a href="#section-9-4.1" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="section-9-4.2">Alan Soloway added as author<a href="#section-9-4.2" class="pilcrow">¶</a>
+        <li class="normal" id="section-9-4.2">Implementation considerations for proxies added<a href="#section-9-4.2" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-9-4.3">Security considerations added<a href="#section-9-4.3" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-9-4.4">IANA considerations added<a href="#section-9-4.4" class="pilcrow">¶</a>
 </li>
       </ul>
-<p id="section-9-5">draft-ietf-core-conditional-attributes-00<a href="#section-9-5" class="pilcrow">¶</a></p>
+<p id="section-9-5">draft-ietf-core-conditional-attributes-01<a href="#section-9-5" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-9-6.1">Conditional Atttributes section from draft-ietf-core-dynlink-13 separated into own WG draft<a href="#section-9-6.1" class="pilcrow">¶</a>
+<li class="normal" id="section-9-6.1">Clarifications on True and False values for Edge and Con Attributes<a href="#section-9-6.1" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-9-6.2">Alan Soloway added as author<a href="#section-9-6.2" class="pilcrow">¶</a>
+</li>
+      </ul>
+<p id="section-9-7">draft-ietf-core-conditional-attributes-00<a href="#section-9-7" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-9-8.1">Conditional Atttributes section from draft-ietf-core-dynlink-13 separated into own WG draft<a href="#section-9-8.1" class="pilcrow">¶</a>
 </li>
       </ul>
 </section>
@@ -1722,10 +1727,10 @@ email: jintao.zhu@huawei.com
       </h2>
 <p id="appendix-A-1">This appendix provides some examples of the use of binding attribute / observe attributes.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
 <p id="appendix-A-2">Note: For brevity the only the method or response code is shown in the header field.<a href="#appendix-A-2" class="pilcrow">¶</a></p>
-<div id="minimum-period-pmin-example">
+<div id="minimum-period-cpmin-example">
 <section id="appendix-A.1">
-        <h3 id="name-minimum-period-pmin-example">
-<a href="#appendix-A.1" class="section-number selfRef">A.1. </a><a href="#name-minimum-period-pmin-example" class="section-name selfRef">Minimum Period (pmin) example</a>
+        <h3 id="name-minimum-period-cpmin-exampl">
+<a href="#appendix-A.1" class="section-number selfRef">A.1. </a><a href="#name-minimum-period-cpmin-exampl" class="section-name selfRef">Minimum Period (c.pmin) example</a>
         </h3>
 <span id="name-client-registers-and-receiv"></span><div id="figbindexp1">
 <figure id="figure-2">
@@ -1739,7 +1744,7 @@ email: jintao.zhu@huawei.com
     3                 +-----&gt;|                  Header: GET
     4                 | GET  |                   Token: 0x4a
     5                 |      |                Uri-Path: temperature
-    6                 |      |               Uri-Query: pmin="10"
+    6                 |      |               Uri-Query: c.pmin="10"
     7                 |      |                 Observe: 0 (register)
     8                 |      |
     9   ____________  |&lt;-----+                  Header: 2.05
@@ -1762,15 +1767,15 @@ email: jintao.zhu@huawei.com
 </pre>
 </div>
 <figcaption><a href="#figure-2" class="selfRef">Figure 2</a>:
-<a href="#name-client-registers-and-receiv" class="selfRef">Client registers and receives one notification of the current state and one of a new state state when pmin time expires.</a>
+<a href="#name-client-registers-and-receiv" class="selfRef">Client registers and receives one notification of the current state and one of a new state state when c.pmin time expires.</a>
           </figcaption></figure>
 </div>
 </section>
 </div>
-<div id="maximum-period-pmax-example">
+<div id="maximum-period-cpmax-example">
 <section id="appendix-A.2">
-        <h3 id="name-maximum-period-pmax-example">
-<a href="#appendix-A.2" class="section-number selfRef">A.2. </a><a href="#name-maximum-period-pmax-example" class="section-name selfRef">Maximum Period (pmax) example</a>
+        <h3 id="name-maximum-period-cpmax-exampl">
+<a href="#appendix-A.2" class="section-number selfRef">A.2. </a><a href="#name-maximum-period-cpmax-exampl" class="section-name selfRef">Maximum Period (c.pmax) example</a>
         </h3>
 <span id="name-client-registers-and-receive"></span><div id="figbindexp2">
 <figure id="figure-3">
@@ -1784,7 +1789,7 @@ email: jintao.zhu@huawei.com
     3                 +-----&gt;|                  Header: GET
     4                 | GET  |                   Token: 0x4a
     5                 |      |                Uri-Path: temperature
-    6                 |      |               Uri-Query: pmax="20"
+    6                 |      |               Uri-Query: c.pmax="20"
     7                 |      |                 Observe: 0 (register)
     8                 |      |
     9   ____________  |&lt;-----+                  Header: 2.05
@@ -1824,15 +1829,15 @@ email: jintao.zhu@huawei.com
 </pre>
 </div>
 <figcaption><a href="#figure-3" class="selfRef">Figure 3</a>:
-<a href="#name-client-registers-and-receive" class="selfRef">Client registers and receives one notification of the current state, one of a new state and one of an unchanged state when pmax time expires.</a>
+<a href="#name-client-registers-and-receive" class="selfRef">Client registers and receives one notification of the current state, one of a new state and one of an unchanged state when "c.pmax</a>
           </figcaption></figure>
 </div>
 </section>
 </div>
-<div id="greater-than-gt-example">
+<div id="greater-than-cgt-example">
 <section id="appendix-A.3">
-        <h3 id="name-greater-than-gt-example">
-<a href="#appendix-A.3" class="section-number selfRef">A.3. </a><a href="#name-greater-than-gt-example" class="section-name selfRef">Greater Than (gt) example</a>
+        <h3 id="name-greater-than-cgt-example">
+<a href="#appendix-A.3" class="section-number selfRef">A.3. </a><a href="#name-greater-than-cgt-example" class="section-name selfRef">Greater Than (c.gt) example</a>
         </h3>
 <span id="name-client-registers-and-receives"></span><div id="figbindexp3">
 <figure id="figure-4">
@@ -1846,7 +1851,7 @@ email: jintao.zhu@huawei.com
  3                 +-----&gt;|                  Header: GET
  4                 | GET  |                   Token: 0x4a
  5                 |      |                Uri-Path: temperature
- 6                 |      |               Uri-Query: gt=25
+ 6                 |      |               Uri-Query: c.gt=25
  7                 |      |                 Observe: 0 (register)
  8                 |      |
  9   ____________  |&lt;-----+                  Header: 2.05
@@ -1870,10 +1875,10 @@ email: jintao.zhu@huawei.com
 </div>
 </section>
 </div>
-<div id="greater-than-gt-and-period-max-pmax-example">
+<div id="greater-than-cgt-and-period-max-cpmax-example">
 <section id="appendix-A.4">
-        <h3 id="name-greater-than-gt-and-period-">
-<a href="#appendix-A.4" class="section-number selfRef">A.4. </a><a href="#name-greater-than-gt-and-period-" class="section-name selfRef">Greater Than (gt) and Period Max (pmax) example</a>
+        <h3 id="name-greater-than-cgt-and-period">
+<a href="#appendix-A.4" class="section-number selfRef">A.4. </a><a href="#name-greater-than-cgt-and-period" class="section-name selfRef">Greater Than (c.gt) and Period Max (c.pmax) example</a>
         </h3>
 <span id="name-client-registers-and-receives-"></span><div id="figbindexp4">
 <figure id="figure-5">
@@ -1887,7 +1892,7 @@ email: jintao.zhu@huawei.com
  3                 +-----&gt;|                  Header: GET
  4                 | GET  |                   Token: 0x4a
  5                 |      |                Uri-Path: temperature
- 6                 |      |         Uri-Query: pmax=20;gt=25
+ 6                 |      |         Uri-Query: c.pmax=20;c.gt=25
  7                 |      |                 Observe: 0 (register)
  8                 |      |
  9   ____________  |&lt;-----+                  Header: 2.05
@@ -1927,7 +1932,7 @@ email: jintao.zhu@huawei.com
 </pre>
 </div>
 <figcaption><a href="#figure-5" class="selfRef">Figure 5</a>:
-<a href="#name-client-registers-and-receives-" class="selfRef">Client registers and receives one notification of the current state, one when pmax time expires and one of a new state when it passes through the greater than threshold of 25.</a>
+<a href="#name-client-registers-and-receives-" class="selfRef">Client registers and receives one notification of the current state, one when "c.pmax</a>
           </figcaption></figure>
 </div>
 </section>
