@@ -2,7 +2,7 @@
 title: "Conditional Attributes for Constrained RESTful Environments"
 abbrev: Conditional Attributes for CoRE
 docname: draft-ietf-core-conditional-attributes-latest
-date: 2022-05-09
+date: 2022-05-10
 category: info
 
 ipr: trust200902
@@ -189,20 +189,22 @@ Conditional Notification Attributes and Conditional Control Attributes may be pr
 ~~~~
 bool notifiable( Resource * r ) {
 
-#define BAND r->band
-#define SCALAR_TYPE ( num_type == r->type )
-#define STRING_TYPE ( str_type == r->type )
-#define BOOLEAN_TYPE ( bool_type == r->type )
-#define PMIN_EX ( r->last_sample_time - r->last_rep_time >= r->pmin )
-#define PMAX_EX ( r->last_sample_time - r->last_rep_time > r->pmax )
-#define LT_EX ( r->v < r->lt ^ r->last_rep_v < r->lt )
-#define GT_EX ( r->v > r->gt ^ r->last_rep_v > r->gt )
-#define ST_EX ( abs( r->v - r->last_rep_v ) >= r->st )
-#define IN_BAND ( ( r->gt <= r->v && r->v <= r->lt ) || \
-                  ( r->lt <= r->gt && r->gt <= r->v ) || \
-                  ( r->v <= r->lt && r->lt <= r->gt ) )
-#define VB_CHANGE ( r->vb != r->last_rep_vb )
-#define VS_CHANGE ( r->vs != r->last_rep_vs )
+  #define EDGE EXISTS(r->edge) 
+  #define BAND EXISTS(r->band) 
+  #define SCALAR_TYPE ( num_type == r->type )
+  #define STRING_TYPE ( str_type == r->type )
+  #define BOOLEAN_TYPE ( bool_type == r->type )
+  #define PMIN_EX ( r->last_sample_time - r->last_rep_time >= r->pmin )
+  #define PMAX_EX ( r->last_sample_time - r->last_rep_time > r->pmax )
+  #define LT_EX ( r->v < r->lt ^ r->last_rep_v < r->lt )
+  #define GT_EX ( r->v > r->gt ^ r->last_rep_v > r->gt )
+  #define ST_EX ( abs( r->v - r->last_rep_v ) >= r->st )
+  #define IN_BAND ( ( r->gt <= r->v && r->v <= r->lt ) || \
+                    ( r->lt <= r->gt && r->gt <= r->v ) || \
+                    ( r->v <= r->lt && r->lt <= r->gt ) )
+  #define VB_CHANGE ( r->vb != r->last_rep_vb )
+  #define VB_EDGE ( r->vb && r->edge || !r->vb && !r->edge )
+  #define VS_CHANGE ( r->vs != r->last_rep_vs )
 
   return (
     PMIN_EX &&
@@ -212,11 +214,14 @@ bool notifiable( Resource * r ) {
     : STRING_TYPE ?
       ( VS_CHANGE || PMAX_EX )
     : BOOLEAN_TYPE ?
-      ( VB_CHANGE || PMAX_EX )
+      ( ( !EDGE && VB_CHANGE ) || 
+        ( EDGE && VB_CHANGE && VB_EDGE ) || 
+        PMAX_EX )
     : false )
   );
 }
 ~~~~
+
 {: #figattrint title="Code logic for conditional notification attribute interactions"}
 
 
@@ -289,6 +294,10 @@ Contributors
 
 Changelog
 =========
+draft-ietf-core-conditional-attributes-04
+
+* Reference code updated to include behaviour for edge attribute.
+
 draft-ietf-core-conditional-attributes-03
 
 * Attribute names updated to create uniqueness for use as conditional observe attributes.
