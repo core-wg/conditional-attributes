@@ -2,7 +2,7 @@
 title: "Conditional Attributes for Constrained RESTful Environments"
 abbrev: Conditional Attributes for CoRE
 docname: draft-ietf-core-conditional-attributes-latest
-date: 2022-05-10
+date: 2022-10-17
 category: info
 
 ipr: trust200902
@@ -60,9 +60,9 @@ The git repository for the draft is found at https://github.com/core-wg/conditio
 Introduction        {#introduction}
 ============
 
-IETF Standards for machine to machine communication in constrained environments describe a REST protocol {{-coap}} and a set of related information standards that may be used to represent machine data and machine metadata in REST interfaces. 
+IETF Standards for machine-to-machine communication in constrained environments describe the Constrained Application Protocol (CoAP) {{-coap}}, a RESTful application protocol, as well as a set of related information standards that may be used to represent machine data and machine metadata in REST interfaces. 
 
-This specification defines Conditional Notification and Control Attributes for use with CoRE Observe {{RFC7641}}.
+This specification defines Conditional Notification and Control Attributes for use with CoAP Observe {{RFC7641}}.
 
 Terminology     {#terminology}
 ===========
