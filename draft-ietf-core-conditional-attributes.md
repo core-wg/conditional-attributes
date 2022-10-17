@@ -69,7 +69,7 @@ Terminology     {#terminology}
 
 {::boilerplate bcp14}
 
-This specification requires readers to be familiar with all the terms and concepts that are discussed in {{RFC7641}}.  This specification makes use of the following additional terminology:
+This specification requires readers to be familiar with all the terms and concepts that are discussed in {{-coap}} and {{RFC7641}}.  This specification makes use of the following additional terminology:
 
 Notification Band:  
 : A resource value range that  may be bounded by a minimum and maximum value or may be unbounded having either a minimum or maximum value.
