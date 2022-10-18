@@ -241,21 +241,22 @@ The security considerations in Section 11 of {{RFC7252}} apply. Additionally, th
 IANA Considerations
 ===================
 
-This memo requests a new Conditional Attributes registry to ensure attributes map uniquely to parameter names.
+This specification requests a new Conditional Attributes registry to ensure attributes map uniquely to parameter names.
+
+Note to IANA: Please replace "RFC XXXX" with the assigned RFC number in the table below.
 
 | Attribute                    | Parameter  | Value           | Reference |
 | -------------- | --- | --- | --- |
-| Minimum Period (s)           | c.pmin       | xs:decimal (>0) | This memo |
-| Maximum Period (s)           | c.pmax       | xs:decimal (>0) | This memo |
-| Minimum Evaluation Period (s)| c.epmin      | xs:decimal (>0) | This memo |
-| Maximum Evaluation Period (s)| c.epmax      | xs:decimal (>0) | This memo |
-| Confirmable Notification     | c.con        | xs:boolean      | This memo |
-| Greater Than                 | c.gt         | xs:decimal      | This memo |
-| Less Than                    | c.lt         | xs:decimal      | This memo |
-| Change Step                  | c.st         | xs:decimal (>0) | This memo |
-| Notification Band            | c.band       | (none)          | This memo |
-| Edge                         | c.edge       | xs:boolean      | This memo |
-
+| Minimum Period (s)           | c.pmin       | xs:decimal (>0) | RFC XXXX |
+| Maximum Period (s)           | c.pmax       | xs:decimal (>0) | RFC XXXX |
+| Minimum Evaluation Period (s)| c.epmin      | xs:decimal (>0) | RFC XXXX |
+| Maximum Evaluation Period (s)| c.epmax      | xs:decimal (>0) | RFC XXXX |
+| Confirmable Notification     | c.con        | xs:boolean      | RFC XXXX |
+| Greater Than                 | c.gt         | xs:decimal      | RFC XXXX |
+| Less Than                    | c.lt         | xs:decimal      | RFC XXXX |
+| Change Step                  | c.st         | xs:decimal (>0) | RFC XXXX |
+| Notification Band            | c.band       | (none)          | RFC XXXX |
+| Edge                         | c.edge       | xs:boolean      | RFC XXXX |
 
 
 Acknowledgements
