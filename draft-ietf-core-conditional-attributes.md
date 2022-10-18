@@ -166,7 +166,7 @@ Note: Due to finite quantization effects, the time between notifications may be 
 
 ###Maximum Period (c.pmax) {#pmax}
 
-When present, the maximum period indicates the maximum time, in seconds, between two consecutive notifications (whether or not the resource state has changed). In the absence of this parameter, the maximum period is up to the server. The maximum period MUST be greater than zero and MUST be greater than, or equal to, the minimum period parameter (if present) otherwise the receiver MUST return a CoAP error code 4.00 "Bad Request" (or equivalent).
+When present, Maximum Period indicates the maximum time, in seconds, between two consecutive notifications (whether or not the resource state has changed). In the absence of this parameter, the maximum period is up to the server. Maximum Period MUST be greater than zero and MUST be greater than or equal to Minimum Period (if present), otherwise the receiver MUST return a CoAP error code 4.00 "Bad Request" (or equivalent).
 
 ###Minimum Evaluation Period (c.epmin) {#epmin}
 
