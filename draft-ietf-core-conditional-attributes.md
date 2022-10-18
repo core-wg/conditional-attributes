@@ -142,7 +142,7 @@ The "c.edge" attribute can only be supported on resources with a boolean value.
 
 ## Conditional Control Attributes
 
-Conditional Control Attributes define the time intervals between consecutive notifications as well as the cadence of the measurement of the conditions that trigger a notification. Conditional Control Attributes can be used to configure the internal server-driven sampling process for performing measurements of the conditions of a resource. One or more Conditional Control Attributes MAY be included in an Observe request.
+Conditional Control Attributes define the time intervals between consecutive notifications as well as the cadence of the evaluation of the conditions that trigger a notification. Conditional Control Attributes can be used to configure the internal server-driven sampling process for performing evaluations of the conditions of a resource. One or more Conditional Control Attributes MAY be included in an Observe request.
 
 Conditional Control Attributes are defined below:
 
