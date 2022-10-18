@@ -85,7 +85,7 @@ Note: In this draft, we assume that there are finite quantization effects in the
 
 Conditional Notification Attributes define the conditions that trigger a notification. Conditional Notification Attributes SHOULD be evaluated on all potential notifications from a resource, whether resulting from an internal server-driven sampling process or from external update requests to the server. 
 
-The set of Conditional Notification Attributes defined here allow a client to control how often a client is interested in receiving notifications and how much a value should change for the new representation state to be interesting. One or more Conditional Notification Attributes MAY be included in an Observe request.
+The set of Conditional Notification Attributes defined here allow a client to control how often a notification is received and how much a representation state should change in order to trigger a notification. One or more Conditional Notification Attributes MAY be included in an Observe request.
 
 Conditional Notification Attributes are defined below:
 
