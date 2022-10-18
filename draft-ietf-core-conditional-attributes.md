@@ -158,7 +158,7 @@ Conditional Control Attributes are defined below:
 
 ###Minimum Period (c.pmin) {#pmin}
 
-When present, the minimum period indicates the minimum time, in seconds, between two consecutive notifications (whether or not the resource state has changed). In the absence of this parameter, the minimum period is up to the server. The minimum period MUST be greater than zero otherwise the receiver MUST return a CoAP error code 4.00 "Bad Request" (or equivalent).
+When present, Minimum Period indicates the minimum time, in seconds, between two consecutive notifications (whether or not the resource state has changed). In the absence of this parameter, the minimum period is up to the server. Minimum Period MUST be greater than zero otherwise the receiver MUST return a CoAP error code 4.00 "Bad Request" (or equivalent).
 
 A server MAY update the resource state with the last sampled value that occured during the "c.pmin" interval, after the "c.pmin" interval expires. 
 
