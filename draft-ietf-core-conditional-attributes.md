@@ -408,7 +408,7 @@ Maximum Period (c.pmax) example
    41                 |      |
    42                 |      |
 ~~~~
-{: #figbindexp2 title="Client registers and receives one notification of the current state, one of a new state and one of an unchanged state when "c.pmax" time expires."}
+{: #figbindexp2 title="Client registers and receives one notification of the current state, one of a new state and one of an unchanged state when c.pmax time expires."}
 
 Greater Than (c.gt) example
 --------------------------
