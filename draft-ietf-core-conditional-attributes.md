@@ -178,7 +178,7 @@ When present, Maximum Evaluation Period indicates the maximum time, in seconds, 
 
 ###Confirmable Notification (c.con) {#con}
 
-When present with a value of 1 (True) in a query, the "c.con" attribute indicates a notification MUST be confirmable, i.e., the server MUST send the notification in a confirmable CoAP message, to request an acknowledgement from the client. When present with a value of 0 (False) in a query, the "c.con" attribute indicates a notification can be confirmable or non-confirmable, i.e., it can be sent in a confirmable or a non-confirmable CoAP message.
+When present with a value of 1 (True), Confirmable Notification indicates a notification MUST be confirmable, i.e., the server MUST send the notification in a confirmable CoAP message, to request an acknowledgement from the client. When present with a value of 0 (False), Confirmable Notification indicates a notification can be confirmable or non-confirmable, i.e., it can be sent in a confirmable or a non-confirmable CoAP message.
 
 ## Server processing of Conditional Attributes
 
