@@ -136,7 +136,7 @@ The Notification Band parameter can only be supported on resources with a scalar
 
 ###Edge (c.edge) {#edge}
 
-When present, the "c.edge" attribute indicates interest for receiving notifications of either the falling edge or the rising edge transition of a boolean resource state. When the value of the "c.edge" attribute is 0 (False), the server notifies the client each time a resource state changes from True to False. When the value of the "c.edge" attribute is 1 (True), the server notifies the client each time a resource state changes from False to True. 
+When present, the Edge attribute indicates interest for receiving notifications of either the falling edge or the rising edge transition of a boolean resource state. When the value of the "c.edge" attribute is 0 (False), the server notifies the client each time a resource state changes from True to False. When the value of the "c.edge" attribute is 1 (True), the server notifies the client each time a resource state changes from False to True. 
 
 The "c.edge" attribute can only be supported on resources with a boolean value.
 
