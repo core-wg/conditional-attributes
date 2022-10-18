@@ -319,7 +319,7 @@ draft-ietf-core-conditional-attributes-00
 Examples
 ========
 
-This appendix provides some examples of the use of binding attribute / observe attributes.
+This appendix provides some examples of the use of Conditional Attributes.
 
 Note: For brevity the only the method or response code is shown in the header field.
 
