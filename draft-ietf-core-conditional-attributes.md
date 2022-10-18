@@ -491,4 +491,4 @@ Greater Than (c.gt) and Period Max (c.pmax) example
 41                 |      |                 
 42                 |      |
 ~~~~
-{: #figbindexp4 title="Client registers and receives one notification of the current state, one when "c.pmax" time expires and one of a new state when it passes through the greater than threshold of 25."}
+{: #figbindexp4 title="Client registers and receives one notification of the current state, one when c.pmax time expires and one of a new state when it passes through the greater than threshold of 25."}
