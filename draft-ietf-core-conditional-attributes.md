@@ -105,7 +105,7 @@ When present, Greater Than indicates the upper limit value the sampled value SHO
 The Greater Than parameter can only be supported on resources with a scalar numeric value. 
 
 ###Less Than (c.lt) {#lt}
-When present, Less Than indicates the lower limit value the resource value SHOULD cross before triggering a notification. A notification is sent when the samples value crosses the specified lower limit value, relative to the last reported value, and the time for "c.pmin" has elapsed since the last notification. The sampled value is sent in the notification. If the value continues to fall no notifications are generated as a result of "c.lt". If the value rises above the lower limit value then a new notification is sent, subject to the "c.pmin" time. 
+When present, Less Than indicates the lower limit value the resource value SHOULD cross before triggering a notification. A notification is sent whenever the sampled value crosses the specified lower limit value, relative to the last reported value, and the time for "c.pmin" has elapsed since the last notification. The sampled value is sent in the notification. If the value continues to fall no notifications are generated as a result of "c.lt". If the value rises above the lower limit value then a new notification is sent, subject to the "c.pmin" time. 
 
 The Less Than parameter can only be supported on resources with a scalar numeric value. 
 
@@ -116,19 +116,17 @@ The Change Step parameter can only be supported on resources with a scalar numer
 
 Note: Due to sampling and other constraints, e.g. "c.pmin", the change in resource states received in two sequential notifications may differ by more than "c.st".
 
-###Notification band (c.band) {#band}
+###Notification Band (c.band) {#band}
 
-The notification band attribute allows a bounded or unbounded (based on a minimum or maximum) value range that may trigger multiple notifications. This enables use cases where different ranges results in differing behaviour. For example, in monitoring the temperature of machinery, whilst the temperature is in the normal operating range, only periodic updates are needed. However as the temperature moves to more abnormal ranges more frequent state updates may be sent to clients.
+The Notification Band attribute allows a bounded or unbounded (based on a minimum or maximum) value range that may trigger multiple notifications. This enables use cases where different ranges results in differing behaviour. For example, in monitoring the temperature of machinery, whilst the temperature is in the normal operating range, only periodic updates are needed. However as the temperature moves to more abnormal ranges more frequent state updates may be sent to clients.
 
-Without a notification band, a transition across a less than (c.lt), or greater than (c.gt) limit only generates one notification.  This means that it is not possible to describe a case where multiple notifications are sent so long as the limit is exceeded.
+Without a notification band, a transition across a Less Than (c.lt), or Greater Than (c.gt) limit only generates one notification.  This means that it is not possible to describe a case where multiple notifications are sent so long as the limit is exceeded.
 
 The "c.band" attribute works as a modifier to the behaviour of "c.gt" and "c.lt". Its use is determined only by its presence, and not its value. Therefore, if "c.band" is present in a query, "c.gt", "c.lt" or both, MUST be included.
 
-When "c.band" is present with the "c.lt" attribute, it defines the lower bound for the notification band (notification band minimum). Notifications occur when the resource value is equal to or above the notification band minimum. If "c.lt" is not present there is no minimum value for the band.
+When "c.band" is present with "c.lt" but without "c.gt", the lower bound for the notification band (notification band minimum) is defined. Notifications occur when the resource value is equal to or above the notification band minimum. No maximum values exist for the band. 
 
-When "c.band" is present with the "c.gt" attribute, it defines the upper bound for the notification band (notification band maximum). Notifications occur when the resource value is equal to or below the notification band maximum. If "c.gt" is not present there is no maximum value for the band.
-
-If "c.band" is present with both the "c.gt" and "c.lt" attributes, notification occurs when the resource value is greater than or equal to "c.gt" or when the resource value is less than or equal to "c.lt".
+When "c.band" is present with "c.gt" but without "c.lt", the upper bound for the notification band (notification band maximum) is defined. Notifications occur when the resource value is equal to or below the notification band maximum. No minimum values exist for the band.
 
 If "c.band" is specified in which the value of "c.gt" is less than that of "c.lt", in-band notification occurs. That is, notification occurs whenever the resource value is between the "c.gt" and "c.lt" values, including equal to "c.gt" or "c.lt". 
 
