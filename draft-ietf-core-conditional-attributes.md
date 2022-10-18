@@ -41,8 +41,6 @@ author:
   email: bilhanan.silverajan@tuni.fi
 
 normative:
-
-informative:
   RFC7252: coap
   RFC7641: observe
 
