@@ -2,7 +2,7 @@
 title: "Conditional Attributes for Constrained RESTful Environments"
 abbrev: Conditional Attributes for CoRE
 docname: draft-ietf-core-conditional-attributes-latest
-date: 2022-10-18
+date: 2022-10-24
 category: info
 
 ipr: trust200902
@@ -259,7 +259,7 @@ Note to IANA: Please replace "RFC XXXX" with the assigned RFC number in the tabl
 
 Acknowledgements
 ================
-Hannes Tschofenig and Mert Ocak highlighted syntactical corrections in the usage of pmax and pmin in a query. David Navarro proposed allowing for pmax to be equal to pmin. 
+Hannes Tschofenig and Mert Ocak highlighted syntactical corrections in the usage of pmax and pmin in a query. David Navarro proposed allowing for pmax to be equal to pmin. Marco Tiloca provided an extensive review.
 
 Contributors
 ============
@@ -290,6 +290,10 @@ Contributors
 
 Changelog
 =========
+draft-ietf-core-conditional-attributes-05
+
+* Multiple (mostly editorial) clarifications and updates based on review comments on mailing list from Marco Tiloca.
+
 draft-ietf-core-conditional-attributes-04
 
 * Reference code updated to include behaviour for edge attribute.
