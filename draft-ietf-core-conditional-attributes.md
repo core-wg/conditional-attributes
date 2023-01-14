@@ -2,7 +2,7 @@
 title: "Conditional Attributes for Constrained RESTful Environments"
 abbrev: Conditional Attributes for CoRE
 docname: draft-ietf-core-conditional-attributes-latest
-date: 2022-10-24
+date: 2023-01-14
 category: info
 
 ipr: trust200902
@@ -180,44 +180,8 @@ When present with a value of 1 (True), Confirmable Notification indicates a noti
 
 ## Server processing of Conditional Attributes
 
-Conditional Notification Attributes and Conditional Control Attributes may be present in the same query. However, they are not defined at multiple prioritization levels. The server sends a notification whenever any of the parameter conditions are met, upon which it updates its last notification value and time to prepare for the next notification. Only one notification occurs when there are multiple conditions being met at the same time. The reference code below illustrates the logic to determine when a notification is to be sent.
+Conditional Notification Attributes and Conditional Control Attributes may be present in the same query. However, they are not defined at multiple prioritization levels. The server sends a notification whenever any of the parameter conditions are met, upon which it updates its last notification value and time to prepare for the next notification. Only one notification occurs when there are multiple conditions being met at the same time. As a general example, the pseudocode illustrated in {{pseudocode}} shows one way to determine when a notification is to be sent.
 
-~~~~
-bool notifiable( Resource * r ) {
-
-  #define EDGE EXISTS(r->edge) 
-  #define BAND EXISTS(r->band) 
-  #define SCALAR_TYPE ( num_type == r->type )
-  #define STRING_TYPE ( str_type == r->type )
-  #define BOOLEAN_TYPE ( bool_type == r->type )
-  #define PMIN_EX ( r->last_sample_time - r->last_rep_time >= r->pmin )
-  #define PMAX_EX ( r->last_sample_time - r->last_rep_time > r->pmax )
-  #define LT_EX ( r->v < r->lt ^ r->last_rep_v < r->lt )
-  #define GT_EX ( r->v > r->gt ^ r->last_rep_v > r->gt )
-  #define ST_EX ( abs( r->v - r->last_rep_v ) >= r->st )
-  #define IN_BAND ( ( r->gt <= r->v && r->v <= r->lt ) || \
-                    ( r->lt <= r->gt && r->gt <= r->v ) || \
-                    ( r->v <= r->lt && r->lt <= r->gt ) )
-  #define VB_CHANGE ( r->vb != r->last_rep_vb )
-  #define VB_EDGE ( r->vb && r->edge || !r->vb && !r->edge )
-  #define VS_CHANGE ( r->vs != r->last_rep_vs )
-
-  return (
-    PMIN_EX &&
-    ( SCALAR_TYPE ?
-      ( ( !BAND && ( GT_EX || LT_EX || ST_EX || PMAX_EX ) ) ||
-        ( BAND && IN_BAND && ( ST_EX || PMAX_EX) ) )
-    : STRING_TYPE ?
-      ( VS_CHANGE || PMAX_EX )
-    : BOOLEAN_TYPE ?
-      ( ( !EDGE && VB_CHANGE ) || 
-        ( EDGE && VB_CHANGE && VB_EDGE ) || 
-        PMAX_EX )
-    : false )
-  );
-}
-~~~~
-{: #figattrint title="Code logic for conditional notification attribute interactions"}
 
 
 Implementation Considerations   {#Implementation}
@@ -290,6 +254,12 @@ Contributors
 
 Changelog
 =========
+draft-ietf-core-conditional-attributes-06
+
+* Removed code block from Section 3.5
+* Added an appendix containing pseudocode for server processing.
+
+
 draft-ietf-core-conditional-attributes-05
 
 * Multiple (mostly editorial) clarifications and updates based on review comments on mailing list from Marco Tiloca.
@@ -320,10 +290,92 @@ draft-ietf-core-conditional-attributes-00
 
 --- back
 
+Pseudocode: Processing Conditional Attributes {#pseudocode}
+========
+This appendix is informative. It describes the possible logic of how a server processes conditional attributes to determine when to send a notification to a client. 
+
+Note: The pseudocode is not exhaustive nor should it be treated as reference code. It depicts a subset of the conditional attributes described in this document.
+
+~~~~
+
+// struct Resource {
+//
+//  bool band;
+//  int pmin;
+//  int pmax;
+//  int epmin;
+//  int epmax;
+//  int st;
+//  int gt;
+//  int lt;
+//  
+//  time_t last_sampled_time;
+//  time_t last_rep_time;
+
+//  int curr_state;
+//  int prev_state;   
+//
+//  ...
+//
+// };
+
+
+boolean is_notifiable( Resource * r ) {
+
+    time_t curr_time = get_current_time();
+
+    #define BAND_EXISTS ( r->band )
+
+    #define LT_EXISTS ( r->lt )
+    #define GT_EXISTS ( r->gt )
+   
+    #define EPMIN_TRUE ( curr_time - r->last_sampled_time >= r->epmin )
+    #define EPMAX_TRUE ( curr_time - r->last_sampled_time > r->epmax )
+    
+    #define PMIN_TRUE ( curr_time - r->last_reported_time >= r->pmin )
+    #define PMAX_TRUE ( curr_time - r->last_reported_time > r->pmax )
+
+    #define LT_TRUE ( r->curr_state < r->lt ^ r->prev_state < r->lt )
+    #define GT_TRUE ( r->curr_state > r->gt ^ r->prev_state > r->gt )
+
+    #define ST_TRUE ( abs( r->curr_state - r->prev_state ) >= r->st )
+
+    #define INBAND_TRUE ( gt < lt && (gt <= curr_state && curr_state <= lt ))
+    #define OUTOFBAND_TRUE ( lt < gt && (gt < curr_state || curr_state < lt ))
+    
+    #define BANDMIN_TRUE ( r->lt <= r->curr_state)
+    #define BANDMAX_TRUE (r->curr_state <= r->gt)
+
+
+    if PMAX_TRUE {
+        return true;
+    }
+    
+    if PMIN_TRUE {
+        if !BAND_EXISTS {
+            if LT_TRUE || GT_TRUE || ST_TRUE {
+                return true;
+            }
+        }
+        else {
+         if ( ( BANDMIN_TRUE && !GT_EXISTS) || (BANDMAX_TRUE && !LT_EXISTS) || INBAND_TRUE || OUTOFBAND_TRUE ) {
+             return true;
+         }
+        }
+    }
+
+    return false;
+    
+}
+
+~~~~
+{: #figattrint title="Pseudocode showing the logic for processing conditional attributes"}
+
+
 Examples
 ========
 
-This appendix provides some examples of the use of Conditional Attributes.
+This appendix is informative. It provides some examples of the use of Conditional Attributes.
 
 Note: For brevity only the method or response code is shown in the header field.
 
