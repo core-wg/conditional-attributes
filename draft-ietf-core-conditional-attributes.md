@@ -2,8 +2,8 @@
 title: "Conditional Attributes for Constrained RESTful Environments"
 abbrev: Conditional Attributes for CoRE
 docname: draft-ietf-core-conditional-attributes-latest
-date: 2023-01-14
-category: info
+date: 2024-07-08
+category: std
 
 ipr: trust200902
 area: art
@@ -44,6 +44,8 @@ normative:
   RFC7252: coap
   RFC7641: observe
 
+informative: 
+  I-D.irtf-t2trg-amplification-attacks: t2trg-attacks
 
 --- abstract
 
@@ -75,9 +77,155 @@ Notification Band:
 Conditional Attributes        {#binding_attributes}
 =============
 
-This specification defines conditional attributes for use with CoRE Observe {{RFC7641}}. Conditional attributes provide fine-grained control of notification and synchronization of resource states. When observing a resource, a CoAP client conveys conditional attributes as metadata using the query component of a CoAP URI. A conditional attribute can be represented as a "name=value" query parameter or simply a "name" without a value. Multiple conditional attributes in a query component are separated with an ampersand "&". A resource marked as Observable in its link description SHOULD support these conditional attributes.
+This specification defines conditional attributes for use with CoRE Observe {{RFC7641}}. Conditional attributes provide fine-grained control of notification and synchronization of resource states. A CoAP client conveys conditional attributes as metadata using the query component of a CoAP URI. A conditional attribute can be represented as a "name=value" query parameter or simply a "name" without a value. Multiple conditional attributes in a query component are separated with an ampersand "&". A resource marked as Observable in its link description SHOULD support these conditional attributes.
  
 Note: In this draft, we assume that there are finite quantization effects in the internal or external updates to the value representing the state of a resource; specifically, that a resource state may be updated at any time with any valid value. We therefore avoid any continuous-time assumptions in the description of the conditional attributes and instead use the phrase "sampled value" to refer to a member of a sequence of values that may be internally observed from the resource state over time.
+
+## Overview
+
+CoAP clients interested in obtaining all changes in all state representations of a resource from a CoAP server, are able to do so by using CoAP Observe. If a CoAP client is instead interested in receiving only state representations fulfilling certain constraints (such as a minimum/maximum value), it can do so by indicating conditional attributes its request to a CoAP server when registering its interest in observing a resource.
+
+The usage of conditional attributes employs the notion of resource state projection, in which the client requests the server to project a new state from the current resource representation. When a server receives a request containing conditional attributes from a client, the server creates a projected resource state to the client which is maintained separately from a resource state requested without conditional attributes. 
+
+The mechanism can be explained in the following subsections in terms of registration, operation and cancellation.
+
+
+## Registration
+
+In this example, 3 CoAP endpoints are shown: Clients A and B are interested in obtaining updates to state representations describing the current CO2 level, provided by a CoAP Server.
+
+In {{fig-reg-client-a}}, Client A uses CoAP Observe to register its interest in receiving all updates to the CO2 resource state from the Server.
+
+
+~~~~
+ClientA         ClientB                   Server
+   │               │                        │
+   │               │                     ( CO2 )
+   │ GET /CO2      │                        │
+   │ Token: 0x42   │                        │
+   │ Observe: 0    │                        │
+   +───────────────┼───────────────────────>│
+   │               │                        │
+   │               │                        │
+   │               │           2.05 Content │
+   │               │           Token: 0x42  │
+   │               │           Observe: 12  │
+   │               │           "600 ppm"    │
+   │<──────────────┼────────────────────────+
+   │               │                        │
+   │               │                        │
+   │               │           2.05 Content │
+   │               │           Token: 0x42  │
+   │               │           Observe: 23  │
+   │               │           "800 ppm"    │
+   │<──────────────┼────────────────────────+
+   │               │                        │
+
+~~~~
+{: #fig-reg-client-a title="Client A registers and receives one notification of the current state and one state update."}
+
+
+Client B, on the other hand is interested in receiving only a subset of updates from the Server. In {{fig-reg-client-b}}, Client B is depicted using CoAP Observe with a conditional attribute to register its interest in receiving specific updates to the C02 resource state from the Server. The Server provides a representation of the current state and creates a new state projection in which the interest of Client B is registered.
+
+~~~~
+ClientA         ClientB                   Server
+   │               │                        │
+   │               │                     ( CO2 )
+   │               │                        │
+   │               │                        │
+   │               │ GET /CO2?c.gt=1000     │
+   │               │ Token: 0x66            │
+   │               │ Observe: 0             │
+   │               +───────────────────────>│
+   │               │                        │
+   │               │           2.05 Content │
+   │               │           Token: 0x66  │
+   │               │           Observe: 20  │      Resource State
+   │               │           "800 ppm"    │        Projection
+   │               │<───────────────────────+    ..................
+   │               │                        +--->. /CO2?c.gt=1000 .
+   │               │                        │    ..................
+   │               │                        │             .
+   │               │                        │             .
+   │               │                        │             .
+
+~~~~
+{: #fig-reg-client-b title="Client B registers with conditional attributes, and receives one notification of the current state and a state projection is created."}
+
+
+## Operation
+
+In subsequent interactions for providing state updates, the Server will continue to provide all state updates to Client A, while Client B receives state updates fulfilling the conditions specified by the conditional attribute.
+
+
+~~~~
+ClientA         ClientB                   Server
+   │               │                        │
+   │               │                     ( CO2 )
+   │               │                        │
+   │               │                        │      Resource State
+   │               │                        │        Projection
+   │               │                        │    ..................
+   │               │                        +--->. /CO2?c.gt=1000 .
+   │               │                        │    ..................
+   │               │                        │             .
+   │               │           2.05 Content │             .
+   │               │           Token: 0x42  │             .
+   │               │           Observe: 29  │             .
+   │               │           "1000 ppm"   │             .
+   │<──────────────┼────────────────────────+             .
+   │               │                        │             .
+   │               │           2.05 Content │             .
+   │               │           Token: 0x66  │             .
+   │               │           Observe: 23  │             .
+   │               │           "1100 ppm"   │             .
+   │               │<───────────────────────┤-------------+
+   │               │                        │             .
+   │               │           2.05 Content │             .
+   │               │           Token: 0x42  │             .
+   │               │           Observe: 33  │             .
+   │               │           "1100 ppm"   │             .
+   │<──────────────┼────────────────────────+             .
+   │               │                        │             .
+
+~~~~
+{: #fig-operation title="Clients A and B receiving C02 state updates from the Server, without and with conditional attributes, respectively."}
+
+
+## Cancellation
+
+A client which wishes to cancel an existing registration can do so in accordance with Section 3.6 of {{RFC7641}}. If a client wishes to explicitly register an existing notification by issuing a GET request, it MUST also additionally supply the URI containing the conditional attributes that was conveyed to the server during the registration. This is depicted in {{fig-cancellation}} for Client B.
+
+
+~~~~
+ClientA         ClientB                   Server
+   │               │                        │
+   │               │                     ( CO2 )
+   │               │                        │
+   │               │                        │      Resource State
+   │               │                        │        Projection
+   │               │                        │    ..................
+   │               │                        +--->. /CO2?c.gt=1000 .
+   │               │                        │    ..................
+   │               │                        │             .
+   │               │                        │             .
+   │               │ GET /CO2?c.gt=1000     │             .
+   │               │ Token: 0x66            │             .
+   │               │ Observe: 1             │             .
+   │               +────────────────────────┤------------>.             
+   │               │                        │             .
+   │               │                        │             .
+   │               │           2.05 Content │             .
+   │               │           Token: 0x66  │             .
+   │               │           "900 ppm"    │             .
+   │               │<───────────────────────┤-------------+
+   │               │                        │              
+   │               │                        │              
+   │               │                        │              
+
+~~~~
+{: #fig-cancellation title="Client B explicitly cancelling an existing registration."}
+
 
 ## Conditional Notification Attributes
 
@@ -108,7 +256,7 @@ When present, Less Than indicates the lower limit value the resource value SHOUL
 The Less Than parameter can only be supported on resources with a scalar numeric value. 
 
 ###Change Step (c.st) {#st}
-When present, Change step indicates how much the value representing a resource state SHOULD change before triggering a notification, compared to the previous resource state. Upon reception of a query including the "c.st" attribute, the current resource state representing the most recently sampled value is reported, and then set as the last reported value (last_rep_v). When a subsequent sampled value or update of the resource state differs from the last reported state by an amount, positive or negative, greater than or equal to st, and the time for "c.pmin" has elapsed since the last notification, a notification is sent and the last reported value is updated to the new resource state sent in the notification. The change step MUST be greater than zero otherwise the receiver MUST return a CoAP error code 4.00 "Bad Request" (or equivalent).
+When present, Change step indicates how much the value representing a resource state SHOULD change before triggering a notification, compared to the previous resource state. Upon reception of a query including the "c.st" attribute, the current resource state representing the most recently sampled value is reported, and then set as the last reported value (last_rep_v). When a subsequent sampled value or update of the resource state differs from the last reported state by an amount, positive or negative, greater than or equal to "c.st", and the time for "c.pmin" has elapsed since the last notification, a notification is sent and the last reported value is updated to the new resource state sent in the notification. The change step MUST be greater than zero otherwise the receiver MUST return a CoAP error code 4.00 "Bad Request" (or equivalent).
 
 The Change Step parameter can only be supported on resources with a scalar numeric value.
 
@@ -198,12 +346,16 @@ This specification defines conditional attributes that can be used with CoAP Obs
 Security Considerations   {#Security}
 =======================
 
-The security considerations in Section 11 of {{RFC7252}} apply. Additionally, the security considerations in Section 7 of {{RFC7641}} also apply.
+The security considerations in {{Section 11 of RFC7252}} apply. 
+
+Additionally, the security considerations in {{Section 7 of RFC7641}} also apply, particularly towards mitigating amplification attacks.
+
+As noted in {{Section 2.2 of I-D.irtf-t2trg-amplification-attacks}}, an attacker might choose to craft GET requests, in which observations are requested together with conditional attributes such as c.pmax or c.epmax with values that are below a minimum implementation-specific threshold. A server receiving such a request and is unwilling to register MAY silently ignore the registration request and process the GET request as usual.  The resulting response MUST NOT include an Observe Option, the absence of which signals to the client that it will not be added to the list of observers by the server.
 
 IANA Considerations
 ===================
 
-This specification requests a new Conditional Attributes registry to ensure attributes map uniquely to parameter names.
+This specification requests a new Conditional Attributes registry to ensure attributes map uniquely to query parameter names.
 
 Note to IANA: Please replace "RFC XXXX" with the assigned RFC number in the table below.
 
@@ -223,7 +375,7 @@ Note to IANA: Please replace "RFC XXXX" with the assigned RFC number in the tabl
 
 Acknowledgements
 ================
-Hannes Tschofenig and Mert Ocak highlighted syntactical corrections in the usage of pmax and pmin in a query. David Navarro proposed allowing for pmax to be equal to pmin. Marco Tiloca provided an extensive review.
+Hannes Tschofenig and Mert Ocak highlighted syntactical corrections in the usage of pmax and pmin in a query. David Navarro proposed allowing for pmax to be equal to pmin. Marco Tiloca and Ines Robles provided extensive reviews. Suggestions from Klaus Hartke aided greatly in clarifying how conditional attributes work with Core Observe. Security considerations were improved based on authors' observations in {{Section 2.2 of I-D.irtf-t2trg-amplification-attacks}}.
 
 Contributors
 ============
@@ -254,6 +406,13 @@ Contributors
 
 Changelog
 =========
+
+draft-ietf-core-conditional-attributes-07
+
+* Expanded how conditional attributes work with Observe in sections 3.1 to 3.4
+* Addressed early review from IoT Directorate
+* Security Considerations section expanded 
+
 draft-ietf-core-conditional-attributes-06
 
 * Removed code block from Section 3.5
@@ -340,8 +499,10 @@ boolean is_notifiable( Resource * r ) {
 
     #define ST_TRUE ( abs( r->curr_state - r->prev_state ) >= r->st )
 
-    #define INBAND_TRUE ( gt < lt && (gt <= curr_state && curr_state <= lt ))
-    #define OUTOFBAND_TRUE ( lt < gt && (gt < curr_state || curr_state < lt ))
+    #define INBAND_TRUE ( gt < lt && \\
+                         (gt <= curr_state && curr_state <= lt ))
+    #define OUTOFBAND_TRUE ( lt < gt && \\
+                         (gt < curr_state || curr_state < lt ))
     
     #define BANDMIN_TRUE ( r->lt <= r->curr_state)
     #define BANDMAX_TRUE (r->curr_state <= r->gt)
@@ -358,7 +519,10 @@ boolean is_notifiable( Resource * r ) {
             }
         }
         else {
-         if ( ( BANDMIN_TRUE && !GT_EXISTS) || (BANDMAX_TRUE && !LT_EXISTS) || INBAND_TRUE || OUTOFBAND_TRUE ) {
+         if ( (BANDMIN_TRUE && !GT_EXISTS) || \
+              (BANDMAX_TRUE && !LT_EXISTS) || \
+               INBAND_TRUE || \
+               OUTOFBAND_TRUE ) {
              return true;
          }
         }
