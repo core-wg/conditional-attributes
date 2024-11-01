@@ -2,7 +2,7 @@
 title: "Conditional Attributes for Constrained RESTful Environments"
 abbrev: Conditional Attributes for CoRE
 docname: draft-ietf-core-conditional-attributes-latest
-date: 2024-07-08
+date: 2024-10-17
 category: std
 
 ipr: trust200902
@@ -14,6 +14,14 @@ stand_alone: yes
 pi: [toc, sortrefs, symrefs]
 
 author:
+- ins: B. Silverajan
+  name: Bilhanan Silverajan
+  org: Tampere University
+  street: Kalevantie 4
+  city: Tampere
+  code: 'FI-33100'
+  country: Finland
+  email: bilhanan.silverajan@tuni.fi
 - ins: M. Koster
   name: Michael Koster
   organization: Dogtiger Labs
@@ -30,15 +38,6 @@ author:
   code: 92121
   country: USA
   email: asoloway@qti.qualcomm.com
-- role: editor
-  ins: B. Silverajan
-  name: Bilhanan Silverajan
-  org: Tampere University
-  street: Kalevantie 4
-  city: Tampere
-  code: 'FI-33100'
-  country: Finland
-  email: bilhanan.silverajan@tuni.fi
 
 normative:
   RFC7252: coap
@@ -79,13 +78,13 @@ Conditional Attributes        {#binding_attributes}
 
 This specification defines conditional attributes for use with CoRE Observe {{RFC7641}}. Conditional attributes provide fine-grained control of notification and synchronization of resource states. A CoAP client conveys conditional attributes as metadata using the query component of a CoAP URI. A conditional attribute can be represented as a "name=value" query parameter or simply a "name" without a value. Multiple conditional attributes in a query component are separated with an ampersand "&". A resource marked as Observable in its link description SHOULD support these conditional attributes.
  
-Note: In this draft, we assume that there are finite quantization effects in the internal or external updates to the value representing the state of a resource; specifically, that a resource state may be updated at any time with any valid value. We therefore avoid any continuous-time assumptions in the description of the conditional attributes and instead use the phrase "sampled value" to refer to a member of a sequence of values that may be internally observed from the resource state over time.
+This specification assumes that there are finite quantization effects in the internal or external updates to the value representing the state of a resource; specifically, that a resource state may be updated at any time with any valid value. We therefore avoid any continuous-time assumptions in the description of the conditional attributes and instead use the phrase "sampled value" to refer to a member of a sequence of values that may be internally observed from the resource state over time.
 
 ## Overview
 
-CoAP clients interested in obtaining all changes in all state representations of a resource from a CoAP server, are able to do so by using CoAP Observe. If a CoAP client is instead interested in receiving only state representations fulfilling certain constraints (such as a minimum/maximum value), it can do so by indicating conditional attributes its request to a CoAP server when registering its interest in observing a resource.
+If a CoAP client is interested in obtaining all the state representations of a resource from a CoAP server as they change, the client is able to do so by using CoAP Observe. If a CoAP client is instead interested in receiving only state representations fulfilling certain constraints (such as a minimum/maximum value), it can do so by indicating conditional attributes as query paramets in its request to a CoAP server, when registering its interest in observing a resource.
 
-The usage of conditional attributes employs the notion of resource state projection, in which the client requests the server to project a new state from the current resource representation. When a server receives a request containing conditional attributes from a client, the server creates a projected resource state to the client which is maintained separately from a resource state requested without conditional attributes. 
+The usage of conditional attributes employs the notion of resource state projection, in which the client requests the server to project a new state from the current resource representation. When a server receives a request containing conditional attributes from a client, the server maintains a projected resource state separate from a resource state requested without conditional attributes. 
 
 The mechanism can be explained in the following subsections in terms of registration, operation and cancellation.
 
@@ -108,16 +107,16 @@ ClientA         ClientB                   Server
    │               │                        │
    │               │                        │
    │               │           2.05 Content │
-   │               │           Token: 0x42  │
-   │               │           Observe: 12  │
-   │               │           "600 ppm"    │
+   │               │            Token: 0x42 │
+   │               │            Observe: 12 │
+   │               │     Payload: "600 ppm" │
    │<──────────────┼────────────────────────+
    │               │                        │
    │               │                        │
    │               │           2.05 Content │
-   │               │           Token: 0x42  │
-   │               │           Observe: 23  │
-   │               │           "800 ppm"    │
+   │               │            Token: 0x42 │
+   │               │            Observe: 23 │
+   │               │     Payload: "800 ppm" │
    │<──────────────┼────────────────────────+
    │               │                        │
 
@@ -139,9 +138,9 @@ ClientA         ClientB                   Server
    │               +───────────────────────>│
    │               │                        │
    │               │           2.05 Content │
-   │               │           Token: 0x66  │
-   │               │           Observe: 20  │      Resource State
-   │               │           "800 ppm"    │        Projection
+   │               │            Token: 0x66 │
+   │               │            Observe: 20 │      Resource State
+   │               │     Payload: "800 ppm" │        Projection
    │               │<───────────────────────+    ..................
    │               │                        +--->. /CO2?c.gt=1000 .
    │               │                        │    ..................
@@ -170,21 +169,21 @@ ClientA         ClientB                   Server
    │               │                        │    ..................
    │               │                        │             .
    │               │           2.05 Content │             .
-   │               │           Token: 0x42  │             .
-   │               │           Observe: 29  │             .
-   │               │           "1000 ppm"   │             .
+   │               │            Token: 0x42 │             .
+   │               │            Observe: 29 │             .
+   │               │    Payload: "1000 ppm" │             .
    │<──────────────┼────────────────────────+             .
    │               │                        │             .
    │               │           2.05 Content │             .
-   │               │           Token: 0x66  │             .
-   │               │           Observe: 23  │             .
-   │               │           "1100 ppm"   │             .
+   │               │            Token: 0x66 │             .
+   │               │            Observe: 23 │             .
+   │               │    Payload: "1100 ppm" │             .
    │               │<───────────────────────┤-------------+
    │               │                        │             .
    │               │           2.05 Content │             .
-   │               │           Token: 0x42  │             .
-   │               │           Observe: 33  │             .
-   │               │           "1100 ppm"   │             .
+   │               │            Token: 0x42 │             .
+   │               │            Observe: 33 │             .
+   │               │    Payload: "1100 ppm" │             .
    │<──────────────┼────────────────────────+             .
    │               │                        │             .
 
@@ -194,7 +193,7 @@ ClientA         ClientB                   Server
 
 ## Cancellation
 
-A client which wishes to cancel an existing registration can do so in accordance with Section 3.6 of {{RFC7641}}. If a client wishes to explicitly register an existing notification by issuing a GET request, it MUST also additionally supply the URI containing the conditional attributes that was conveyed to the server during the registration. This is depicted in {{fig-cancellation}} for Client B.
+A client that wishes to cancel an existing registration can do so in accordance with Section 3.6 of {{RFC7641}}. If a client wishes to explicitly cancel an existing registration by issuing a GET request, it MUST also additionally supply the original URI containing the conditional attributes that was conveyed to the server during the registration. This is depicted in {{fig-cancellation}} for Client B.
 
 
 ~~~~
@@ -216,8 +215,8 @@ ClientA         ClientB                   Server
    │               │                        │             .
    │               │                        │             .
    │               │           2.05 Content │             .
-   │               │           Token: 0x66  │             .
-   │               │           "900 ppm"    │             .
+   │               │            Token: 0x66 │             .
+   │               │     Payload: "900 ppm" │             .
    │               │<───────────────────────┤-------------+
    │               │                        │              
    │               │                        │              
@@ -256,27 +255,27 @@ When present, Less Than indicates the lower limit value the resource value SHOUL
 The Less Than parameter can only be supported on resources with a scalar numeric value. 
 
 ###Change Step (c.st) {#st}
-When present, Change step indicates how much the value representing a resource state SHOULD change before triggering a notification, compared to the previous resource state. Upon reception of a query including the "c.st" attribute, the current resource state representing the most recently sampled value is reported, and then set as the last reported value (last_rep_v). When a subsequent sampled value or update of the resource state differs from the last reported state by an amount, positive or negative, greater than or equal to "c.st", and the time for "c.pmin" has elapsed since the last notification, a notification is sent and the last reported value is updated to the new resource state sent in the notification. The change step MUST be greater than zero otherwise the receiver MUST return a CoAP error code 4.00 "Bad Request" (or equivalent).
+When present, Change step indicates how much the value representing a resource state SHOULD change before triggering a notification, compared to the previous resource state. Upon reception of a query including the "c.st" attribute, the current resource state representing the most recently sampled value is reported, and then set as the last reported value (last_rep_v). When a subsequent sampled value or update of the resource state differs from the last reported state by an amount, positive or negative, greater than or equal to "c.st", and the time for "c.pmin" has elapsed since the last notification, a notification is sent and the last reported value is updated to the new resource state sent in the notification. The change step MUST be greater than zero, otherwise the receiver MUST return a CoAP error code 4.00 "Bad Request" (or equivalent).
 
 The Change Step parameter can only be supported on resources with a scalar numeric value.
 
-Note: due to sampling and other constraints, e.g. "c.pmin", the change in resource states received in two sequential notifications may differ by more than "c.st".
+Note: due to sampling and other constraints, e.g., "c.pmin", the change in resource states received in two sequential notifications may differ by more than "c.st".
 
 ###Notification Band (c.band) {#band}
 
-The Notification Band attribute allows a bounded or unbounded (based on a minimum or maximum) value range that may trigger multiple notifications. This enables use cases where different ranges result in differing behaviour. For example, in monitoring the temperature of machinery, whilst the temperature is in the normal operating range, only periodic updates are needed. However as the temperature moves to more abnormal ranges more frequent state updates may be sent to clients.
+The Notification Band attribute allows a bounded or unbounded (based on a minimum or maximum) value range that may trigger multiple notifications. This enables use cases where different ranges result in differing behaviour. For example, in monitoring the temperature of machinery, whilst the temperature is in the normal operating range, only periodic updates are needed. However as the temperature moves to more abnormal ranges, more frequent state updates may be sent to clients.
 
 Without a notification band, a transition across a Less Than (c.lt), or Greater Than (c.gt) limit only generates one notification.  This means that it is not possible to describe a case where multiple notifications are sent so long as the limit is exceeded.
 
-The "c.band" attribute works as a modifier to the behaviour of "c.gt" and "c.lt". Its use is determined only by its presence, and not its value. Therefore, if "c.band" is present in a query, "c.gt", "c.lt" or both, MUST be included.
+The "c.band" attribute works as a modifier to the behaviour of "c.gt" and "c.lt". Its use is determined only by its presence, as this attribute takes no value. Therefore, if "c.band" is present in a query, "c.gt", "c.lt", or both, MUST be included.
 
 When "c.band" is present with "c.lt" but without "c.gt", the lower bound for the notification band (notification band minimum) is defined. Notifications occur when the resource value is equal to or above the notification band minimum. No maximum values exist for the band. 
 
 When "c.band" is present with "c.gt" but without "c.lt", the upper bound for the notification band (notification band maximum) is defined. Notifications occur when the resource value is equal to or below the notification band maximum. No minimum values exist for the band.
 
-If "c.band" is specified in which the value of "c.gt" is less than that of "c.lt", in-band notification occurs. That is, notification occurs whenever the resource value is between the "c.gt" and "c.lt" values, including equal to "c.gt" or "c.lt". 
+If "c.band" is specified and the value of "c.gt" is less than that of "c.lt", in-band notification occurs. That is, notification occurs whenever the resource value is between the "c.gt" and "c.lt" values, including equal to "c.gt" or "c.lt". 
 
-If "c.band" is specified in which the value of "c.gt" is greater than that of "c.lt", out-of-band notification occurs. That is, notification occurs when the resource value not between the "c.gt" and "c.lt" values, excluding equal to "c.gt" and "c.lt".
+If "c.band" is specified and the value of "c.gt" is greater than that of "c.lt", out-of-band notification occurs. That is, notification occurs when the resource value is not between the "c.gt" and "c.lt" values, excluding equal to "c.gt" and "c.lt".
 
 The Notification Band parameter can only be supported on resources with a scalar numeric value. 
 
@@ -304,7 +303,7 @@ Conditional Control Attributes are defined below:
 
 ###Minimum Period (c.pmin) {#pmin}
 
-When present, Minimum Period indicates the minimum time, in seconds, between two consecutive notifications (whether or not the resource state has changed). In the absence of this parameter, the minimum period is up to the server. Minimum Period MUST be greater than zero otherwise the receiver MUST return a CoAP error code 4.00 "Bad Request" (or equivalent).
+When present, Minimum Period indicates the minimum time, in seconds, between two consecutive notifications (whether or not the resource state has changed). In the absence of this parameter, the minimum period is up to the server. Minimum Period MUST be greater than zero, otherwise the receiver MUST return a CoAP error code 4.00 "Bad Request" (or equivalent).
 
 A server MAY update the resource state with the last sampled value that occurred during the "c.pmin" interval, after the "c.pmin" interval expires. 
 
@@ -324,7 +323,7 @@ When present, Maximum Evaluation Period indicates the maximum time, in seconds, 
 
 ###Confirmable Notification (c.con) {#con}
 
-When present with a value of 1 (True), Confirmable Notification indicates a notification MUST be confirmable, i.e., the server MUST send the notification in a confirmable CoAP message, to request an acknowledgement from the client. When present with a value of 0 (False), Confirmable Notification indicates a notification can be confirmable or non-confirmable, i.e., it can be sent in a confirmable or a non-confirmable CoAP message.
+When present with a value of 1 (True), Confirmable Notification indicates that a notification MUST be confirmable, i.e., the server MUST send the notification in a confirmable CoAP message, to request an acknowledgement from the client. When present with a value of 0 (False), Confirmable Notification indicates a notification can be confirmable or non-confirmable, i.e., it can be sent in a confirmable or a non-confirmable CoAP message.
 
 ## Server processing of Conditional Attributes
 
@@ -337,11 +336,11 @@ Implementation Considerations   {#Implementation}
 
 When "c.pmax" and "c.pmin" are equal, the expected behaviour is that notifications will be sent every (c.pmin == c.pmax) seconds. However, these notifications can only be fulfilled by the server on a best effort basis. Because "c.pmin" and "c.pmax" are designed as acceptable tolerance bounds for sending state updates, a query from an interested client containing equal "c.pmin" and "c.pmax" values must not be seen as a hard real-time scheduling contract between the client and the server.
 
-The use of the notification band minimum and maximum allows for a synchronization whenever a change in the resource value occurs. Theoretically this could occur in-line with the server internal sample period or as defined by the "c.epmin" and "c.epmax" values for determining the resource value. Implementors SHOULD consider the resolution needed before updating the resource, e.g. updating the resource when a temperature sensor value changes by 0.001 degree versus 1 degree.
+The use of the notification band minimum and maximum allows for a synchronization whenever a change in the resource value occurs. Theoretically, this could occur in-line with the server internal sample period or as defined by the "c.epmin" and "c.epmax" values for determining the resource value. Implementors SHOULD consider the resolution needed before updating the resource, e.g., updating the resource when a temperature sensor value changes by 0.001 degree versus 1 degree.
 
 When a server has multiple observations with different measurement cadences as defined by the "c.epmin" and "c.epmax" values, the server MAY evaluate all observations when performing the measurement of any one observation.
 
-This specification defines conditional attributes that can be used with CoAP Observe relationships between CoAP clients and CoAP servers. However, it is recognised that the presence of one or more proxies between a client and a server can interfere with clients receiving resource updates, if a proxy does not supply resource representations when the value remains unchanged (e.g. if "c.pmax" is set, and the server sends multiple updates when the resource state contains the same value). A server SHOULD use the Max-Age option to mitigate this by setting Max-Age to be less than or equal to "c.pmax".
+This specification defines conditional attributes that can be used with CoAP Observe relationships between CoAP clients and CoAP servers. However, it is recognised that the presence of one or more proxies between a client and a server can interfere with clients receiving resource updates, if a proxy does not supply resource representations when the value remains unchanged (e.g., if "c.pmax" is set, and the server sends multiple updates when the resource state contains the same value). A server SHOULD use the Max-Age option to mitigate this, by setting Max-Age to be less than or equal to "c.pmax".
 
 Security Considerations   {#Security}
 =======================
@@ -350,12 +349,14 @@ The security considerations in {{Section 11 of RFC7252}} apply.
 
 Additionally, the security considerations in {{Section 7 of RFC7641}} also apply, particularly towards mitigating amplification attacks.
 
-As noted in {{Section 2.2 of I-D.irtf-t2trg-amplification-attacks}}, an attacker might choose to craft GET requests, in which observations are requested together with conditional attributes such as c.pmax or c.epmax with values that are below a minimum implementation-specific threshold. A server receiving such a request and is unwilling to register MAY silently ignore the registration request and process the GET request as usual.  The resulting response MUST NOT include an Observe Option, the absence of which signals to the client that it will not be added to the list of observers by the server.
+As noted in {{Section 2.2 of I-D.irtf-t2trg-amplification-attacks}}, an attacker might choose to craft GET requests, in which observations are requested together with conditional attributes such as c.pmax or c.epmax with values that are below a minimum implementation-specific threshold. If a server receives such a request and is unwilling to register the observer client, the server MAY silently ignore the registration request and process the GET request as usual.  The resulting response MUST NOT include an Observe Option, the absence of which signals to the client that it will not be added to the list of observers by the server.
 
 IANA Considerations
 ===================
 
-This specification requests a new Conditional Attributes registry to ensure attributes map uniquely to query parameter names.
+This document establishes the "Conditional Attributes" registry within the "Constrained RESTful Environments (CoRE) Parameters" registry group, in order to ensure that attributes map uniquely to query parameter names.
+
+
 
 Note to IANA: Please replace "RFC XXXX" with the assigned RFC number in the table below.
 
@@ -375,7 +376,7 @@ Note to IANA: Please replace "RFC XXXX" with the assigned RFC number in the tabl
 
 Acknowledgements
 ================
-Hannes Tschofenig and Mert Ocak highlighted syntactical corrections in the usage of pmax and pmin in a query. David Navarro proposed allowing for pmax to be equal to pmin. Marco Tiloca and Ines Robles provided extensive reviews. Suggestions from Klaus Hartke aided greatly in clarifying how conditional attributes work with Core Observe. Security considerations were improved based on authors' observations in {{Section 2.2 of I-D.irtf-t2trg-amplification-attacks}}.
+Hannes Tschofenig and Mert Ocak highlighted syntactical corrections in the usage of pmax and pmin in a query. David Navarro proposed allowing for pmax to be equal to pmin. Marco Tiloca and Ines Robles provided extensive reviews. Suggestions from Klaus Hartke aided greatly in clarifying how conditional attributes work with CoAP Observe. Security considerations were improved based on authors' observations in {{Section 2.2 of I-D.irtf-t2trg-amplification-attacks}}.
 
 Contributors
 ============
@@ -406,6 +407,13 @@ Contributors
 
 Changelog
 =========
+
+Editor's Note: This section is to be removed before publishing as an RFC.
+
+draft-ietf-core-conditional-attributes-08
+
+* Various editorial fixes and corrections based on review comments on mailing list from Marco Tiloca.
+
 
 draft-ietf-core-conditional-attributes-07
 
@@ -453,7 +461,7 @@ Pseudocode: Processing Conditional Attributes {#pseudocode}
 ========
 This appendix is informative. It describes the possible logic of how a server processes conditional attributes to determine when to send a notification to a client. 
 
-Note: The pseudocode is not exhaustive nor should it be treated as reference code. It depicts a subset of the conditional attributes described in this document.
+Note: The pseudocode is not exhaustive nor should it be treated as reference code. It depicts a subset of the conditional attributes described in this specification.
 
 ~~~~
 
@@ -541,7 +549,7 @@ Examples
 
 This appendix is informative. It provides some examples of the use of Conditional Attributes.
 
-Note: For brevity only the method or response code is shown in the header field.
+Note: For brevity, only the method or response code is shown in the header field.
 
 Minimum Period (c.pmin) example
 --------------------------
@@ -673,7 +681,7 @@ Greater Than (c.gt) and Period Max (c.pmax) example
  3                 +----->|                  Header: GET 
  4                 | GET  |                   Token: 0x4a
  5                 |      |                Uri-Path: temperature
- 6                 |      |         Uri-Query: c.pmax=20;c.gt=25
+ 6                 |      |         Uri-Query: c.pmax=20&c.gt=25
  7                 |      |                 Observe: 0 (register)
  8                 |      |
  9   ____________  |<-----+                  Header: 2.05 
@@ -711,4 +719,4 @@ Greater Than (c.gt) and Period Max (c.pmax) example
 41                 |      |                 
 42                 |      |
 ~~~~
-{: #figbindexp4 title="Client registers and receives one notification of the current state, one when c.pmax time expires and one of a new state when it passes through the greater than threshold of 25."}
+{: #figbindexp4 title="Client registers and receives one notification of the current state, one when c.pmax time expires, and one of a new state when it passes through the greater than threshold of 25."}
