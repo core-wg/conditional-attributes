@@ -327,7 +327,7 @@ When present with a value of 1 (True), Confirmable Notification indicates that a
 
 ## Server processing of Conditional Attributes
 
-Conditional Notification Attributes and Conditional Control Attributes may be present in the same query. However, they are not defined at multiple prioritization levels. The server sends a notification whenever any of the parameter conditions are met, upon which it updates its last notification value and time to prepare for the next notification. Only one notification occurs when there are multiple conditions being met at the same time. As a general example, the pseudocode illustrated in {{pseudocode}} shows one way to determine when a notification is to be sent.
+Conditional Notification Attributes and Conditional Control Attributes may be present in the same query. However, they are not defined at multiple prioritization levels. The server sends a notification whenever any of the parameter conditions are met, upon which it updates its last notification value and time to prepare for the next notification. When Conditional Notification Attributes and Conditional Control Attributes are present in the same query, notifications may be subjected to the presence of a Conditional Control Attribute such as "c.pmin" or "c.pmax". Only one notification occurs when there are multiple conditions being met at the same time. As a general example, the pseudocode illustrated in {{pseudocode}} shows one way to determine when a notification is to be sent.
 
 
 
