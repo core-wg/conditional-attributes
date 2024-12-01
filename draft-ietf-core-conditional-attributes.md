@@ -1,37 +1,35 @@
 ---
+v: 3
+
 title: "Conditional Attributes for Constrained RESTful Environments"
 abbrev: Conditional Attributes for CoRE
 docname: draft-ietf-core-conditional-attributes-latest
-date: 2024-10-17
+
 category: std
-
-ipr: trust200902
-area: art
+stream: IETF
+area: Applications
 workgroup: CoRE Working Group
-keyword: [Internet-Draft, CoRE, CoAP, Observe]
 
-stand_alone: yes
-pi: [toc, sortrefs, symrefs]
+venue:
+  mail: core@ietf.org
+  github: core-wg/conditional-attributes
 
 author:
-- ins: B. Silverajan
-  name: Bilhanan Silverajan
+- name: Bilhanan Silverajan
   org: Tampere University
   street: Kalevantie 4
   city: Tampere
   code: 'FI-33100'
   country: Finland
   email: bilhanan.silverajan@tuni.fi
-- ins: M. Koster
-  name: Michael Koster
-  organization: Dogtiger Labs
+- name: Michael Koster
+  org: Dogtiger Labs
   street: 524 H Street
   city: Antioch, CA
   code: 94509
   country: USA
   email: michaeljohnkoster@gmail.com
-- ins: A. Soloway
-  name: Alan Soloway
+- name: Alan Soloway
   organization: Qualcomm Technologies, Inc.
   street: 5775 Morehouse Drive
   city: San Diego
@@ -39,27 +37,49 @@ author:
   country: USA
   email: asoloway@qti.qualcomm.com
 
-normative:
-  RFC7252: coap
-  RFC7641: observe
+contributor:
+- name: Christian Groves
+  country: Australia 
+  email: cngroves.std@gmail.com
+- name: Zach Shelby
+  organization: ARM
+  city: Vuokatti
+  country: Finland
+  email: zach.shelby@arm.com
+- name: Matthieu Vial
+  organization: Schneider-Electric
+  city: Grenoble
+  country: France
+  email: matthieu.vial@schneider-electric.com
+- name: Jintao Zhu
+  organization: Huawei
+  city: Xi’an, Shaanxi Province
+  country: China
+  email: jintao.zhu@huawei.com 
+  
 
-informative: 
+normative:
+  RFC7252:
+  RFC7641:
+  RFC8126:
+
+
+informative:
   I-D.irtf-t2trg-amplification-attacks: t2trg-attacks
+
+entity:
+  SELF: "[RFC-XXXX]"
 
 --- abstract
 
 This specification defines Conditional Notification and Control Attributes that work with CoAP Observe (RFC7641).
- 
---- note_Editor_note
- 
-The git repository for the draft is found at https://github.com/core-wg/conditional-attributes/
 
 --- middle
 
 Introduction        {#introduction}
 ============
 
-IETF Standards for machine-to-machine communication in constrained environments describe the Constrained Application Protocol (CoAP) {{-coap}}, a RESTful application protocol, as well as a set of related information standards that may be used to represent machine data and machine metadata in REST interfaces. 
+IETF Standards for machine-to-machine communication in constrained environments describe the Constrained Application Protocol (CoAP) {{RFC7252}}, a RESTful application protocol, as well as a set of related information standards that may be used to represent machine data and machine metadata in REST interfaces. 
 
 This specification defines Conditional Notification and Control Attributes for use with CoAP Observe {{RFC7641}}.
 
@@ -68,7 +88,7 @@ Terminology     {#terminology}
 
 {::boilerplate bcp14}
 
-This specification requires readers to be familiar with all the terms and concepts that are discussed in {{-coap}} and {{RFC7641}}.  This specification makes use of the following additional terminology:
+This specification requires readers to be familiar with all the terms and concepts that are discussed in {{RFC7252}} and {{RFC7641}}.  This specification makes use of the following additional terminology:
 
 Notification Band:  
 : A resource value range that  may be bounded by a minimum and maximum value or may be unbounded having either a minimum or maximum value.
@@ -92,8 +112,6 @@ The mechanism can be explained in the following subsections in terms of registra
 ## Registration
 
 In this example, 3 CoAP endpoints are shown: Clients A and B are interested in obtaining updates to state representations describing the current CO2 level, provided by a CoAP Server.
-
-In {{fig-reg-client-a}}, Client A uses CoAP Observe to register its interest in receiving all updates to the CO2 resource state from the Server.
 
 
 ~~~~
@@ -150,6 +168,7 @@ ClientA         ClientB                   Server
 
 ~~~~
 {: #fig-reg-client-b title="Client B registers with conditional attributes, and receives one notification of the current state and a state projection is created."}
+
 
 
 ## Operation
@@ -224,7 +243,6 @@ ClientA         ClientB                   Server
 
 ~~~~
 {: #fig-cancellation title="Client B explicitly cancelling an existing registration."}
-
 
 ## Conditional Notification Attributes
 
@@ -342,8 +360,9 @@ When a server has multiple observations with different measurement cadences as d
 
 This specification defines conditional attributes that can be used with CoAP Observe relationships between CoAP clients and CoAP servers. However, it is recognised that the presence of one or more proxies between a client and a server can interfere with clients receiving resource updates, if a proxy does not supply resource representations when the value remains unchanged (e.g., if "c.pmax" is set, and the server sends multiple updates when the resource state contains the same value). A server SHOULD use the Max-Age option to mitigate this, by setting Max-Age to be less than or equal to "c.pmax".
 
-Security Considerations   {#Security}
-=======================
+
+
+# Security Considerations {#seccons}
 
 The security considerations in {{Section 11 of RFC7252}} apply. 
 
@@ -351,14 +370,24 @@ Additionally, the security considerations in {{Section 7 of RFC7641}} also apply
 
 As noted in {{Section 2.2 of I-D.irtf-t2trg-amplification-attacks}}, an attacker might choose to craft GET requests, in which observations are requested together with conditional attributes such as c.pmax or c.epmax with values that are below a minimum implementation-specific threshold. If a server receives such a request and is unwilling to register the observer client, the server MAY silently ignore the registration request and process the GET request as usual.  The resulting response MUST NOT include an Observe Option, the absence of which signals to the client that it will not be added to the list of observers by the server.
 
-IANA Considerations
-===================
+
+# IANA Considerations {#iana}
+
+This document has the following actions for IANA:
+
+Note to RFC Editor: Please replace all occurrences of "{{&SELF}}" with the RFC number of this specification and delete this paragraph.
 
 This document establishes the "Conditional Attributes" registry within the "Constrained RESTful Environments (CoRE) Parameters" registry group, in order to ensure that attributes map uniquely to query parameter names.
 
+Each entry in the registry must include:
+
+* Attribute: This is the human-readable name and description of the attribute,
+* Parameter: This is the short name, as used in query parameters,
+* Value: The value type (if any),
+* Reference: The link to reference documentation, which must give details describing the conditional notification or control attribute and how it is to be processed.
 
 
-Note to IANA: Please replace "RFC XXXX" with the assigned RFC number in the table below.
+Initial entries in this subregistry are as follows:
 
 | Attribute                    | Parameter  | Value           | Reference |
 | -------------- | --- | --- | --- |
@@ -372,96 +401,21 @@ Note to IANA: Please replace "RFC XXXX" with the assigned RFC number in the tabl
 | Change Step                  | c.st         | xs:decimal (>0) | RFC XXXX |
 | Notification Band            | c.band       | (none)          | RFC XXXX |
 | Edge                         | c.edge       | xs:boolean      | RFC XXXX |
+{: #conditionalattributes-registry title="New Conditional Attributes registry"}
 
 
-Acknowledgements
-================
-Hannes Tschofenig and Mert Ocak highlighted syntactical corrections in the usage of pmax and pmin in a query. David Navarro proposed allowing for pmax to be equal to pmin. Marco Tiloca and Ines Robles provided extensive reviews. Suggestions from Klaus Hartke aided greatly in clarifying how conditional attributes work with CoAP Observe. Security considerations were improved based on authors' observations in {{Section 2.2 of I-D.irtf-t2trg-amplification-attacks}}.
 
-Contributors
-============
+The IANA policy for future additions to the subregistry is Expert Review, as described in {{RFC8126}}. The evaluation should consider formal criteria and duplication of functionality (i.e., is the new entry redundant with an existing one). To reduce potential for conflict with commonly used query parameter names, it is strongly recommended that new entry names be prepended with "c." (such as entries described in {{conditionalattributes-registry}} ).
 
-    Christian Groves
-    Australia
-    email: cngroves.std@gmail.com
-
-    Zach Shelby
-    ARM
-    Vuokatti
-    FINLAND
-    phone: +358 40 7796297
-    email: zach.shelby@arm.com
-
-    Matthieu Vial
-    Schneider-Electric
-    Grenoble
-    France
-    phone: +33 (0)47657 6522
-    eMail: matthieu.vial@schneider-electric.com
-
-    Jintao Zhu
-    Huawei
-    Xi’an, Shaanxi Province
-    China
-    email: jintao.zhu@huawei.com 
-
-Changelog
-=========
-
-Editor's Note: This section is to be removed before publishing as an RFC.
-
-draft-ietf-core-conditional-attributes-08
-
-* Various editorial fixes and corrections based on review comments on mailing list from Marco Tiloca.
-
-
-draft-ietf-core-conditional-attributes-07
-
-* Expanded how conditional attributes work with Observe in sections 3.1 to 3.4
-* Addressed early review from IoT Directorate
-* Security Considerations section expanded 
-
-draft-ietf-core-conditional-attributes-06
-
-* Removed code block from Section 3.5
-* Added an appendix containing pseudocode for server processing.
-
-
-draft-ietf-core-conditional-attributes-05
-
-* Multiple (mostly editorial) clarifications and updates based on review comments on mailing list from Marco Tiloca.
-
-draft-ietf-core-conditional-attributes-04
-
-* Reference code updated to include behaviour for edge attribute.
-
-draft-ietf-core-conditional-attributes-03
-
-* Attribute names updated to create uniqueness for use as conditional observe attributes.
-
-draft-ietf-core-conditional-attributes-02
-
-* Clarifications on usage and value of the band parameter
-* Implementation considerations for proxies added
-* Security considerations added
-* IANA considerations added
-
-draft-ietf-core-conditional-attributes-01
-
-* Clarifications on True and False values for Edge and Con Attributes
-* Alan Soloway added as author
-
-draft-ietf-core-conditional-attributes-00
-
-* Conditional Atttributes section from draft-ietf-core-dynlink-13 separated into own WG draft
 
 --- back
 
-Pseudocode: Processing Conditional Attributes {#pseudocode}
-========
+# Pseudocode: Processing Conditional Attributes {#pseudocode}
+
 This appendix is informative. It describes the possible logic of how a server processes conditional attributes to determine when to send a notification to a client. 
 
 Note: The pseudocode is not exhaustive nor should it be treated as reference code. It depicts a subset of the conditional attributes described in this specification.
+
 
 ~~~~
 
@@ -489,54 +443,54 @@ Note: The pseudocode is not exhaustive nor should it be treated as reference cod
 
 boolean is_notifiable( Resource * r ) {
 
-    time_t curr_time = get_current_time();
+  time_t curr_time = get_current_time();
 
-    #define BAND_EXISTS ( r->band )
+  #define BAND_EXISTS ( r->band )
 
-    #define LT_EXISTS ( r->lt )
-    #define GT_EXISTS ( r->gt )
+  #define LT_EXISTS ( r->lt )
+  #define GT_EXISTS ( r->gt )
    
-    #define EPMIN_TRUE ( curr_time - r->last_sampled_time >= r->epmin )
-    #define EPMAX_TRUE ( curr_time - r->last_sampled_time > r->epmax )
+  #define EPMIN_TRUE ( curr_time - r->last_sampled_time >= r->epmin )
+  #define EPMAX_TRUE ( curr_time - r->last_sampled_time > r->epmax )
     
-    #define PMIN_TRUE ( curr_time - r->last_reported_time >= r->pmin )
-    #define PMAX_TRUE ( curr_time - r->last_reported_time > r->pmax )
+  #define PMIN_TRUE ( curr_time - r->last_reported_time >= r->pmin )
+  #define PMAX_TRUE ( curr_time - r->last_reported_time > r->pmax )
 
-    #define LT_TRUE ( r->curr_state < r->lt ^ r->prev_state < r->lt )
-    #define GT_TRUE ( r->curr_state > r->gt ^ r->prev_state > r->gt )
+  #define LT_TRUE ( r->curr_state < r->lt ^ r->prev_state < r->lt )
+  #define GT_TRUE ( r->curr_state > r->gt ^ r->prev_state > r->gt )
 
-    #define ST_TRUE ( abs( r->curr_state - r->prev_state ) >= r->st )
+  #define ST_TRUE ( abs( r->curr_state - r->prev_state ) >= r->st )
 
-    #define INBAND_TRUE ( gt < lt && \\
-                         (gt <= curr_state && curr_state <= lt ))
-    #define OUTOFBAND_TRUE ( lt < gt && \\
-                         (gt < curr_state || curr_state < lt ))
+  #define INBAND_TRUE ( gt < lt && \\
+                       (gt <= curr_state && curr_state <= lt ))
+  #define OUTOFBAND_TRUE ( lt < gt && \\
+                           (gt < curr_state || curr_state < lt ))
     
-    #define BANDMIN_TRUE ( r->lt <= r->curr_state)
-    #define BANDMAX_TRUE (r->curr_state <= r->gt)
+  #define BANDMIN_TRUE ( r->lt <= r->curr_state)
+  #define BANDMAX_TRUE (r->curr_state <= r->gt)
 
 
-    if PMAX_TRUE {
+  if PMAX_TRUE {
         return true;
-    }
+  }
     
-    if PMIN_TRUE {
-        if !BAND_EXISTS {
-            if LT_TRUE || GT_TRUE || ST_TRUE {
-                return true;
-            }
-        }
-        else {
-         if ( (BANDMIN_TRUE && !GT_EXISTS) || \
-              (BANDMAX_TRUE && !LT_EXISTS) || \
-               INBAND_TRUE || \
-               OUTOFBAND_TRUE ) {
-             return true;
-         }
-        }
-    }
+  if PMIN_TRUE {
+      if !BAND_EXISTS {
+          if LT_TRUE || GT_TRUE || ST_TRUE {
+              return true;
+          }
+      }
+      else {
+       if ( (BANDMIN_TRUE && !GT_EXISTS) || \
+            (BANDMAX_TRUE && !LT_EXISTS) || \
+             INBAND_TRUE || \
+             OUTOFBAND_TRUE ) {
+           return true;
+       }
+      }
+  }
 
-    return false;
+  return false;
     
 }
 
@@ -544,8 +498,8 @@ boolean is_notifiable( Resource * r ) {
 {: #figattrint title="Pseudocode showing the logic for processing conditional attributes"}
 
 
-Examples
-========
+#Examples
+
 
 This appendix is informative. It provides some examples of the use of Conditional Attributes.
 
@@ -554,7 +508,7 @@ Note: For brevity, only the method or response code is shown in the header field
 Minimum Period (c.pmin) example
 --------------------------
 
-~~~~
+~~~~aasvg
         Observed   CLIENT  SERVER     Actual
     t   State         |      |         State
         ____________  |      |  ____________
@@ -589,7 +543,7 @@ Minimum Period (c.pmin) example
 Maximum Period (c.pmax) example
 --------------------------
 
-~~~~
+~~~~aasvg
         Observed   CLIENT  SERVER     Actual
     t   State         |      |         State
         ____________  |      |  ____________
@@ -641,7 +595,7 @@ Maximum Period (c.pmax) example
 Greater Than (c.gt) example
 --------------------------
 
-~~~~
+~~~~aasvg
      Observed   CLIENT  SERVER     Actual
  t   State         |      |         State
      ____________  |      |  ____________
@@ -672,7 +626,7 @@ Greater Than (c.gt) example
 Greater Than (c.gt) and Period Max (c.pmax) example
 ----------------------------------
 
-~~~~
+~~~~aasvg
      Observed   CLIENT  SERVER     Actual
  t   State         |      |         State
      ____________  |      |  ____________
@@ -720,3 +674,58 @@ Greater Than (c.gt) and Period Max (c.pmax) example
 42                 |      |
 ~~~~
 {: #figbindexp4 title="Client registers and receives one notification of the current state, one when c.pmax time expires, and one of a new state when it passes through the greater than threshold of 25."}
+
+
+# Acknowledgements
+{: numbered='no'}
+
+Hannes Tschofenig and Mert Ocak highlighted syntactical corrections in the usage of pmax and pmin in a query. David Navarro proposed allowing for pmax to be equal to pmin. Marco Tiloca and Ines Robles provided extensive reviews. Suggestions from Klaus Hartke aided greatly in clarifying how conditional attributes work with CoAP Observe. Security considerations were improved based on authors' observations in {{Section 2.2 of I-D.irtf-t2trg-amplification-attacks}}.
+
+# Changelog # {#changelog}
+{: numbered='no'}
+{:removeinrfc}
+
+
+draft-ietf-core-conditional-attributes-08
+
+* Various editorial fixes and corrections based on review comments on mailing list from Marco Tiloca.
+
+draft-ietf-core-conditional-attributes-07
+
+* Expanded how conditional attributes work with Observe in sections 3.1 to 3.4
+* Addressed early review from IoT Directorate
+* Security Considerations section expanded 
+
+draft-ietf-core-conditional-attributes-06
+
+* Removed code block from Section 3.5
+* Added an appendix containing pseudocode for server processing.
+
+
+draft-ietf-core-conditional-attributes-05
+
+* Multiple (mostly editorial) clarifications and updates based on review comments on mailing list from Marco Tiloca.
+
+draft-ietf-core-conditional-attributes-04
+
+* Reference code updated to include behaviour for edge attribute.
+
+draft-ietf-core-conditional-attributes-03
+
+* Attribute names updated to create uniqueness for use as conditional observe attributes.
+
+draft-ietf-core-conditional-attributes-02
+
+* Clarifications on usage and value of the band parameter
+* Implementation considerations for proxies added
+* Security considerations added
+* IANA considerations added
+
+draft-ietf-core-conditional-attributes-01
+
+* Clarifications on True and False values for Edge and Con Attributes
+* Alan Soloway added as author
+
+draft-ietf-core-conditional-attributes-00
+
+* Conditional Atttributes section from draft-ietf-core-dynlink-13 separated into own WG draft
