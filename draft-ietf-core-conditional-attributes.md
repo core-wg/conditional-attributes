@@ -383,7 +383,7 @@ Each entry in the registry must include:
 
 * Attribute: This is the human-readable name and description of the attribute,
 * Parameter: This is the short name, as used in query parameters,
-* Value: The value type (if any),
+* Value Type: The value type of the attribute (if any),
 * Reference: The link to reference documentation, which must give details describing the conditional notification or control attribute and how it is to be processed.
 
 
