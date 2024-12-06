@@ -113,6 +113,7 @@ The mechanism can be explained in the following subsections in terms of registra
 
 In this example, 3 CoAP endpoints are shown: Clients A and B are interested in obtaining updates to state representations describing the current CO2 level, provided by a CoAP Server.
 
+In {{fig-reg-client-a}}, Client A uses CoAP Observe to register its interest in receiving all updates to the CO2 resource state from the Server.
 
 ~~~~
 ClientA         ClientB                   Server
