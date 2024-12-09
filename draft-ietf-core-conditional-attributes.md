@@ -3,7 +3,7 @@ v: 3
 
 title: "Conditional Attributes for Constrained RESTful Environments"
 abbrev: Conditional Attributes for CoRE
-docname: draft-ietf-core-conditional-attributes-latest
+docname: draft-ietf-core-conditional-attributes-09
 
 category: std
 stream: IETF
@@ -76,15 +76,13 @@ This specification defines Conditional Notification and Control Attributes that 
 
 --- middle
 
-Introduction        {#introduction}
-============
+# Introduction        {#introduction}
 
 IETF Standards for machine-to-machine communication in constrained environments describe the Constrained Application Protocol (CoAP) {{RFC7252}}, a RESTful application protocol, as well as a set of related information standards that may be used to represent machine data and machine metadata in REST interfaces. 
 
 This specification defines Conditional Notification and Control Attributes for use with CoAP Observe {{RFC7641}}.
 
-Terminology     {#terminology}
-===========
+# Terminology     {#terminology}
 
 {::boilerplate bcp14}
 
@@ -93,8 +91,7 @@ This specification requires readers to be familiar with all the terms and concep
 Notification Band:  
 : A resource value range that  may be bounded by a minimum and maximum value or may be unbounded having either a minimum or maximum value.
 
-Conditional Attributes        {#binding_attributes}
-=============
+# Conditional Attributes        {#binding_attributes}
 
 This specification defines conditional attributes for use with CoRE Observe {{RFC7641}}. Conditional attributes provide fine-grained control of notification and synchronization of resource states. A CoAP client conveys conditional attributes as metadata using the query component of a CoAP URI. A conditional attribute can be represented as a "name=value" query parameter or simply a "name" without a value. Multiple conditional attributes in a query component are separated with an ampersand "&". A resource marked as Observable in its link description SHOULD support these conditional attributes.
  
@@ -253,7 +250,7 @@ The set of Conditional Notification Attributes defined here allows a client to c
 
 Conditional Notification Attributes are defined below:
 
-| Attribute         | Name | Value          |
+| Attribute         | Name | Value Type     |
 | --- | --- | --- |
 | Greater Than      | c.gt       | xs:decimal      |
 | Less Than         | c.lt       | xs:decimal      |
@@ -310,7 +307,7 @@ Conditional Control Attributes define the time intervals between consecutive not
 
 Conditional Control Attributes are defined below:
 
-| Attribute                    | Name  | Value           |
+| Attribute                    | Name  | Value Type      |
 | --- | --- | --- |
 | Minimum Period (s)           | c.pmin       | xs:decimal (>0) |
 | Maximum Period (s)           | c.pmax       | xs:decimal (>0) |
@@ -350,8 +347,7 @@ Conditional Notification Attributes and Conditional Control Attributes may be pr
 
 
 
-Implementation Considerations   {#Implementation}
-=======================
+# Implementation Considerations   {#Implementation}
 
 When "c.pmax" and "c.pmin" are equal, the expected behaviour is that notifications will be sent every (c.pmin == c.pmax) seconds. However, these notifications can only be fulfilled by the server on a best effort basis. Because "c.pmin" and "c.pmax" are designed as acceptable tolerance bounds for sending state updates, a query from an interested client containing equal "c.pmin" and "c.pmax" values must not be seen as a hard real-time scheduling contract between the client and the server.
 
@@ -390,7 +386,7 @@ Each entry in the registry must include:
 
 Initial entries in this subregistry are as follows:
 
-| Attribute                    | Parameter  | Value           | Reference |
+| Attribute                    | Parameter  | Value Type      | Reference |
 | -------------- | --- | --- | --- |
 | Minimum Period (s)           | c.pmin       | xs:decimal (>0) | RFC XXXX |
 | Maximum Period (s)           | c.pmax       | xs:decimal (>0) | RFC XXXX |
@@ -509,7 +505,7 @@ Note: For brevity, only the method or response code is shown in the header field
 Minimum Period (c.pmin) example
 --------------------------
 
-~~~~aasvg
+~~~~
         Observed   CLIENT  SERVER     Actual
     t   State         |      |         State
         ____________  |      |  ____________
@@ -544,7 +540,7 @@ Minimum Period (c.pmin) example
 Maximum Period (c.pmax) example
 --------------------------
 
-~~~~aasvg
+~~~~
         Observed   CLIENT  SERVER     Actual
     t   State         |      |         State
         ____________  |      |  ____________
@@ -596,7 +592,7 @@ Maximum Period (c.pmax) example
 Greater Than (c.gt) example
 --------------------------
 
-~~~~aasvg
+~~~~
      Observed   CLIENT  SERVER     Actual
  t   State         |      |         State
      ____________  |      |  ____________
@@ -627,7 +623,7 @@ Greater Than (c.gt) example
 Greater Than (c.gt) and Period Max (c.pmax) example
 ----------------------------------
 
-~~~~aasvg
+~~~~
      Observed   CLIENT  SERVER     Actual
  t   State         |      |         State
      ____________  |      |  ____________
@@ -686,6 +682,10 @@ Hannes Tschofenig and Mert Ocak highlighted syntactical corrections in the usage
 {: numbered='no'}
 {:removeinrfc}
 
+draft-ietf-core-conditional-attributes-09
+
+* IANA Considerations section updated
+* Editorial and formatting fixes
 
 draft-ietf-core-conditional-attributes-08
 
