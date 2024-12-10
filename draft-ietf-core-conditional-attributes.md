@@ -3,7 +3,7 @@ v: 3
 
 title: "Conditional Attributes for Constrained RESTful Environments"
 abbrev: Conditional Attributes for CoRE
-docname: draft-ietf-core-conditional-attributes-09
+docname: draft-ietf-core-conditional-attributes-10
 
 category: std
 stream: IETF
@@ -386,24 +386,27 @@ Each entry in the registry must include:
 
 Initial entries in this subregistry are as follows:
 
-| Attribute                    | Parameter  | Value Type      | Reference |
-| -------------- | --- | --- | --- |
-| Minimum Period (s)           | c.pmin       | xs:decimal (>0) | RFC XXXX |
-| Maximum Period (s)           | c.pmax       | xs:decimal (>0) | RFC XXXX |
-| Minimum Evaluation Period (s)| c.epmin      | xs:decimal (>0) | RFC XXXX |
-| Maximum Evaluation Period (s)| c.epmax      | xs:decimal (>0) | RFC XXXX |
-| Confirmable Notification     | c.con        | xs:boolean      | RFC XXXX |
-| Greater Than                 | c.gt         | xs:decimal      | RFC XXXX |
-| Less Than                    | c.lt         | xs:decimal      | RFC XXXX |
-| Change Step                  | c.st         | xs:decimal (>0) | RFC XXXX |
-| Notification Band            | c.band       | (none)          | RFC XXXX |
-| Edge                         | c.edge       | xs:boolean      | RFC XXXX |
+| Attribute                    | Parameter | Value Type      | Change Controller | Reference |
+| -                            | -         | -               | -                 | -         |
+| Minimum Period (s)           | c.pmin    | xs:decimal (>0) | IETF              | RFC XXXX  |
+| Maximum Period (s)           | c.pmax    | xs:decimal (>0) | IETF              | RFC XXXX  |
+| Minimum Evaluation Period (s)| c.epmin   | xs:decimal (>0) | IETF              | RFC XXXX  |
+| Maximum Evaluation Period (s)| c.epmax   | xs:decimal (>0) | IETF              | RFC XXXX  |
+| Confirmable Notification     | c.con     | xs:boolean      | IETF              | RFC XXXX  |
+| Greater Than                 | c.gt      | xs:decimal      | IETF              | RFC XXXX  |
+| Less Than                    | c.lt      | xs:decimal      | IETF              | RFC XXXX  |
+| Change Step                  | c.st      | xs:decimal (>0) | IETF              | RFC XXXX  |
+| Notification Band            | c.band    | (none)          | IETF              | RFC XXXX  |
+| Edge                         | c.edge    | xs:boolean      | IETF              | RFC XXXX  |
 {: #conditionalattributes-registry title="New Conditional Attributes registry"}
 
 
 
-The IANA policy for future additions to the subregistry is Expert Review, as described in {{RFC8126}}. The evaluation should consider formal criteria and duplication of functionality (i.e., is the new entry redundant with an existing one). To reduce potential for conflict with commonly used query parameter names, it is strongly recommended that new entry names be prepended with "c." (such as entries described in {{conditionalattributes-registry}} ).
+The IANA policy for future additions to the subregistry is Expert Review, as described in {{RFC8126}}. The evaluation of a registration
+request should consider the following points:
 
+* Clarity and correctness of registrations. Experts are expected to check the clarity of purpose and use of the new conditional attributes and associated query parameters, which have to be clearly defined in the corresponding reference documentation. Conditional attributes that do not meet these objectives of clarity and completeness must not be registered.
+* Point squatting should be discouraged. Reviewers are encouraged to get sufficient information for registration requests to ensure that a new conditional attribute is likely to be used in deployments and is not going to duplicate one that is already registered. To reduce the potential for conflict with commonly used query parameter names, it is strongly recommended that new entry names be prepended with "c." (such as entries described in {{conditionalattributes-registry}}).
 
 --- back
 
@@ -681,6 +684,10 @@ Hannes Tschofenig and Mert Ocak highlighted syntactical corrections in the usage
 # Changelog # {#changelog}
 {: numbered='no'}
 {:removeinrfc}
+
+draft-ietf-core-conditional-attributes-10
+
+* Rectifying text and a table column in IANA Considerations, that version -09 erroneously omitted. 
 
 draft-ietf-core-conditional-attributes-09
 
