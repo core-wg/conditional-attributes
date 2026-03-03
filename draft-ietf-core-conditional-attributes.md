@@ -3,7 +3,7 @@ v: 3
 
 title: "Conditional Query Parameters for CoAP Observe"
 abbrev: Conditional Query Parameters for CoAP Observe
-docname: draft-ietf-core-conditional-attributes-11
+docname: draft-ietf-core-conditional-attributes-12
 
 category: std
 stream: IETF
@@ -62,7 +62,7 @@ normative:
   RFC7252:
   RFC7641:
   RFC8126:
-
+  W3C.REC-xmlschema-2-20041028:
 
 informative:
   I-D.irtf-t2trg-amplification-attacks: t2trg-attacks
@@ -91,20 +91,28 @@ This specification requires readers to be familiar with all the terms and concep
 Notification Band:  
 : A resource value range that  may be bounded by a minimum and maximum value or may be unbounded having either a minimum or maximum value.
 
+"xs:boolean" and "xs:decimal" types:
+: Data types from XML Schema {{W3C.REC-xmlschema-2-20041028}}, used in this document to describe boolean and scalar values in CoAP resources. The "xs:" prefix notation is used solely for type indication and does not imply the use of XML or XML Schema in protocol encoding.
+
 # Conditional Query Parameters        {#conditional_parameters}
 
 This specification defines conditional query parameters (or more simply, "conditional parameters" in this document) for use with CoRE Observe {{RFC7641}}. Conditional parameters provide fine-grained control of notification and synchronization of resource states. A CoAP client conveys conditional parameters as metadata using the query component of a CoAP URI. A conditional parameter can be represented as a "name=value" query parameter or simply a "name" without a value. A conditional parameter can be one of two kinds: A conditional notification parameter, or a conditional control parameter. Multiple conditional parameters in a query component are separated with an ampersand "&". A resource marked as Observable in its link description SHOULD support these conditional parameters.
  
+This specification also defines conditional query parameters as parameters that apply to scalar and boolean values in CoAP resources. While complex data structures (e.g., SenML, CBOR arrays, or other structured formats) are commonly used in IoT systems, this document does not provide explicit guidance on how conditional parameters should interact with these formats.
+
 This specification assumes that there are finite quantization effects in the internal or external updates to the value representing the state of a resource; specifically, that a resource state may be updated at any time with any valid value. We therefore avoid any continuous-time assumptions in the description of the conditional parameters and instead use the phrase "sampled value" to refer to a member of a sequence of values that may be internally observed from the resource state over time.
+
+
 
 ## Overview
 
 If a CoAP client is interested in obtaining all the state representations of a resource from a CoAP server as they change, the client is able to do so by using CoAP Observe. If a CoAP client is instead interested in receiving only state representations fulfilling certain constraints (such as a minimum/maximum value), it can do so by indicating conditional parameters as query parameters in its request to a CoAP server, when registering its interest in observing a resource.
 
-The usage of conditional parameters employs the notion of resource state projection, in which the client requests the server to project a new state from the current resource representation. When a server receives a request containing conditional parameters from a client, the server maintains a projected resource state separate from a resource state requested without conditional parameters. 
+The usage of conditional attributes employs the notion of resource state projection. This is an idea that aligns with established practices employed by RESTful API designs that allow clients to retrieve specific representations or subsets of a resource’s data, enhancing efficiency and flexibility.
+
+In constrained environments, CoAP clients can employ resource state projections as a technique to reduce unnecessary data transfer in constrained environments. By using Observe with query parameters, the client requests the server to project a new state from the current resource representation and deliver only a subset of updates, based on the received requests. When a server receives a request containing conditional query parameters from a client, the server maintains a projected resource state separate from a resource state requested without conditional query parameters.
 
 The mechanism can be explained in the following subsections in terms of registration, operation and cancellation.
-
 
 ## Registration
 
@@ -357,8 +365,13 @@ The use of the notification band minimum and maximum allows for a synchronizatio
 
 When a server has multiple observations with different measurement cadences as defined by the "c.epmin" and "c.epmax" values, the server MAY evaluate all observations when performing the measurement of any one observation.
 
+An implementation might choose to apply conditions like c.gt or c.lt to the v (value) field in SenML-based resources. However, this behavior is not defined in this document. Implementers are encouraged to consider how such formats may be adapted in their specific deployments. Future extensions or additional mechanisms may provide explicit guidance on supporting conditional parameters for complex data structures as well as data structures having multiple records.
+
 This specification defines conditional parameters that can be used with CoAP Observe relationships between CoAP clients and CoAP servers. However, it is recognised that the presence of one or more proxies between a client and a server can interfere with clients receiving resource updates, if a proxy does not supply resource representations when the value remains unchanged (e.g., if "c.pmax" is set, and the server sends multiple updates when the resource state contains the same value). A server SHOULD use the Max-Age option to mitigate this, by setting Max-Age to be less than or equal to "c.pmax".
 
+This document defines conditional query parameters that refine the behavior of a resource when used in conjunction with the Observe mechanism. As such, this specification does not require resources to advertise explicit support for conditional parameters through resource discovery. More specifically, it does not define a new CoRE Link Format (if=) interface type for advertising support of these conditional parameters. This specification intentionally avoids defining such an interface type at this stage, in order to preserve flexibility and to avoid introducing unnecessary coupling between resource interface semantics and request-time projection behavior.
+
+Future specifications MAY define a Link Format interface type or other discovery mechanisms to explicitly advertise support for conditional attributes, should deployment experience indicate that proactive capability discovery is necessary. Such mechanisms would need to clearly specify the behavioral guarantees associated with advertising that interface.
 
 
 # Security Considerations {#seccons}
@@ -686,6 +699,13 @@ Hannes Tschofenig and Mert Ocak highlighted syntactical corrections in the usage
 # Changelog # {#changelog}
 {: numbered='no'}
 {:removeinrfc}
+
+draft-ietf-core-conditional-attributes-12
+
+* Added "xs:boolean" and "xs:decimal" types in Terminology
+* Added avoidance of complex data structures in Section 3
+* Extra text regarding resource state projection in Section 3.1
+* Implementation Considerations now discusses SenML as well as if= interface descriptions.
 
 draft-ietf-core-conditional-attributes-11
 
