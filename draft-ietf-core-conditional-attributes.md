@@ -371,7 +371,7 @@ This specification defines conditional parameters that can be used with CoAP Obs
 
 This document defines conditional query parameters that refine the behavior of a resource when used in conjunction with the Observe mechanism. As such, this specification does not require resources to advertise explicit support for conditional parameters through resource discovery. More specifically, it does not define a new CoRE Link Format (if=) interface type for advertising support of these conditional parameters. This specification intentionally avoids defining such an interface type at this stage, in order to preserve flexibility and to avoid introducing unnecessary coupling between resource interface semantics and request-time projection behavior.
 
-Future specifications MAY define a Link Format interface type or other discovery mechanisms to explicitly advertise support for conditional attributes, should deployment experience indicate that proactive capability discovery is necessary. Such mechanisms would need to clearly specify the behavioral guarantees associated with advertising that interface.
+Future specifications MAY define a Link Format interface type or other discovery mechanisms to explicitly advertise support for conditional parameters, should deployment experience indicate that proactive capability discovery is necessary. Such mechanisms would need to clearly specify the behavioral guarantees associated with advertising that interface.
 
 
 # Security Considerations {#seccons}
