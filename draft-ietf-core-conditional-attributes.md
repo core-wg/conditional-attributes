@@ -3,7 +3,7 @@ v: 3
 
 title: "Conditional Query Parameters for CoAP Observe"
 abbrev: Conditional Query Parameters for CoAP Observe
-docname: draft-ietf-core-conditional-attributes-12
+docname: draft-ietf-core-conditional-attributes-13
 
 category: std
 stream: IETF
@@ -59,6 +59,7 @@ contributor:
   
 
 normative:
+  RFC6690:
   RFC7252:
   RFC7641:
   RFC8126:
@@ -96,7 +97,7 @@ Notification Band:
 
 # Conditional Query Parameters        {#conditional_parameters}
 
-This specification defines conditional query parameters (or more simply, "conditional parameters" in this document) for use with CoRE Observe {{RFC7641}}. Conditional parameters provide fine-grained control of notification and synchronization of resource states. A CoAP client conveys conditional parameters as metadata using the query component of a CoAP URI. A conditional parameter can be represented as a "name=value" query parameter or simply a "name" without a value. A conditional parameter can be one of two kinds: A conditional notification parameter, or a conditional control parameter. Multiple conditional parameters in a query component are separated with an ampersand "&". A resource marked as Observable in its link description SHOULD support these conditional parameters.
+This specification defines conditional query parameters (or more simply, "conditional parameters" in this document) for use with CoRE Observe {{RFC7641}}. Conditional parameters provide fine-grained control of notification and synchronization of resource states. A CoAP client conveys conditional parameters as metadata using the query component of a CoAP URI. A conditional parameter can be represented as a "name=value" query parameter or simply a "name" without a value. A conditional parameter can be one of two kinds: A conditional notification parameter, or a conditional control parameter. Multiple conditional parameters in a query component are separated with an ampersand "&". Support for conditional parameters is OPTIONAL and is determined on a per-resource basis. A resource that is observable MAY support the conditional parameters defined in this document. A resource that supports them MAY advertise this using the "core.conditional" interface type.
  
 This specification also defines conditional query parameters as parameters that apply to scalar and boolean values in CoAP resources. While complex data structures (e.g., SenML, CBOR arrays, or other structured formats) are commonly used in IoT systems, this document does not provide explicit guidance on how conditional parameters should interact with these formats.
 
@@ -108,11 +109,27 @@ This specification assumes that there are finite quantization effects in the int
 
 If a CoAP client is interested in obtaining all the state representations of a resource from a CoAP server as they change, the client is able to do so by using CoAP Observe. If a CoAP client is instead interested in receiving only state representations fulfilling certain constraints (such as a minimum/maximum value), it can do so by indicating conditional parameters as query parameters in its request to a CoAP server, when registering its interest in observing a resource.
 
-The usage of conditional attributes employs the notion of resource state projection. This is an idea that aligns with established practices employed by RESTful API designs that allow clients to retrieve specific representations or subsets of a resource’s data, enhancing efficiency and flexibility.
+The usage of conditional parameters employs the notion of resource state projection. This is an idea that aligns with established practices employed by RESTful API designs that allow clients to retrieve specific representations or subsets of a resource’s data, enhancing efficiency and flexibility.
 
 In constrained environments, CoAP clients can employ resource state projections as a technique to reduce unnecessary data transfer in constrained environments. By using Observe with query parameters, the client requests the server to project a new state from the current resource representation and deliver only a subset of updates, based on the received requests. When a server receives a request containing conditional query parameters from a client, the server maintains a projected resource state separate from a resource state requested without conditional query parameters.
 
 The mechanism can be explained in the following subsections in terms of registration, operation and cancellation.
+
+## Advertising Support for Conditional Parameters
+
+A resource that supports the conditional parameters MAY advertise this by including the interface description {{RFC6690}} "core.conditional" as a target attribute (if="core.conditional") in its link description. A client that
+discovers this interface type on a resource can therefore use conditional parameters with that resource.
+
+The "core.conditional" interface type MAY be used together with other target attributes, including a resource type ("rt=") and the observable attribute ("obs") {{RFC7641}}. For example:
+
+~~~~
+</temperature>;rt="core.s";if="core.conditional";obs
+~~~~
+
+Advertising the "core.conditional" interface type is OPTIONAL. A resource MAY support the conditional parameters defined in this document without advertising this interface type; for example, the applicable interpretation of the query component may be established by another specification or by the context in
+which the resource is used. Conversely, advertising this interface type does not by itself guarantee that any particular conditional parameter is supported; a resource that advertises it handles conditional parameters it does not support as described in {{server-processing}}.
+
+This document does not define a mechanism for discovering which individual conditional parameters a resource supports; such fine-grained discovery MAY be defined in future specifications.
 
 ## Registration
 
@@ -148,7 +165,7 @@ ClientA         ClientB                   Server
 {: #fig-reg-client-a title="Client A registers and receives one notification of the current state and one state update."}
 
 
-Client B, on the other hand is interested in receiving only a subset of updates from the Server. In {{fig-reg-client-b}}, Client B is depicted using CoAP Observe with a conditional parameter to register its interest in receiving specific updates to the C02 resource state from the Server. The Server provides a representation of the current state and creates and creates a new state projection registering Client B's interest.
+Client B, on the other hand is interested in receiving only a subset of updates from the Server. In {{fig-reg-client-b}}, Client B is depicted using CoAP Observe with a conditional parameter to register its interest in receiving specific updates to the CO2 resource state from the Server. The Server provides a representation of the current state and creates a new state projection registering Client B's interest.
 
 ~~~~
 ClientA         ClientB                   Server
@@ -213,7 +230,7 @@ ClientA         ClientB                   Server
    │               │                        │             .
 
 ~~~~
-{: #fig-operation title="Clients A and B receiving C02 state updates from the Server, without and with conditional parameters, respectively."}
+{: #fig-operation title="Clients A and B receiving CO2 state updates from the Server, without and with conditional parameters, respectively."}
 
 
 ## Cancellation
@@ -349,10 +366,12 @@ When present, Maximum Evaluation Period indicates the maximum time, in seconds, 
 
 When present with a value of 1 (True), Confirmable Notification indicates that a notification MUST be confirmable, i.e., the server MUST send the notification in a confirmable CoAP message, to request an acknowledgement from the client. When present with a value of 0 (False), Confirmable Notification indicates a notification can be confirmable or non-confirmable, i.e., it can be sent in a confirmable or a non-confirmable CoAP message.
 
-## Server processing of Conditional Parameters
+## Server processing of Conditional Parameters {#server-processing}
 
 Conditional Notification Parameters and Conditional Control Parameters may be present in the same query. However, they are not defined at multiple prioritization levels. The server sends a notification whenever any of the parameter conditions are met, upon which it updates its last notification value and time to prepare for the next notification. When Conditional Notification Parameters and Conditional Control Parameters are present in the same query, notifications may be subjected to the presence of a Conditional Control Parameter such as "c.pmin" or "c.pmax". Only one notification occurs when there are multiple conditions being met at the same time. As a general example, the pseudocode illustrated in {{pseudocode}} shows one way to determine when a notification is to be sent.
 
+A resource that receives a conditional parameter it does not support MUST treat that parameter as having
+no effect on the observation, and MUST process the remainder of the request as usual. Such a request MUST NOT be rejected solely because a conditional parameter is not supported. For example, if a client sends "GET /temp?c.gt=25&c.newthing=5" (Observe), and the server supports "c.gt" but does not support "c.newthing", the server returns the usual "2.05 Content" with an Observe option, exactly as if only "c.gt" had been sent.
 
 
 # Implementation Considerations   {#Implementation}
@@ -368,10 +387,6 @@ When a server has multiple observations with different measurement cadences as d
 An implementation might choose to apply conditions like c.gt or c.lt to the v (value) field in SenML-based resources. However, this behavior is not defined in this document. Implementers are encouraged to consider how such formats may be adapted in their specific deployments. Future extensions or additional mechanisms may provide explicit guidance on supporting conditional parameters for complex data structures as well as data structures having multiple records.
 
 This specification defines conditional parameters that can be used with CoAP Observe relationships between CoAP clients and CoAP servers. However, it is recognised that the presence of one or more proxies between a client and a server can interfere with clients receiving resource updates, if a proxy does not supply resource representations when the value remains unchanged (e.g., if "c.pmax" is set, and the server sends multiple updates when the resource state contains the same value). A server SHOULD use the Max-Age option to mitigate this, by setting Max-Age to be less than or equal to "c.pmax".
-
-This document defines conditional query parameters that refine the behavior of a resource when used in conjunction with the Observe mechanism. As such, this specification does not require resources to advertise explicit support for conditional parameters through resource discovery. More specifically, it does not define a new CoRE Link Format (if=) interface type for advertising support of these conditional parameters. This specification intentionally avoids defining such an interface type at this stage, in order to preserve flexibility and to avoid introducing unnecessary coupling between resource interface semantics and request-time projection behavior.
-
-Future specifications MAY define a Link Format interface type or other discovery mechanisms to explicitly advertise support for conditional parameters, should deployment experience indicate that proactive capability discovery is necessary. Such mechanisms would need to clearly specify the behavioral guarantees associated with advertising that interface.
 
 
 # Security Considerations {#seccons}
@@ -422,6 +437,14 @@ request should consider the following points:
 
 * Clarity and correctness of registrations. Experts are expected to check the clarity of purpose and use of the new conditional parameters and associated query parameters, which have to be clearly defined in the corresponding reference documentation. Conditional parameters that do not meet these objectives of clarity and completeness MUST NOT be registered.
 * Point squatting is to be discouraged. Reviewers are encouraged to get sufficient information for registration requests to ensure that a new conditional parameter is likely to be used in deployments and is not going to duplicate one that is already registered. To reduce the potential for conflict with commonly used query parameter names, it is strongly recommended that new entry names be prepended with "c." (such as entries described in {{conditionalparameters-registry}}).
+
+
+This document also registers the following entry in the "Interface Description (if=) Link Target Attribute Values" registry within the "Constrained RESTful Environments (CoRE) Parameters" registry group.
+
+| Value              | Description                                         | Reference |
+| -                  | -                                                   | -         |
+| core.conditional   | Advertisement of support for conditional parameters | RFC XXXX  |
+{: #conditionalparameters-interface title="Interface Type for Conditional Parameters Support"}
 
 --- back
 
@@ -699,6 +722,11 @@ Hannes Tschofenig and Mert Ocak highlighted syntactical corrections in the usage
 # Changelog # {#changelog}
 {: numbered='no'}
 {:removeinrfc}
+
+draft-ietf-core-conditional-attributes-13
+* Added support for discovery with "if=" interface type
+* Clarified no-op handling of unsupported parameters
+* Minor corrections and clarifications
 
 draft-ietf-core-conditional-attributes-12
 
