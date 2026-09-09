@@ -129,7 +129,7 @@ The "core.conditional" interface type MAY be used together with other target att
 Advertising the "core.conditional" interface type is OPTIONAL. A resource MAY support the conditional parameters defined in this document without advertising this interface type; for example, the applicable interpretation of the query component may be established by another specification or by the context in
 which the resource is used. Conversely, advertising this interface type does not by itself guarantee that any particular conditional parameter is supported; a resource that advertises it handles conditional parameters it does not support as described in {{server-processing}}.
 
-This document does not define a mechanism for discovering which individual conditional parameters a resource supports; such fine-grained discovery MAY be defined in future specifications.
+This document does not define a mechanism for discovering which individual conditional parameters a resource supports; such fine-grained discovery can be defined in future specifications.
 
 ## Registration
 
@@ -371,7 +371,7 @@ When present with a value of 1 (True), Confirmable Notification indicates that a
 Conditional Notification Parameters and Conditional Control Parameters may be present in the same query. However, they are not defined at multiple prioritization levels. The server sends a notification whenever any of the parameter conditions are met, upon which it updates its last notification value and time to prepare for the next notification. When Conditional Notification Parameters and Conditional Control Parameters are present in the same query, notifications may be subjected to the presence of a Conditional Control Parameter such as "c.pmin" or "c.pmax". Only one notification occurs when there are multiple conditions being met at the same time. As a general example, the pseudocode illustrated in {{pseudocode}} shows one way to determine when a notification is to be sent.
 
 A resource that receives a conditional parameter it does not support MUST treat that parameter as having
-no effect on the observation, and MUST process the remainder of the request as usual. Such a request MUST NOT be rejected solely because a conditional parameter is not supported. For example, if a client sends "GET /temp?c.gt=25&c.newthing=5" (Observe), and the server supports "c.gt" but does not support "c.newthing", the server returns the usual "2.05 Content" with an Observe option, exactly as if only "c.gt" had been sent.
+no effect on the observation, and MUST process the remainder of the request as usual. Such a request MUST NOT be rejected solely because a conditional parameter is not supported. For example, if a client sends "GET /temp?c.gt=25&c.newthing=5" (Observe), and the server supports "c.gt" but does not support "c.newthing", the server returns the usual "2.05 Content" with an Observe option after successfully processing the request, exactly as if only "c.gt" had been sent.
 
 
 # Implementation Considerations   {#Implementation}
