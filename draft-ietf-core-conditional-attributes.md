@@ -717,13 +717,19 @@ Greater Than (c.gt) and Period Max (c.pmax) example
 # Acknowledgements
 {: numbered='no'}
 
-Hannes Tschofenig and Mert Ocak highlighted syntactical corrections in the usage of pmax and pmin in a query. David Navarro proposed allowing for pmax to be equal to pmin. Jaime Jiménez, Marco Tiloca and Ines Robles provided extensive reviews. Suggestions from Klaus Hartke aided greatly in clarifying how conditional parameters work with CoAP Observe. Security considerations were improved based on authors' observations in {{Section 2.2 of I-D.irtf-t2trg-amplification-attacks}}.
+The authors wish to thank Christian Amsüss, Carsten Bormann, Esko Dijk, Klaus Hartke, Jaime Jiménez, John Mattsson, David Navarro, Mert Ocak, Ines Robles, Marco Tiloca and Hannes Tschofenig for discussions, feedback and reviews of this document.
 
 # Changelog # {#changelog}
 {: numbered='no'}
 {:removeinrfc}
 
+draft-ietf-core-conditional-attributes-14
+
+* Minor edits for clarification and language
+
+
 draft-ietf-core-conditional-attributes-13
+
 * Added support for discovery with "if=" interface type
 * Clarified no-op handling of unsupported parameters
 * Minor corrections and clarifications
