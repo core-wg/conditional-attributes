@@ -3,7 +3,7 @@ v: 3
 
 title: "Conditional Query Parameters for CoAP Observe"
 abbrev: Conditional Query Parameters for CoAP Observe
-docname: draft-ietf-core-conditional-attributes-13
+docname: draft-ietf-core-conditional-attributes-14
 
 category: std
 stream: IETF
